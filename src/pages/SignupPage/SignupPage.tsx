@@ -1,4 +1,4 @@
-import { AuthButton, Input, PhoneNumberInput } from '@components';
+import { AuthButton, ErrorMessage, Input, PhoneNumberInput } from '@components';
 import { ROUTES } from '@constants';
 import { useAuth } from '@context';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -28,7 +28,7 @@ export const SignupPage: React.FC = () => {
 
   return (
     <div
-      className={`w-[22rem] lg:w-[35rem] mx-auto h-screen flex flex-col gap-3 justify-center ${isAuthLoading ? 'opacity-70' : ''
+      className={`w-[22rem] lg:w-[35rem] relative mx-auto h-screen flex flex-col gap-3 justify-center ${isAuthLoading ? 'opacity-70' : ''
         } `}
     >
       {isAuthLoading && (
@@ -110,12 +110,10 @@ export const SignupPage: React.FC = () => {
             </label>
           </div>
         </div>
-        {errorMessage.length > 0 && (
-          <p className="text-basicRed">{errorMessage}</p>
-        )}
+        <ErrorMessage error={errorMessage} />
         <AuthButton text="Sign Up" />
         <div className="flex gap-3 items-baseline">
-          <p className="text-[13px] text-grayTxt">Already have an account</p>
+          <p className="text-[13px] m-0 text-grayTxt">Already have an account</p>
           <Link
             to={`${ROUTES.auth}/${ROUTES.login}`}
             onClick={() => setErrorMessage('')}

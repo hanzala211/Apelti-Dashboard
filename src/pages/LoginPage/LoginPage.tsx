@@ -1,4 +1,4 @@
-import { AuthButton, CheckInput, Input } from '@components';
+import { AuthButton, CheckInput, ErrorMessage, Input } from '@components';
 import { ROUTES } from '@constants';
 import { useAuth } from '@context';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -65,10 +65,7 @@ export const LoginPage: React.FC = () => {
             Forgot Password
           </button>
         </div>
-
-        {errorMessage.length > 0 && (
-          <p className="text-basicRed">{errorMessage}</p>
-        )}
+        <ErrorMessage error={errorMessage} />
         <AuthButton text="Sign In" />
         <div>
           <p className="text-[13px] text-grayTxt">
