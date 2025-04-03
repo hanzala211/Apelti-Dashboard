@@ -3,6 +3,7 @@ import { useAuth, useInvoice } from '@context';
 import { FilterTypes, Invoice } from '@types';
 import {
   APP_ACTIONS,
+  COLORS,
   DATE_FOMRAT,
   ICONS,
   PERMISSIONS,
@@ -15,6 +16,7 @@ import {
   FilterBtn,
   PageHeading,
   Table,
+  SvgIcon
 } from '@components';
 import InvoiceModel from './components/InvoiceModel';
 import InvoiceFilter from './components/InvoiceFilter';
@@ -22,7 +24,6 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { useQuery } from '@tanstack/react-query';
 import { formatDate } from '@helpers';
-import { ReactSVG } from 'react-svg';
 import { MenuProps } from 'antd';
 
 export const InvoicePage: React.FC = () => {
@@ -60,7 +61,7 @@ export const InvoicePage: React.FC = () => {
               ? invoices.filter((item) => item.status === 'draft')
               : invoices
       );
-  }, [location.search, invoices]);
+  }, [location.search, invoices, isInvoiceLoading]);
 
   const handleClick = () => {
     setIsInvoiceModelOpen(true);
@@ -210,17 +211,10 @@ export const InvoicePage: React.FC = () => {
           }}
           className="w-32 flex gap-2 items-center text-[14px] text-primaryColor hover:text-basicBlack transition-all duration-200 font-medium text-left"
         >
-          <ReactSVG
+          <SvgIcon
             src={ICONS.edit_overview}
-            beforeInjection={(svg) => {
-              svg.querySelectorAll('path').forEach((path) => {
-                path.setAttribute('fill', 'none');
-                path.setAttribute('stroke', 'currentColor');
-              });
-              svg.style.height = '14px';
-              svg.style.width = '14px';
-            }}
-            className={`group-hover:text-primaryColor`}
+            size={14}
+            className="group-hover:text-primaryColor"
           />
           Edit
         </button>
@@ -233,17 +227,10 @@ export const InvoicePage: React.FC = () => {
           onClick={handleDelete}
           className="w-32 flex gap-2 items-center text-[14px] text-primaryColor hover:text-basicBlack transition-all duration-200 font-medium text-left"
         >
-          <ReactSVG
+          <SvgIcon
             src={ICONS.table_setting}
-            beforeInjection={(svg) => {
-              svg.querySelectorAll('path').forEach((path) => {
-                path.setAttribute('fill', 'none');
-                path.setAttribute('stroke', 'currentColor');
-              });
-              svg.style.height = '14px';
-              svg.style.width = '14px';
-            }}
-            className={`group-hover:text-primaryColor`}
+            size={14}
+            className="group-hover:text-primaryColor"
           />
           Delete
         </button>
@@ -289,24 +276,18 @@ export const InvoicePage: React.FC = () => {
           onClick={showModal}
           className="text-accentBlue rounded-md transition-all duration-200 flex gap-1 hover:bg-softBlue px-2 py-1 items-center md:text-[18px] text-[15px]"
         >
-          <ICONS.plusIcon size={24} /> Add Filters
+          <ICONS.plusIcon size={24} color={COLORS.primaryColor} />
+          Add Filters
         </button>
         {userPermissions.includes(APP_ACTIONS.postInvoice) && (
           <DropDown
             items={items}
             label={
               <button className="group transition-all duration-200">
-                <ReactSVG
+                <SvgIcon
                   src={ICONS.table_setting}
-                  beforeInjection={(svg) => {
-                    svg.querySelectorAll('path').forEach((path) => {
-                      path.setAttribute('fill', 'none');
-                      path.setAttribute('stroke', 'currentColor');
-                    });
-                    svg.style.height = '20px';
-                    svg.style.width = '20px';
-                  }}
-                  className={`group-hover:text-primaryColor transition-all duration-200`}
+                  size={20}
+                  className="group-hover:text-primaryColor transition-all duration-200"
                 />
               </button>
             }
@@ -316,9 +297,7 @@ export const InvoicePage: React.FC = () => {
           okText="Add"
           handleOk={handleFilters}
           heading="In this view show records"
-          modalItems={
-            <InvoiceFilter filters={filters} setFilters={setFilters} />
-          }
+          modalItems={<InvoiceFilter filters={filters} setFilters={setFilters} />}
           setOpen={setIsModalOpen}
           open={isModalOpen}
         />

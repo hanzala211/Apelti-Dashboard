@@ -1,22 +1,23 @@
-import { ReactSVG } from 'react-svg';
+import React from 'react';
+import { SvgIcon } from '@components';
 
 export const IconButton: React.FC<{
   icon: string;
   label: string;
   className?: string;
-}> = ({ icon: Icon, label, className }) => {
+}> = ({ icon, label, className }) => {
   return (
     <button
-      className={`text-basicBlack ${className} font-semibold flex gap-2 items-center rounded-full shadow-md p-2 `}
+      className={`text-basicBlack ${className} font-semibold flex gap-2 items-center rounded-full shadow-md p-2`}
     >
-      <ReactSVG
-        src={Icon}
-        beforeInjection={(svg) => {
-          svg.setAttribute('width', '16');
-          svg.setAttribute('height', '16');
-        }}
-      />{' '}
-      {label}{' '}
+      <SvgIcon
+        src={icon}
+        size={16}
+        injectionOptions={{ fill: 'currentColor', stroke: 'none' }}
+      />
+      {label}
     </button>
   );
 };
+
+export default IconButton;

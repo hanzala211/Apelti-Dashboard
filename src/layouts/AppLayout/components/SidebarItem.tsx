@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { ReactSVG } from 'react-svg';
-import { IconType } from 'react-icons/lib';
+import { IconType } from 'react-icons';
+import { SvgIcon } from '@components';
 
 interface SidebarItemProps {
   label: string;
@@ -22,25 +22,19 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
     <NavLink to={link} onClick={onClick}>
       {({ isActive }) => (
         <div
-          className={`flex items-center gap-3 px-4 py-2 rounded-full cursor-pointer transition group ${isActive
-            ? 'bg-colorMint text-basicBlack'
-            : 'text-gray-400 hover:bg-colorMint'
+          className={`flex items-center gap-3 px-4 py-2 rounded-full cursor-pointer transition group ${isActive ? 'bg-colorMint text-basicBlack' : 'text-gray-400 hover:bg-colorMint'
             }`}
         >
           {!isIconType ? (
-            <ReactSVG
+            <SvgIcon
               src={typeof Icon === 'string' ? Icon : ''}
-              beforeInjection={(svg) => {
-                svg.querySelectorAll('path').forEach((path) => {
-                  path.setAttribute('fill', 'currentColor');
-                  path.setAttribute('stroke', 'none');
-                });
-              }}
+              size={20}
               className={
                 isActive
                   ? 'text-primaryColor w-5 h-5'
                   : 'text-gray-400 group-hover:text-primaryColor w-5 h-5'
               }
+              injectionOptions={{ fill: 'currentColor', stroke: 'none' }}
             />
           ) : (
             <Icon
@@ -52,7 +46,6 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
               }
             />
           )}
-
           <span className="text-sm">{label}</span>
         </div>
       )}

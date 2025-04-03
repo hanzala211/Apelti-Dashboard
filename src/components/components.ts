@@ -16,3 +16,5 @@ export * from './TableSkeleton';
 export * from './DatePickerField';
 export * from './ErrorMessage';
 export * from './TableCheckbox';
+export * from './SvgIcon';
+
