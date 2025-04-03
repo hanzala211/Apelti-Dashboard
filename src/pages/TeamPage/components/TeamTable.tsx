@@ -111,20 +111,18 @@ export const TeamTable: React.FC<TeamTableProps> = ({
                     >
                       <ICONS.userEdit size={24} />
                     </td>
-                    <button
-                      className={`${deleteUserMutation.isPending
-                          ? 'cursor-not-allowed opacity-50'
-                          : ''
+                    <td
+                      className={`px-4 py-2 text-sm text-basicRed ${deleteUserMutation.isPending
+                        ? 'cursor-not-allowed opacity-50'
+                        : ''
                         }`}
-                      disabled={deleteUserMutation.isPending}
-                      onClick={() =>
-                        deleteUserMutation.mutate({ userId: item._id })
-                      }
+                      onClick={() => {
+                        if (!deleteUserMutation.isPending)
+                          deleteUserMutation.mutate({ userId: item._id });
+                      }}
                     >
-                      <td className="px-4 py-2 text-sm text-basicRed">
-                        <ICONS.delete size={24} />
-                      </td>
-                    </button>
+                      <ICONS.delete size={24} />
+                    </td>
                   </>
                 )}
               </tr>
