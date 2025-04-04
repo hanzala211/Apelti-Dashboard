@@ -31,7 +31,8 @@ export interface Invoice {
   termsOfPayment?: string,
   vendorId: string,
   FiscalNumber: string,
-  vatNumber: string
+  vatNumber: string,
+  matchedWithPO?: boolean
 }
 
 export interface FilterTypes {

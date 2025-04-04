@@ -100,6 +100,7 @@ export const InvoiceRightPanelForm: React.FC = () => {
       vendorId: data.supplierId,
       FiscalNumber: data.fiscalNumber,
       vatNumber: extractedData?.vatNumber || data.supplierId || '',
+      matchedWithPO: extractedData?.matchedWithPO || false,
     }
     if (!selectedData) {
       postInvoiceMutation.mutate(result);

@@ -2,11 +2,11 @@ import { useInvoice } from '@context';
 import React from 'react';
 
 export const InvoiceHeader: React.FC = () => {
-  const { selectedData, extractDataMutation } = useInvoice();
+  const { selectedData, extractDataMutation, extractedData } = useInvoice();
 
   const message = extractDataMutation.isPending
     ? 'Loading Invoice'
-    : extractDataMutation.isSuccess
+    : extractedData?.matchedWithPO ? "The data has been successfully extracted from the PO dataset." : extractDataMutation.isSuccess
       ? 'The Apelti AI has filled in the data from the invoice. Review and add the invoice.'
       : extractDataMutation.isError
         ? ''
