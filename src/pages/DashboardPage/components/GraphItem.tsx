@@ -13,6 +13,7 @@ export const GraphItem: React.FC<GraphItemProps> = ({ icon, label, value }) => {
       <div className="flex items-center gap-2">
         <span className="bg-primaryColor rounded-xl p-2 w-fit block">
           <SvgIcon
+            className="text-white"
             src={icon}
             size={15}
             injectionOptions={{ fill: "currentColor", stroke: "none" }}
