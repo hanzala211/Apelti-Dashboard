@@ -9,7 +9,7 @@ interface InvoiceFilterProps {
   setFilters: React.Dispatch<React.SetStateAction<FilterTypes[]>>;
 }
 
-const InvoiceFilter: React.FC<InvoiceFilterProps> = ({
+export const InvoiceFilter: React.FC<InvoiceFilterProps> = ({
   filters,
   setFilters,
 }) => {

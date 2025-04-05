@@ -11,7 +11,8 @@ export const PERMISSIONS: Record<string, string[]> = {
     APP_ACTIONS.payemntPage,
     APP_ACTIONS.approvalPage,
     APP_ACTIONS.teamPage,
-    APP_ACTIONS.postInvoice
+    APP_ACTIONS.postInvoice,
+    APP_ACTIONS.approvalPage,
   ],
   clerk: [
     APP_ACTIONS.invoicePage,

@@ -17,4 +17,6 @@ export * from './DatePickerField';
 export * from './ErrorMessage';
 export * from './TableCheckbox';
 export * from './SvgIcon';
+export * from './InvoiceWidget';
+export * from './InvoiceFilter';
 

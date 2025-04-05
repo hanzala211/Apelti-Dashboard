@@ -5,3 +5,4 @@ export * from './contextTypes';
 export * from './invoicesTypes';
 export * from './formSchema';
 export * from './userTypes';
+export * from './approvalTypes';

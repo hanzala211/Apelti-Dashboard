@@ -1,5 +1,5 @@
 import { UseMutationResult } from '@tanstack/react-query';
-import { IMessage, Invoice, IUser } from '@types';
+import { GetApprovalTypes, IMessage, Invoice, IUser } from '@types';
 import { RefObject } from 'react';
 import { Socket } from 'socket.io-client';
 
@@ -37,9 +37,9 @@ export interface InvoiceContextTypes {
   setSelectedInvoice: React.Dispatch<React.SetStateAction<number | null>>;
   selectedData: Invoice | null;
   setSelectedData: React.Dispatch<React.SetStateAction<Invoice | null>>;
-  postInvoiceMutation: UseMutationResult<Invoice, Error, unknown, unknown>,
-  updateInvoiceMutation: UseMutationResult<Invoice, Error, unknown, unknown>,
-  deleteInvoiceMutation: UseMutationResult<void, Error, string, unknown>,
+  postInvoiceMutation: UseMutationResult<Invoice, Error, unknown, unknown>;
+  updateInvoiceMutation: UseMutationResult<Invoice, Error, unknown, unknown>;
+  deleteInvoiceMutation: UseMutationResult<void, Error, string, unknown>;
 }
 
 export interface AuthContextTypes {
@@ -71,4 +71,13 @@ export interface SettingContextTypes {
   changePassword: (data: unknown) => void;
   errorMessage: string;
   changeUserData: (data: unknown) => void;
+}
+
+export interface ApprovalContextTypes {
+  selectedApprovalInvoice: number | null;
+  setSelectedApprovalInvoice: React.Dispatch<
+    React.SetStateAction<number | null>
+  >;
+  getApprovalInvoices: () => Promise<GetApprovalTypes | undefined>;
+  changeStatus: (data: unknown, invoiceID: string | undefined) => Promise<void>;
 }

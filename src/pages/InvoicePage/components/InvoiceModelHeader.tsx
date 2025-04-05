@@ -1,7 +1,7 @@
+import { SvgIcon } from '@components';
 import { COLORS, ICONS } from '@constants';
 import { useInvoice } from '@context';
 import { SyncLoader } from 'react-spinners';
-import { ReactSVG } from 'react-svg';
 
 export const InvoiceModelHeader: React.FC = () => {
   const {
@@ -23,7 +23,7 @@ export const InvoiceModelHeader: React.FC = () => {
 
   return (
     <header className="h-[7rem] px-4 shadow-lg flex justify-between items-center w-full bg-basicWhite">
-      <h1 className="md:text-[22px] text-[17px] font-bold">
+      <h1 className="md:text-[22px] m-0 text-[17px] font-bold">
         {selectedData ? 'Edit Invoice' : 'Add Invoice'}
       </h1>
       <div className="flex gap-4 items-center">
@@ -61,7 +61,7 @@ export const InvoiceModelHeader: React.FC = () => {
           {!formData ? 'Draft' : 'Edit'}
         </button>
         <button onClick={handleClose}>
-          <ReactSVG src={ICONS.close} />
+          <SvgIcon src={ICONS.close} size={24} />
         </button>
       </div>
     </header>

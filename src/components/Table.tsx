@@ -17,7 +17,7 @@ export const Table = <T,>({
   data,
   keys,
   isLoading = false,
-  skeletonRowCount = 5,
+  skeletonRowCount = 20,
   selectedIndex,
   setSelectedIndex,
 }: TableProps<T>) => {

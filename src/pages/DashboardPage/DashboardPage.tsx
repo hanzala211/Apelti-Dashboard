@@ -1,6 +1,5 @@
 import { useAuth } from '@context';
 import { ApexChart } from './components/ApexChart';
-import { InvoiceWidget } from './components/InvoiceWidget';
 import { PaymentItem } from './components/PaymentItem';
 import {
   APP_ACTIONS,
@@ -14,6 +13,7 @@ import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import ColumnChart from './components/ColumnChart';
 import GraphItem from './components/GraphItem';
+import { InvoiceWidget } from "@components"
 
 export const DashboardPage: React.FC = () => {
   const { userData } = useAuth();

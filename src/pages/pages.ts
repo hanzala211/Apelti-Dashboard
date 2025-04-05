@@ -6,3 +6,4 @@ export * from './LoginPage/LoginPage';
 export * from './SignupPage/SignupPage';
 export * from './TeamPage/TeamPage';
 export * from './ProfileSettingPage/ProfileSettingPage';
+export * from './ApprovalPage/ApprovalPage';

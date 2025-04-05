@@ -6,9 +6,11 @@ import {
   ReactQueryProvider,
   SettingProvider,
   TeamProvider,
+  ApprovalProvider
 } from '@context';
 import { AppLayout, AuthLayout, PageNotFound, SettingsLayout } from '@layouts';
 import {
+  ApprovalPage,
   DashboardPage,
   DocumentPage,
   InvoicePage,
@@ -31,46 +33,50 @@ const App: React.FC = () => {
               <InvoiceProvider>
                 <TeamProvider>
                   <SettingProvider>
-                    <Routes>
-                      <Route path={ROUTES.auth} element={<AuthLayout />}>
-                        <Route index element={<LoginPage />} />
-                        <Route path={ROUTES.login} element={<LoginPage />} />
-                        <Route path={ROUTES.signup} element={<SignupPage />} />
-                      </Route>
+                    <ApprovalProvider>
 
-                      <Route element={<AppLayout />} path="/">
-                        <Route index element={<DashboardPage />} />
-                        <Route path="*" element={<PageNotFound />} />
-                        <Route
-                          path={ROUTES.not_available}
-                          element={<PageNotFound />}
-                        />
-                        <Route
-                          path={ROUTES.documents}
-                          element={<DocumentPage />}
-                        />
-                        <Route
-                          path={ROUTES.messages}
-                          element={<MessagesPage />}
-                        />
-                        <Route
-                          path={ROUTES.invoices}
-                          element={<InvoicePage />}
-                        />
-                        <Route path={ROUTES.team} element={<TeamPage />} />
-                      </Route>
+                      <Routes>
+                        <Route path={ROUTES.auth} element={<AuthLayout />}>
+                          <Route index element={<LoginPage />} />
+                          <Route path={ROUTES.login} element={<LoginPage />} />
+                          <Route path={ROUTES.signup} element={<SignupPage />} />
+                        </Route>
 
-                      <Route
-                        path={ROUTES.settings}
-                        element={<SettingsLayout />}
-                      >
-                        <Route index element={<ProfileSettingPage />} />
+                        <Route element={<AppLayout />} path="/">
+                          <Route index element={<DashboardPage />} />
+                          <Route path="*" element={<PageNotFound />} />
+                          <Route
+                            path={ROUTES.not_available}
+                            element={<PageNotFound />}
+                          />
+                          <Route
+                            path={ROUTES.documents}
+                            element={<DocumentPage />}
+                          />
+                          <Route
+                            path={ROUTES.messages}
+                            element={<MessagesPage />}
+                          />
+                          <Route
+                            path={ROUTES.invoices}
+                            element={<InvoicePage />}
+                          />
+                          <Route path={ROUTES.team} element={<TeamPage />} />
+                          <Route path={ROUTES.approval} element={<ApprovalPage />} />
+                        </Route>
+
                         <Route
-                          path={ROUTES.profile}
-                          element={<ProfileSettingPage />}
-                        />
-                      </Route>
-                    </Routes>
+                          path={ROUTES.settings}
+                          element={<SettingsLayout />}
+                        >
+                          <Route index element={<ProfileSettingPage />} />
+                          <Route
+                            path={ROUTES.profile}
+                            element={<ProfileSettingPage />}
+                          />
+                        </Route>
+                      </Routes>
+                    </ApprovalProvider>
                   </SettingProvider>
                 </TeamProvider>
               </InvoiceProvider>
