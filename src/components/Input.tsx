@@ -8,7 +8,8 @@ interface InvoiceInputProps {
   error?: string;
   min?: number;
   placeholder?: string;
-  className?: string
+  className?: string;
+  steps?: string
 }
 
 export const Input: React.FC<InvoiceInputProps> = ({
@@ -18,7 +19,8 @@ export const Input: React.FC<InvoiceInputProps> = ({
   error,
   min = 0,
   placeholder,
-  className
+  className,
+  steps = "any"
 }) => {
   return (
     <div className="flex flex-col gap-2 w-full">
@@ -34,6 +36,7 @@ export const Input: React.FC<InvoiceInputProps> = ({
         className={`${className} bg-white rounded-md w-full py-1.5 px-3 border border-basicBlack focus:shadow-blue-300 focus-within:shadow-sm focus:outline-none focus:border-darkBlue hover:border-darkBlue transition-all duration-200`}
         min={min}
         placeholder={placeholder}
+        step={steps}
       />
       <ErrorMessage error={error} />
     </div>
