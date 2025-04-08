@@ -63,7 +63,7 @@ export const MessagesLeftPanel: React.FC = () => {
             Select All
           </label>
         </div>
-        <div className="flex flex-col gap-3 h-[100dvh] max-h-[calc(100dvh-260px)] overflow-y-auto mt-2 w-full">
+        <div className="flex flex-col gap-3 h-[100dvh] max-h-[calc(100dvh-300px)] overflow-y-auto mt-2 w-full">
           {!isMessagesLoading ? messages && messages.length > 0 && messages.map((item, index) => (
             <Message
               key={index}
