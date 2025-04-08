@@ -53,7 +53,7 @@ export const MessagesLeftPanel: React.FC = () => {
         </span>
       </div>
       <div className="md:px-10 px-2 mt-4 w-full">
-        <div className="flex gap-2">
+        <div className="flex gap-2 border-b-[1px] border-silverGray pb-3 mb-3">
           <CheckInput
             checkValue={selectAll}
             handleOnChange={handleSelectAll}
@@ -63,7 +63,7 @@ export const MessagesLeftPanel: React.FC = () => {
             Select All
           </label>
         </div>
-        <div className="flex flex-col gap-3 h-[100dvh] max-h-[calc(100dvh-250px)] overflow-y-auto mt-2 w-full">
+        <div className="flex flex-col gap-3 h-[100dvh] max-h-[calc(100dvh-260px)] overflow-y-auto mt-2 w-full">
           {!isMessagesLoading ? messages && messages.length > 0 && messages.map((item, index) => (
             <Message
               key={index}

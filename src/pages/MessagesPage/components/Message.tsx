@@ -152,7 +152,7 @@ export const Message: React.FC<MessageProps> = ({
       </div>
       {/* Comment Box */}
       <div
-        className={`mt-3 z-10 transition-all w-full duration-300
+        className={`mt-3 z-10 overflow-hidden transition-all w-full duration-300
     ${isCommentOpen && !isCommentsLoading
             ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
             : 'opacity-0 absolute h-0 translate-y-4 scale-95 pointer-events-none'
