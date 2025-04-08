@@ -88,7 +88,7 @@ export const ApprovalPage: React.FC = () => {
         <InvoiceWidget label="Approved Invoices" amount={approvalInvoices?.approvedInvoices || 0} />
         <InvoiceWidget label="Rejected Invoices" amount={approvalInvoices?.rejectedInvoices || 0} />
         <InvoiceWidget label="Pending Invoices" amount={approvalInvoices?.pendingInvoices || 0} />
-        <InvoiceWidget label="Draft Invoices" amount={0} />
+        <InvoiceWidget label="Draft Invoices" amount={approvalInvoices?.draftInvoices || 0} />
       </div>
       <div className="flex mt-5 justify-between items-center md:px-14 px-2">
         <button

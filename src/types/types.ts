@@ -113,6 +113,7 @@ export type GetApprovalTypes = {
   pendingInvoices: number;
   rejectedInvoices: number;
   totalInvoices: number;
+  draftInvoices: number;
 };
 export interface MessageContextTypes {
   selectedMessage: IMessage | null;
