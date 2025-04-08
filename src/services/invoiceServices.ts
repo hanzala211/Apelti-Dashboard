@@ -29,4 +29,10 @@ export const invoiceServices = {
     isAuthIncluded: true,
     data
   }),
+  postDraftInvoice: (data: unknown) => sendRequest({
+    url: `/invoice/draft`,
+    method: "POST",
+    data,
+    isAuthIncluded: true
+  })
 }

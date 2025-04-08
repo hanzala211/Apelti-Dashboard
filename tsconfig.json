@@ -7,15 +7,15 @@
 	"compilerOptions": {
 		"baseUrl": "./src",
 		"paths": {
-			"@components/*": ["components/components.ts"],
-			"@constants/*": ["constants/constants.ts"],
-			"@pages/*": ["pages/pages.ts*"],
+			"@components/*": ["components/index.ts"],
+			"@constants/*": ["constants/index.ts"],
+			"@pages/*": ["pages/index.ts*"],
 			"@types": ["types/types.ts"],
-			"@context": ["context/context.ts"],
-			"@layouts": ["layouts/layouts.ts"],
-			"@services": ["services/services.ts"],
-			"@helpers": ["helpers/helpers.ts"],
-			"@hooks": ["hooks/hooks.ts"]
+			"@context": ["context/index.ts"],
+			"@layouts": ["layouts/index.ts"],
+			"@services": ["services/index.ts"],
+			"@helpers": ["helpers/index.ts"],
+			"@hooks": ["hooks/index.ts"]
 		}
 	}
 }

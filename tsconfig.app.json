@@ -9,14 +9,14 @@
 		"baseUrl": ".",
 		"paths": {
 			"@types": ["./src/types/types.ts"],
-			"@components": ["./src/components/components.ts"],
-			"@pages": ["./src/pages/pages.ts"],
-			"@constants": ["./src/constants/constants.ts"],
-			"@context": ["./src/context/context.ts"],
-			"@layouts": ["./src/layouts/layouts.ts"],
-			"@services": ["./src/services/services.ts"],
-			"@helpers": ["./src/helpers/helpers.ts"],
-			"@hooks": ["./src/hooks/hooks.ts"]
+			"@components": ["./src/components/index.ts"],
+			"@pages": ["./src/pages/index.ts"],
+			"@constants": ["./src/constants/index.ts"],
+			"@context": ["./src/context/index.ts"],
+			"@layouts": ["./src/layouts/index.ts"],
+			"@services": ["./src/services/index.ts"],
+			"@helpers": ["./src/helpers/index.ts"],
+			"@hooks": ["./src/hooks/index.ts"]
 		},
 
 		/* Bundler mode */

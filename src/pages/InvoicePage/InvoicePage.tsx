@@ -53,8 +53,8 @@ export const InvoicePage: React.FC = () => {
       setFilteredInvoices(
         location.search.includes('unpaid')
           ? invoices.filter((item) => item.status === 'rejected')
-          : location.search.includes('return')
-            ? invoices.filter((item) => item.status === 'return')
+          : location.search.includes('pending')
+            ? invoices.filter((item) => item.status === 'pending')
             : location.search.includes('draft')
               ? invoices.filter((item) => item.status === 'draft')
               : invoices
@@ -68,8 +68,6 @@ export const InvoicePage: React.FC = () => {
   const showModal = () => {
     setIsModalOpen(true);
   };
-
-
 
   const handleDelete = () => {
     if (selectedInvoice !== null && invoices !== undefined) {
@@ -173,9 +171,9 @@ export const InvoicePage: React.FC = () => {
           onClick={() => navigate('?unpaid=true')}
         />
         <FilterBtn
-          label="Return Invoices"
-          bool={location.search.includes('return')}
-          onClick={() => navigate('?return=true')}
+          label="Pending Invoices"
+          bool={location.search.includes('pending')}
+          onClick={() => navigate('?pending=true')}
         />
         <FilterBtn
           label="Draft Invoices"

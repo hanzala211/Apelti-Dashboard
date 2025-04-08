@@ -3,3 +3,4 @@ export * from './teamServices';
 export * from './settingServices';
 export * from './invoiceServices';
 export * from './approvalServices';
+export * from './messageServices';

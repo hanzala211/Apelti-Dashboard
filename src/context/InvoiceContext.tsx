@@ -30,31 +30,42 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const formInputRef = useRef<HTMLInputElement>(null);
   const removeDataBtnRef = useRef<HTMLButtonElement>(null);
+  const draftBtnRef = useRef<HTMLButtonElement>(null);
   const queryClient = useQueryClient();
   const extractDataMutation = useMutation({
     mutationFn: () => extractData(),
+    onSuccess: (data) => {
+      setExtractedData(data);
+    },
   });
 
   const postInvoiceMutation = useMutation({
     mutationFn: (data: unknown) => postInvoice(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['invoices'] });
-      setExtractedData(null)
+      setExtractedData(null);
     },
   });
   const updateInvoiceMutation = useMutation({
     mutationFn: (data: unknown) => updateInvoice(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['invoices'] });
-      setExtractedData(null)
+      setExtractedData(null);
+    },
+  });
+  const postDraftInvoiceMutation = useMutation({
+    mutationFn: (data: unknown) => postDraftInvoice(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['invoices'] });
+      handleBtnClick();
     },
   });
   const deleteInvoiceMutation = useMutation({
     mutationFn: (invoiceId: string) => deleteInvoice(invoiceId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['invoices'] });
-      setIsInvoiceModelOpen(false)
-      handleBtnClick()
+      setIsInvoiceModelOpen(false);
+      handleBtnClick();
     },
   });
 
@@ -72,14 +83,19 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
     formInputRef.current?.click();
   };
 
+  const handleDraftBtnClick = () => {
+    draftBtnRef.current?.click();
+  };
+
   const handleBtnClick = () => {
+    setIsInvoiceModelOpen(false);
     setTimeout(() => {
       extractDataMutation.reset();
       setFormData(null);
       setSelectedImage(null);
       setExtractedData(null);
       setSelectedData(null);
-    }, 500)
+    }, 500);
     removeDataBtnRef.current?.click();
   };
 
@@ -100,9 +116,14 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
       formData.append('file', blob, fileName);
       const extractedData = await invoiceServices.extractData(formData);
       console.log('Extracted Data:', extractedData);
-      setExtractedData(extractedData.data.data);
+      return extractedData.data.data;
     } catch (error) {
       console.error('Error extracting data:', error);
+      toast.error(
+        'Failed to extract data',
+        'There was a problem processing the selected image. Please try again.'
+      );
+      throw error;
     }
   };
 
@@ -120,11 +141,8 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
 
   const updateInvoice = async (data: unknown) => {
     try {
-      const invoiceId = selectedData?._id || formData?._id || "";
-      const response = await invoiceServices.updateInvoice(
-        invoiceId,
-        data
-      );
+      const invoiceId = selectedData?._id || formData?._id || '';
+      const response = await invoiceServices.updateInvoice(invoiceId, data);
       console.log(response);
       setFormData({
         supplierName: response.data.data.supplierName,
@@ -139,13 +157,12 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
         rarityInvoice: response.data.data.rarityInvoice,
         comment: response.data.data.comment,
         fileUrl: response.data.data.fileUrl || '',
+        fileName: response.data.data.fileName || '',
         FiscalNumber: response.data.data.FiscalNumber,
-        vatNumber:
-          response.data.data?.vatNumber,
-        vendorId:
-          response.data.data.vendorId || response.data.data?.vatNumber,
+        vatNumber: response.data.data?.vatNumber,
+        vendorId: response.data.data.vendorId || response.data.data?.vatNumber,
         items: response.data.data?.items || [],
-        _id: response.data.data._id
+        _id: response.data.data._id,
       });
       return response.data.data;
     } catch (error) {
@@ -171,12 +188,13 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
           rarityInvoice: response.data.data.rarityInvoice,
           comment: response.data.data.comment,
           fileUrl: response.data.data.fileUrl || '',
+          fileName: response.data.data.fileName || '',
           FiscalNumber: response.data.data.FiscalNumber,
           vatNumber: response.data.data?.vatNumber,
           vendorId:
             response.data.data.vendorId || response.data.data?.vatNumber,
           items: response.data.data?.items || [],
-          _id: response.data.data._id
+          _id: response.data.data._id,
         });
         return response.data.data;
       }
@@ -189,16 +207,32 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  const postDraftInvoice = async (data: unknown) => {
+    try {
+      const response = await invoiceServices.postDraftInvoice(data);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        'Error',
+        typeof error === 'object' ? (error as Error).message : String(error)
+      );
+    }
+  };
+
   const deleteInvoice = async (invoiceId: string) => {
     try {
-      const response = await invoiceServices.deleteInvoice(invoiceId)
+      const response = await invoiceServices.deleteInvoice(invoiceId);
       if (response.status === 200) {
-        toast.success('Operation Successful', 'Invoice has been successfully deleted.');
+        toast.success(
+          'Operation Successful',
+          'Invoice has been successfully deleted.'
+        );
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   return (
     <InvoiceContext.Provider
@@ -228,7 +262,10 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
         setSelectedData,
         postInvoiceMutation,
         updateInvoiceMutation,
-        deleteInvoiceMutation
+        deleteInvoiceMutation,
+        draftBtnRef,
+        handleDraftBtnClick,
+        postDraftInvoiceMutation,
       }}
     >
       {children}

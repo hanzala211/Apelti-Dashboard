@@ -9,6 +9,7 @@ interface SvgIconProps {
     fill?: string;
     stroke?: string;
   };
+  beforeInjectionExtra?: (svg: SVGSVGElement) => void;
 }
 
 export const SvgIcon: React.FC<SvgIconProps> = ({
@@ -17,6 +18,7 @@ export const SvgIcon: React.FC<SvgIconProps> = ({
   className = '',
   onClick,
   injectionOptions = { fill: 'none', stroke: 'currentColor' },
+  beforeInjectionExtra,
 }) => {
   return (
     <ReactSVG
@@ -26,8 +28,13 @@ export const SvgIcon: React.FC<SvgIconProps> = ({
           path.setAttribute('fill', injectionOptions.fill || 'none');
           path.setAttribute('stroke', injectionOptions.stroke || 'currentColor');
         });
+
         svg.style.height = `${size}px`;
         svg.style.width = `${size}px`;
+
+        if (beforeInjectionExtra) {
+          beforeInjectionExtra(svg);
+        }
       }}
       className={className}
       onClick={onClick}

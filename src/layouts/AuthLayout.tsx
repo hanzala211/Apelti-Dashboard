@@ -1,7 +1,7 @@
 import { ICONS } from '@constants';
 import { useAuth } from '@context';
 import { Outlet } from 'react-router-dom';
-import Loader from '../Loader';
+import Loader from './Loader';
 
 export const AuthLayout: React.FC = () => {
   const { isMainLoading } = useAuth();

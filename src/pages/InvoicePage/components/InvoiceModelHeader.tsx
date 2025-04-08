@@ -14,6 +14,8 @@ export const InvoiceModelHeader: React.FC = () => {
     selectedData,
     setSelectedData,
     updateInvoiceMutation,
+    handleDraftBtnClick,
+    postDraftInvoiceMutation
   } = useInvoice();
 
   const handleClose = () => {
@@ -54,11 +56,17 @@ export const InvoiceModelHeader: React.FC = () => {
             if (formData) {
               setSelectedData(formData);
               setFormData(null);
+            } else {
+              handleDraftBtnClick();
             }
           }}
           className="text-basicBlack md:text-[16px] text-[14px] bg-basicWhite hover:bg-gray-200 transition-all duration-200 border-basicBlack border-[1px] px-7 py-1.5 rounded-full"
         >
-          {!formData ? 'Draft' : 'Edit'}
+          {postDraftInvoiceMutation.isPending ? (
+            <div>
+              <SyncLoader color={COLORS.primaryColor} size={10} />
+            </div>
+          ) : !formData ? 'Draft' : 'Edit'}
         </button>
         <button onClick={handleClose}>
           <SvgIcon src={ICONS.close} size={24} />

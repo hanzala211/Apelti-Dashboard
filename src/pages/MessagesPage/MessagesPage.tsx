@@ -4,26 +4,17 @@ import { MessagesRightPanel } from './components/MessagesRightPanel';
 import {
   APP_ACTIONS,
   ICONS,
-  MESSAGES_DATA,
   PERMISSIONS,
   ROUTES,
 } from '@constants';
 import { useAuth, useMessage } from '@context';
-import { useEffect } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 export const MessagesPage: React.FC = () => {
   const { userData } = useAuth();
   const { selectedMessage, setSelectedMessage } = useMessage();
-  const navigate = useNavigate();
   const userPermissions =
     PERMISSIONS[userData?.role as keyof typeof PERMISSIONS];
-
-  useEffect(() => {
-    if (MESSAGES_DATA && MESSAGES_DATA.length > 0 && window.innerWidth > 768) {
-      navigate(`/messages?id=${MESSAGES_DATA[0]._id}`);
-    }
-  }, []);
 
   const handleClick = () => {
     setSelectedMessage(null);
@@ -31,6 +22,7 @@ export const MessagesPage: React.FC = () => {
 
   if (!userPermissions.includes(APP_ACTIONS.messagesPage))
     return <Navigate to={ROUTES.not_available} />;
+
   return (
     <section className="pt-20 md:pt-0 h-screen w-full">
       <div className="md:px-14 px-2 flex justify-between items-center border-b py-8">

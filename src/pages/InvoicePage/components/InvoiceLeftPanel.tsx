@@ -45,7 +45,7 @@ export const InvoiceLeftPanel: React.FC = () => {
   ) : (
     <div className="w-full md:block bg-mistGray hidden h-full">
       {!formData && <div className="bg-basicWhite border-b flex justify-between items-center border-basicSilver py-4 px-3 mt-0.5">
-        <p className='m-0'>{selectedImage?.label}</p>
+        <p className='m-0'>{selectedImage?.label || selectedData?.fileName}</p>
         <button onClick={() => {
           if (selectedData) {
             setSelectedData({

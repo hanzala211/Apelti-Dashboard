@@ -8,15 +8,15 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@components': path.resolve(__dirname, './src/components/components.ts'),
-      '@constants': path.resolve(__dirname, './src/constants/constants.ts'),
-      '@pages': path.resolve(__dirname, './src/pages/pages.ts'),
+      '@components': path.resolve(__dirname, './src/components/index.ts'),
+      '@constants': path.resolve(__dirname, './src/constants/index.ts'),
+      '@pages': path.resolve(__dirname, './src/pages/index.ts'),
       '@types': path.resolve(__dirname, 'src/types/types.ts'),
-      '@context': path.resolve(__dirname, 'src/context/context.ts'),
-      '@layouts': path.resolve(__dirname, 'src/layouts/layouts.ts'),
-      '@services': path.resolve(__dirname, 'src/services/services.ts'),
-      '@helpers': path.resolve(__dirname, 'src/helpers/helpers.ts'),
-      '@hooks': path.resolve(__dirname, 'src/hooks/hooks.ts'),
+      '@context': path.resolve(__dirname, 'src/context/index.ts'),
+      '@layouts': path.resolve(__dirname, 'src/layouts/index.ts'),
+      '@services': path.resolve(__dirname, 'src/services/index.ts'),
+      '@helpers': path.resolve(__dirname, 'src/helpers/index.ts'),
+      '@hooks': path.resolve(__dirname, 'src/hooks/index.ts'),
     }
   }
 })

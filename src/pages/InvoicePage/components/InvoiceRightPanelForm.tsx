@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Invoice, invoiceForm, InvoiceFormSchema } from '@types';
+import { draftInvoiceSchema, Invoice, invoiceForm, InvoiceFormSchema } from '@types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { convertDateToISO, formatDate } from '@helpers';
 import { useInvoice } from '@context';
@@ -22,7 +22,9 @@ export const InvoiceRightPanelForm: React.FC = () => {
     removeDataBtnRef,
     selectedData,
     postInvoiceMutation,
-    updateInvoiceMutation
+    updateInvoiceMutation,
+    draftBtnRef,
+    postDraftInvoiceMutation
   } = useInvoice();
 
   const {
@@ -33,6 +35,9 @@ export const InvoiceRightPanelForm: React.FC = () => {
     setValue,
     watch,
     reset,
+    getValues,
+    clearErrors,
+    setError
   } = useForm<InvoiceFormSchema>({
     resolver: zodResolver(invoiceForm),
     defaultValues: {
@@ -81,6 +86,47 @@ export const InvoiceRightPanelForm: React.FC = () => {
     }
   }, [extractedData, selectedData, setValue]);
 
+  const handleDraftSubmit = () => {
+    const data = getValues();
+
+    const processedData = Object.fromEntries(
+      Object.entries(data).map(([key, value]) =>
+        typeof value === 'string' && value.trim() === '' ? [key, undefined] : [key, value]
+      )
+    );
+
+    const result = draftInvoiceSchema.safeParse(processedData);
+    clearErrors();
+
+    if (!result.success) {
+      result.error.errors.forEach((err) => {
+        const field = err.path.join('.') as keyof InvoiceFormSchema;
+        setError(field, { type: 'manual', message: err.message });
+      });
+    } else {
+      const postData = {
+        supplierName: processedData.supplierName,
+        invoiceNumber: processedData.invoiceNumber,
+        poNumber: processedData.poNumber,
+        termsOfPayment: processedData.termsOfPayment,
+        invoiceDate: processedData.invoiceDate && convertDateToISO(processedData.invoiceDate as string),
+        paymentTerms: processedData.paymentTerms && convertDateToISO(processedData.paymentTerms as string),
+        amount: processedData.amount,
+        paymentTermDescription: processedData.paymentTermDescription,
+        currency: processedData.currency,
+        rarityInvoice: processedData.rarityInvoice,
+        items: processedData.invoiceItems,
+        comment: processedData.comment,
+        fileUrl: extractedData?.fileUrl || selectedData?.fileUrl || '',
+        fileName: selectedImage?.label || "",
+        vendorId: processedData.supplierId,
+        FiscalNumber: processedData.fiscalNumber,
+      }
+      postDraftInvoiceMutation.mutate(postData)
+    }
+    console.log("Draft Values ===> ", processedData);
+  }
+
   const onSubmit: SubmitHandler<InvoiceFormSchema> = (data) => {
     console.log(data);
     const result = {
@@ -97,6 +143,7 @@ export const InvoiceRightPanelForm: React.FC = () => {
       items: data.invoiceItems,
       comment: data.comment,
       fileUrl: extractedData?.fileUrl || selectedData?.fileUrl || '',
+      fileName: selectedImage?.label || "",
       vendorId: data.supplierId,
       FiscalNumber: data.fiscalNumber,
       vatNumber: extractedData?.vatNumber || data.supplierId || '',
@@ -105,6 +152,7 @@ export const InvoiceRightPanelForm: React.FC = () => {
     if (!selectedData) {
       postInvoiceMutation.mutate(result);
     } else {
+      console.log(result)
       updateInvoiceMutation.mutate(result)
     }
   };
@@ -115,6 +163,7 @@ export const InvoiceRightPanelForm: React.FC = () => {
 
   return (
     <section className="bg-basicWhite mt-[1px] w-full h-full max-h-[calc(100dvh-6rem)] overflow-y-auto">
+      <button type='button' className='hidden' ref={draftBtnRef} onClick={handleDraftSubmit}></button>
       {!formData ? (
         <>
           <button

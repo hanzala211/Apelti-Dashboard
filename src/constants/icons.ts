@@ -11,7 +11,7 @@ import {
 import { TbLogout, TbReportSearch } from 'react-icons/tb';
 import { HiOutlineCreditCard, HiOutlineDocumentMinus } from 'react-icons/hi2';
 import { CgFileDocument } from 'react-icons/cg';
-import { IoSettingsOutline } from 'react-icons/io5';
+import { IoReloadCircle, IoSettingsOutline } from 'react-icons/io5';
 import { BiLogIn } from 'react-icons/bi';
 import { FaRegPenToSquare } from 'react-icons/fa6';
 
@@ -55,4 +55,5 @@ export const ICONS = {
   wallet: '/assets/icons/wallet.svg',
   wrench: '/assets/icons/wrench.svg',
   table_setting: '/assets/icons/table-setting.svg',
+  load: IoReloadCircle
 };
