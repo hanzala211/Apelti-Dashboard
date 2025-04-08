@@ -44,7 +44,7 @@ export const MessagesPage: React.FC = () => {
               >
                 <ICONS.leftArrow />
               </button>
-              <MessagesRightPanel />
+              {selectedMessage && <MessagesRightPanel />}
             </div>
           }
         />

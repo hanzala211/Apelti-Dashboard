@@ -3,6 +3,7 @@ import { useMessage } from '@context';
 
 export const MessagesRightPanel: React.FC = () => {
   const { selectedMessage } = useMessage();
+
   return (
     <>
       {selectedMessage?.fileUrl ?
