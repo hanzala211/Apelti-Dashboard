@@ -54,9 +54,7 @@ export const MessagesLeftPanel: React.FC = () => {
         }`}
     >
       <div className="flex justify-end w-full">
-        <select
-          className="w-fit mr-2 mt-3 rounded-md focus:outline-none focus:border-darkBlue hover:border-darkBlue transition-all duration-200 bg-white py-[3px] px-3 focus-within:outline-none border-basicBlack border-[1px]"
-        >
+        <select className="w-fit mr-2 mt-3 rounded-md focus:outline-none focus:border-darkBlue hover:border-darkBlue transition-all duration-200 bg-white py-[3px] px-3 focus-within:outline-none border-basicBlack border-[1px]">
           {filters.map((item, index) => (
             <option key={index} value={item.value}>
               {item.label}
