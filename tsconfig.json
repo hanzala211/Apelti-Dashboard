@@ -10,7 +10,7 @@
 			"@components/*": ["components/index.ts"],
 			"@constants/*": ["constants/index.ts"],
 			"@pages/*": ["pages/index.ts*"],
-			"@types": ["types/types.ts"],
+			"@types": ["types/index.ts"],
 			"@context": ["context/index.ts"],
 			"@layouts": ["layouts/index.ts"],
 			"@services": ["services/index.ts"],

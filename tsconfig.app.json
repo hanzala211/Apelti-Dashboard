@@ -8,7 +8,7 @@
 		"skipLibCheck": true,
 		"baseUrl": ".",
 		"paths": {
-			"@types": ["./src/types/types.ts"],
+			"@types": ["./src/types/index.ts"],
 			"@components": ["./src/components/index.ts"],
 			"@pages": ["./src/pages/index.ts"],
 			"@constants": ["./src/constants/index.ts"],

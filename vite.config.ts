@@ -11,7 +11,7 @@ export default defineConfig({
       '@components': path.resolve(__dirname, './src/components/index.ts'),
       '@constants': path.resolve(__dirname, './src/constants/index.ts'),
       '@pages': path.resolve(__dirname, './src/pages/index.ts'),
-      '@types': path.resolve(__dirname, 'src/types/types.ts'),
+      '@types': path.resolve(__dirname, 'src/types/index.ts'),
       '@context': path.resolve(__dirname, 'src/context/index.ts'),
       '@layouts': path.resolve(__dirname, 'src/layouts/index.ts'),
       '@services': path.resolve(__dirname, 'src/services/index.ts'),
