@@ -75,10 +75,6 @@ export const DashboardPage: React.FC = () => {
         </div>
       </div>
 
-      <div className={`bg-basicWhite rounded-lg border-[1px] p-4`}>
-        <h1 className="font-semibold w-fit text-[20px]">Workflow</h1>
-      </div>
-
       <div className="grid xl:grid-cols-2 grid-cols-1 gap-4">
         <div className="bg-basicWhite space-y-4 border-[1px] p-5 w-full rounded-lg">
           <ColumnChart />
