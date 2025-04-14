@@ -1,4 +1,4 @@
-import { Input, PhoneNumberInput, Select } from '@components';
+import { ErrorMessage, Input, PhoneNumberInput, Select } from '@components';
 import { useTeam } from '@context';
 import { AddMemberFormSchema } from '@types';
 import { Control, FieldErrors, UseFormRegister } from 'react-hook-form';
@@ -81,9 +81,7 @@ export const TeamForm: React.FC<TeamFormProps> = ({
             <Select control={control} name={'role'} label="Role" data={roles} />
           </div>
         </div>
-        {errorMessage.length > 0 && (
-          <p className="text-basicRed text-sm">{errorMessage}</p>
-        )}
+        <ErrorMessage error={errorMessage} />
         <button
           type="submit"
           disabled={isAddingMember}

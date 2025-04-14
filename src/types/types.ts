@@ -114,6 +114,7 @@ export type GetApprovalTypes = {
   totalInvoices: number;
   draftInvoices: number;
 };
+
 export interface MessageContextTypes {
   selectedMessage: IMessage | null;
   setSelectedMessage: React.Dispatch<React.SetStateAction<IMessage | null>>;

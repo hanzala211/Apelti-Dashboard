@@ -110,8 +110,8 @@ export const Message: React.FC<MessageProps> = ({
       <div
         onClick={handleChange}
         className={`flex gap-2 rounded-md cursor-pointer flex-col border-[1px] p-3 w-full ${item._id === selectedMessage?._id
-            ? 'bg-softBlue border-darkBlue'
-            : ' border-basicSilver'
+          ? 'bg-softBlue border-darkBlue'
+          : ' border-basicSilver'
           }`}
       >
         <div className="flex gap-2 items-center">
@@ -207,8 +207,8 @@ export const Message: React.FC<MessageProps> = ({
               disabled={isFetchingNextPage}
               onClick={handleFetchMore}
               className={`w-fit ${isFetchingNextPage
-                  ? 'bg-blue-900 cursor-not-allowed'
-                  : 'hover:bg-blue-700'
+                ? 'bg-blue-900 cursor-not-allowed'
+                : 'hover:bg-blue-700'
                 } flex gap-2 items-center m-0 bg-primaryColor p-2 rounded-md text-basicWhite transition-all duration-200 text-[14px]`}
             >
               <ICONS.load size={20} color={COLORS.basicWhite} />

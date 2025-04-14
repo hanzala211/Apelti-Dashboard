@@ -84,7 +84,7 @@ export const ApprovalPage: React.FC = () => {
         <PageHeading label="Approval" />
       </div>
 
-      <div className="md:px-14 px-2 mt-4 md:mt-0 grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 xl:gap-16 gap-2">
+      <div className="md:px-14 px-2 mt-4 grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 xl:gap-16 gap-2">
         <InvoiceWidget label="Approved Invoices" amount={approvalInvoices?.approvedInvoices || 0} />
         <InvoiceWidget label="Rejected Invoices" amount={approvalInvoices?.rejectedInvoices || 0} />
         <InvoiceWidget label="Pending Invoices" amount={approvalInvoices?.pendingInvoices || 0} />

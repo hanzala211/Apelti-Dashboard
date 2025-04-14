@@ -86,10 +86,11 @@ export const MessagesLeftPanel: React.FC = () => {
                 messagesBoolean={messagesBoolean}
               />
             ))
-          ) : (
-            <div>
+          ) : (Array.from({ length: 3 }, (_, i) => (
+            <div key={i}>
               <MessageSkeleton />
             </div>
+          ))
           )}
         </div>
       </div>
