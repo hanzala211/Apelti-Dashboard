@@ -33,9 +33,14 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
   const draftBtnRef = useRef<HTMLButtonElement>(null);
   const queryClient = useQueryClient();
   const extractDataMutation = useMutation({
-    mutationFn: () => extractData(),
+    mutationFn: async () => {
+      const result = await extractData();
+      return result || null;
+    },
     onSuccess: (data) => {
-      setExtractedData(data);
+      if (data) {
+        setExtractedData(data);
+      }
     },
   });
 
@@ -116,6 +121,12 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
       formData.append('file', blob, fileName);
       const extractedData = await invoiceServices.extractData(formData);
       console.log('Extracted Data:', extractedData);
+      if (!extractedData.data.data.matchInfo.match) {
+        toast.error(
+          'Missing PO Dataset',
+          extractedData.data.data.matchInfo.reason
+        );
+      }
       return extractedData.data.data;
     } catch (error) {
       console.error('Error extracting data:', error);
@@ -158,7 +169,6 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
         comment: response.data.data.comment,
         fileUrl: response.data.data.fileUrl || '',
         fileName: response.data.data.fileName || '',
-        FiscalNumber: response.data.data.FiscalNumber,
         vatNumber: response.data.data?.vatNumber,
         vendorId: response.data.data.vendorId || response.data.data?.vatNumber,
         items: response.data.data?.items || [],
@@ -189,7 +199,6 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
           comment: response.data.data.comment,
           fileUrl: response.data.data.fileUrl || '',
           fileName: response.data.data.fileName || '',
-          FiscalNumber: response.data.data.FiscalNumber,
           vatNumber: response.data.data?.vatNumber,
           vendorId:
             response.data.data.vendorId || response.data.data?.vatNumber,

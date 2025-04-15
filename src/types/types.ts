@@ -51,9 +51,10 @@ export interface InvoiceItem {
   glAccount: string;
   amount: number;
   description: string;
-  class: string;
   department: string;
+  quantity: number;
   _id?: string;
+  lineItemNumber: string;
 }
 
 export interface Invoice {
@@ -79,10 +80,22 @@ export interface Invoice {
   __v?: number;
   termsOfPayment?: string;
   vendorId: string;
-  FiscalNumber: string;
   vatNumber: string;
   matchedWithPO?: boolean;
   fileName?: string;
+  jciNumber?: string;
+  location?: string;
+  vatPercentage?: number;
+  amountWithOutVat?: number;
+  internalPartnerCode?: string;
+  countryCode?: string;
+  transactionType?: string;
+  documentType?: string;
+  isLocalInvoice?: boolean;
+  matchInfo?: {
+    match: boolean;
+    reason: string;
+  };
 }
 
 export interface FilterTypes {
@@ -137,7 +150,7 @@ export interface InvoiceContextTypes {
   formInputRef: RefObject<HTMLInputElement | null>;
   isInvoiceModelOpen: boolean;
   setIsInvoiceModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  extractDataMutation: UseMutationResult<void, Error, void, unknown>;
+  extractDataMutation: UseMutationResult<Invoice | null, Error, void, unknown>;
   extractedData: Invoice | null;
   setExtractedData: React.Dispatch<React.SetStateAction<Invoice | null>>;
   getInvoices: () => Promise<Invoice[] | undefined>;

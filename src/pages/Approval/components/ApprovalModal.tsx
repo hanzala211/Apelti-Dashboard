@@ -1,5 +1,5 @@
 import { DocumentNotFound, SvgIcon } from '@components';
-import { COLORS, ICONS } from '@constants';
+import { COLORS, ICONS, INVOICE_ITEMS_HEADER } from '@constants';
 import { useApproval } from '@context';
 import { formatDate, toast } from '@helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -242,8 +242,8 @@ export const ApprovalModal: React.FC<{
             <div className="w-full h-[1px] bg-black"></div>
           </div>
           <div className="w-full overflow-x-auto sm:px-0">
-            <div className="grid grid-cols-5 min-w-[600px] w-full px-5 sm:px-2 gap-4 place-items-center border border-slateGrey">
-              {['Account', 'Amount', 'Department', 'Class', 'Description'].map(
+            <div className="grid grid-cols-6 min-w-[600px] w-full px-5 sm:px-2 gap-4 place-items-center border border-slateGrey">
+              {INVOICE_ITEMS_HEADER.map(
                 (header) => (
                   <h4 key={header} className="m-0 py-3 text-center font-medium">
                     {header}
@@ -254,8 +254,11 @@ export const ApprovalModal: React.FC<{
             {[...Array(selectedInvoice?.items)].map((item, index) => (
               <div
                 key={index}
-                className="grid grid-cols-5 min-w-[600px] w-full border-b py-4 px-5 sm:px-2 gap-4 place-items-center"
+                className="grid grid-cols-6 min-w-[600px] w-full border-b py-4 px-5 sm:px-2 gap-4 place-items-center"
               >
+                <div className="border-[1px] border-silverGray w-full p-3 rounded-md font-semibold">
+                  {item?.[index]?.lineItemNumber}
+                </div>
                 <div className="border-[1px] border-silverGray w-full p-3 rounded-md font-semibold">
                   {item?.[index]?.glAccount}
                 </div>
@@ -266,7 +269,7 @@ export const ApprovalModal: React.FC<{
                   {item?.[index]?.department}
                 </div>
                 <div className="border-[1px] border-silverGray w-full p-3 rounded-md font-semibold">
-                  {item?.[index]?.class}
+                  {item?.[index]?.quantity}
                 </div>
                 <div className="border-[1px] border-silverGray w-full p-3 rounded-md font-semibold">
                   {item?.[index]?.description}

@@ -12,37 +12,63 @@ export const invoiceItemSchema = z.object({
   glAccount: z.string().min(1, 'Please provide an account number.'),
   amount: z.number().min(1, 'Please enter an amount of at least 1.'),
   description: z.string().min(1, 'Please provide a description.'),
-  class: z.string().min(1, 'Please specify the class.'),
   department: z.string().min(1, 'Please specify the department.'),
+  quantity: z.number().min(1, 'Please enter quantity of at least 1.'),
+  lineItemNumber: z.string(),
 });
 
 export const invoiceForm = z.object({
-  supplierName: z.string().min(1, 'Please enter the vendor name.'),
-  invoiceNumber: z.string().min(1, 'Please enter the invoice number.'),
-  poNumber: z.string().min(1, 'Please enter the purchase order number.'),
-  termsOfPayment: z.string().min(1, 'Please specify the terms of payment.'),
-  invoiceDate: z.string().min(1, 'Please enter the invoice date.'),
-  paymentTerms: z.string().min(1, 'Please specify the payment terms.'),
-  amount: z.number().min(1, 'Please enter an amount of at least 1.'),
+  supplierName: z.string().min(1, { message: 'Vendor name is required.' }),
+  invoiceNumber: z.string().min(1, { message: 'Invoice number is required.' }),
+  poNumber: z.string().min(1, { message: 'Purchase order number is required.' }),
+  termsOfPayment: z.string().min(1, { message: 'Terms of payment are required.' }),
+  invoiceDate: z.string().min(1, { message: 'Invoice date is required.' }),
+  paymentTerms: z.string().min(1, { message: 'Payment terms are required.' }),
+  amount: z.number().min(1, { message: 'Amount must be at least 1.' }),
   paymentTermDescription: z.string(),
   rarityInvoice: z.string(),
   invoiceItems: z.array(invoiceItemSchema),
-  currency: z.string(),
-  comment: z.string().min(1, 'Please enter a comment.'),
-  supplierId: z.string().min(1, 'Please enter the vendor ID.'),
-  fiscalNumber: z.string().min(1, 'Please enter the fiscal number.'),
+  currency: z.string().min(1, { message: 'Currency is required.' }),
+  countryCode: z.string().min(1, { message: 'Country code is required.' }),
+  comment: z.string().min(1, { message: 'Comment is required.' }),
+  supplierId: z.string().optional(),
+  internalPartnerCode: z.string().min(1, { message: 'Internal partner code is required.' }),
+  amountWithOutVat: z.number().min(1, { message: 'Amount without VAT must be at least 1.' }),
+  vatPercentage: z.number().min(1, { message: 'VAT percentage must be greater than 0.' }),
+  location: z.string().min(1, { message: 'Invoice location is required.' }),
+  jciNumber: z.string().optional(),
+  transactionType: z.string(),
+  documentType: z.string(),
+  isLocalInvoice: z.boolean(),
+}).refine((data) => {
+  if (data.isLocalInvoice) {
+    return !!data.supplierId;
+  } else {
+    return !!data.jciNumber;
+  }
+}, {
+  message: "Vendor ID is required when the invoice is local, and JCI Number is required when the invoice is foreign.",
+  path: ["supplierId", "jciNumber"],
 });
 
-export const optionalInvoiceForm = invoiceForm.partial();
+export const optionalInvoiceForm = z.object({
+  supplierName: z.string().optional(),
+  invoiceNumber: z.string().optional(),
+  poNumber: z.string().optional(),
+  termsOfPayment: z.string().optional(),
+  amount: z.number().optional(),
+  invoiceItems: z.array(invoiceItemSchema).optional(),
+  currency: z.string().optional(),
+});
 
 export const draftInvoiceSchema = optionalInvoiceForm.extend({
-  supplierName: invoiceForm.shape.supplierName,
-  invoiceNumber: invoiceForm.shape.invoiceNumber,
-  poNumber: invoiceForm.shape.poNumber,
-  termsOfPayment: invoiceForm.shape.termsOfPayment,
-  amount: invoiceForm.shape.amount,
-  invoiceItems: invoiceForm.shape.invoiceItems,
-  currency: invoiceForm.shape.currency,
+  supplierName: z.string(),
+  invoiceNumber: z.string(),
+  poNumber: z.string(),
+  termsOfPayment: z.string(),
+  amount: z.number(),
+  invoiceItems: z.array(invoiceItemSchema),
+  currency: z.string(),
 });
 
 export type InvoiceFormSchema = z.infer<typeof invoiceForm>;

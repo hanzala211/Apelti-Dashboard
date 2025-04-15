@@ -6,11 +6,19 @@ import {
   UseFormHandleSubmit,
   UseFormRegister,
   UseFormWatch,
+  UseFormSetValue,
 } from 'react-hook-form';
 import { DatePickerField, ErrorMessage, Input, Select } from '@components';
 import { InvoiceFormSchema } from '@types';
 import { useInvoice } from '@context';
-import { CURRENCIES } from '@constants';
+import {
+  COUNTRIES,
+  CURRENCIES,
+  DOCUMENT_TYPES,
+  INVOICE_ITEMS_HEADER,
+  TRANSACTION_TYPES,
+} from '@constants';
+import { Switch } from 'antd';
 
 interface InvoiceFormContentProps {
   register: UseFormRegister<InvoiceFormSchema>;
@@ -22,6 +30,7 @@ interface InvoiceFormContentProps {
   addRow: () => void;
   termOfPaymentData: { label: string; value: string }[];
   watch: UseFormWatch<InvoiceFormSchema>;
+  setValue: UseFormSetValue<InvoiceFormSchema>;
 }
 
 export const InvoiceFormContent: React.FC<InvoiceFormContentProps> = ({
@@ -34,11 +43,23 @@ export const InvoiceFormContent: React.FC<InvoiceFormContentProps> = ({
   addRow,
   termOfPaymentData,
   watch,
+  setValue,
 }) => {
   const { formInputRef } = useInvoice();
+  const isLocalInvoice = watch('isLocalInvoice');
+
+  const onSubmitHandler: SubmitHandler<InvoiceFormSchema> = (data) => {
+    if (!isLocalInvoice) {
+      data.supplierId = '';
+    }
+    onSubmit(data);
+  };
 
   return (
-    <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="flex flex-col gap-3"
+      onSubmit={handleSubmit(onSubmitHandler)}
+    >
       <div className="w-full px-7">
         <Input
           register={register('supplierName')}
@@ -81,7 +102,7 @@ export const InvoiceFormContent: React.FC<InvoiceFormContentProps> = ({
           <DatePickerField control={control} name="paymentTerms" />
         </div>
       </div>
-      <div className="grid px-7 lg:grid-cols-[1fr_2fr] grid-cols-1 gap-5">
+      <div className="grid px-7 lg:grid-cols-3 grid-cols-1 gap-5">
         <Input
           register={register('amount', { valueAsNumber: true })}
           error={errors['amount']?.message}
@@ -89,62 +110,90 @@ export const InvoiceFormContent: React.FC<InvoiceFormContentProps> = ({
           label="Amount"
         />
         <Input
-          register={register('paymentTermDescription')}
-          error={errors['paymentTermDescription']?.message}
-          type="text"
-          label="Invoice Description"
+          register={register('amountWithOutVat', { valueAsNumber: true })}
+          error={errors['amountWithOutVat']?.message}
+          type="number"
+          label="Amount Without VAT"
+        />
+        <Input
+          register={register('vatPercentage', { valueAsNumber: true })}
+          error={errors['vatPercentage']?.message}
+          type="number"
+          label="VAT Percentage"
         />
       </div>
       <div className="grid px-7 lg:grid-cols-[1fr_1fr] grid-cols-1 gap-5">
+        {isLocalInvoice ? (
+          <Input
+            register={register('supplierId')}
+            error={errors['supplierId']?.message}
+            type="string"
+            label="Vendor ID"
+          />
+        ) : (
+          <Input
+            register={register('jciNumber')}
+            error={errors['jciNumber']?.message}
+            type="text"
+            label="JCI Number"
+          />
+        )}
         <Input
-          register={register('supplierId')}
-          error={errors['supplierId']?.message}
-          type="string"
-          label="Vendor ID"
-        />
-        <Input
-          register={register('fiscalNumber')}
-          error={errors['fiscalNumber']?.message}
+          register={register('internalPartnerCode')}
+          error={errors['internalPartnerCode']?.message}
           type="text"
-          label="Fiscal Number"
+          label="Internal Partner Code"
         />
       </div>
-      <div className="px-7">
+      <div className="grid px-7 lg:grid-cols-[1fr_1fr] grid-cols-1 gap-5">
         <Select
           control={control}
           name="currency"
           label="Currency"
           data={CURRENCIES}
         />
+        <Select
+          control={control}
+          name="countryCode"
+          label="Country Code"
+          data={COUNTRIES}
+        />
+      </div>
+      <div className="px-7 grid grid-cols-1 gap-5">
+        <Input
+          register={register('location')}
+          error={errors['location']?.message}
+          type="text"
+          label="Location"
+        />
+      </div>
+      <div className="grid px-7 lg:grid-cols-[1fr_1fr] grid-cols-1 gap-5">
+        <Select
+          control={control}
+          name="transactionType"
+          label="Transaction Type"
+          data={TRANSACTION_TYPES}
+        />
+        <Select
+          control={control}
+          name="documentType"
+          label="Document Type"
+          data={DOCUMENT_TYPES}
+        />
       </div>
       <div className="px-7">
-        <label className="text-neutralGray" htmlFor="rarityInvoice">
-          Rarity Invoice
+        <Input
+          register={register('paymentTermDescription')}
+          error={errors['paymentTermDescription']?.message}
+          type="text"
+          label="Invoice Description"
+        />
+      </div>
+      <div className="px-7 flex gap-2 items-center">
+        <label className="text-neutralGray" htmlFor="foreignInvoice">
+          Foreign Invoice
         </label>
-        <div className="flex gap-3 items-center">
-          <div className="space-x-2">
-            <input
-              type="radio"
-              id="once"
-              value="Once"
-              {...register('rarityInvoice')}
-            />
-            <label htmlFor="once" className="text-neutralGray">
-              Once
-            </label>
-          </div>
-          <div className="space-x-2">
-            <input
-              type="radio"
-              id="return"
-              value="Return"
-              {...register('rarityInvoice')}
-            />
-            <label htmlFor="return" className="text-neutralGray">
-              Return
-            </label>
-          </div>
-        </div>
+        <Switch defaultChecked onChange={(checked) => setValue("isLocalInvoice", checked)} />
       </div>
       <div>
         <div className="w-fit px-7">
@@ -156,20 +205,23 @@ export const InvoiceFormContent: React.FC<InvoiceFormContentProps> = ({
         <div className="w-full h-[1px] bg-black"></div>
       </div>
       <div className="w-full overflow-x-auto px-4 sm:px-0">
-        <div className="grid grid-cols-5 min-w-[600px] w-full px-5 sm:px-2 gap-4 place-items-center border border-slateGrey">
-          {['Account', 'Amount', 'Department', 'Class', 'Description'].map(
-            (header) => (
-              <h4 key={header} className="m-0 py-3 text-center font-medium">
-                {header}
-              </h4>
-            )
-          )}
+        <div className="grid grid-cols-6 min-w-[600px] w-full px-5 sm:px-2 gap-4 place-items-center border border-slateGrey">
+          {INVOICE_ITEMS_HEADER.map((header) => (
+            <h4 key={header} className="m-0 py-3 text-center font-medium">
+              {header}
+            </h4>
+          ))}
         </div>
         {[...Array(rows)].map((_, index) => (
           <div
             key={index}
-            className="grid grid-cols-5 min-w-[600px] w-full border-b py-4 px-5 sm:px-2 gap-4 place-items-center"
+            className="grid grid-cols-6 min-w-[600px] w-full border-b py-4 px-5 sm:px-2 gap-4 place-items-center"
           >
+            <Input
+              register={register(`invoiceItems.${index}.lineItemNumber`)}
+              type="text"
+              error={errors.invoiceItems?.[index]?.lineItemNumber?.message}
+            />
             <Input
               register={register(`invoiceItems.${index}.glAccount`)}
               type="text"
@@ -188,9 +240,11 @@ export const InvoiceFormContent: React.FC<InvoiceFormContentProps> = ({
               error={errors.invoiceItems?.[index]?.department?.message}
             />
             <Input
-              register={register(`invoiceItems.${index}.class`)}
-              type="text"
-              error={errors.invoiceItems?.[index]?.class?.message}
+              register={register(`invoiceItems.${index}.quantity`, {
+                valueAsNumber: true,
+              })}
+              type="number"
+              error={errors.invoiceItems?.[index]?.quantity?.message}
             />
             <Input
               register={register(`invoiceItems.${index}.description`)}

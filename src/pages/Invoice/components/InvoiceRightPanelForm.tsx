@@ -1,13 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { draftInvoiceSchema, Invoice, invoiceForm, InvoiceFormSchema } from '@types';
+import {
+  draftInvoiceSchema,
+  Invoice,
+  invoiceForm,
+  InvoiceFormSchema,
+} from '@types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { convertDateToISO, formatDate } from '@helpers';
 import { useInvoice } from '@context';
 import InvoiceHeader from './InvoiceHeader';
 import ImageUpload from './ImageUpload';
 import InvoiceFormContent from './InvoiceFormContent';
-import { CURRENCIES, TERM_OF_PAYMENT } from '@constants';
+import {
+  COUNTRIES,
+  CURRENCIES,
+  DOCUMENT_TYPES,
+  TERM_OF_PAYMENT,
+  TRANSACTION_TYPES,
+} from '@constants';
 import InvoiceRightPanelOverview from './InvoiceRightPanelOverview';
 
 export const InvoiceRightPanelForm: React.FC = () => {
@@ -24,7 +35,7 @@ export const InvoiceRightPanelForm: React.FC = () => {
     postInvoiceMutation,
     updateInvoiceMutation,
     draftBtnRef,
-    postDraftInvoiceMutation
+    postDraftInvoiceMutation,
   } = useInvoice();
 
   const {
@@ -37,13 +48,16 @@ export const InvoiceRightPanelForm: React.FC = () => {
     reset,
     getValues,
     clearErrors,
-    setError
+    setError,
   } = useForm<InvoiceFormSchema>({
     resolver: zodResolver(invoiceForm),
     defaultValues: {
       rarityInvoice: 'Once',
       currency: CURRENCIES[0].value,
       termsOfPayment: TERM_OF_PAYMENT[0].value,
+      transactionType: TRANSACTION_TYPES[0].value,
+      documentType: DOCUMENT_TYPES[0].value,
+      isLocalInvoice: false,
     },
   });
   const [rows, setRows] = useState<number>(extractedData?.items?.length || 1);
@@ -55,11 +69,21 @@ export const InvoiceRightPanelForm: React.FC = () => {
       setValue('invoiceNumber', data.invoiceNumber || '');
       setValue('poNumber', data.poNumber || '');
       setValue('currency', data.currency || CURRENCIES[0].value);
+      setValue('countryCode', data.countryCode || COUNTRIES[0].value);
       setValue('supplierId', data.vendorId || '');
-      setValue('fiscalNumber', data.FiscalNumber || '');
       setValue('paymentTermDescription', data.paymentTermDescription || '');
       setValue('comment', data.comment || '');
-
+      setValue('amountWithOutVat', data.amountWithOutVat || 0);
+      setValue('vatPercentage', data.vatPercentage || 0);
+      setValue('internalPartnerCode', data.internalPartnerCode || '');
+      setValue('location', data.location || '');
+      setValue('jciNumber', data.jciNumber || '');
+      setValue(
+        'transactionType',
+        data.transactionType || TRANSACTION_TYPES[0].value
+      );
+      setValue('documentType', data.documentType || DOCUMENT_TYPES[0].value);
+      setValue('isLocalInvoice', data.isLocalInvoice || false);
       if (data.paymentTerms?.length > 0) {
         setValue('paymentTerms', formatDate(data.paymentTerms));
       }
@@ -74,10 +98,11 @@ export const InvoiceRightPanelForm: React.FC = () => {
         setValue(
           'invoiceItems',
           data.items.map((item) => ({
+            lineItemNumber: String(item.lineItemNumber) || '',
+            quantity: Number(item.quantity) || 1,
             description: item.description || '',
             glAccount: item.glAccount || '',
             amount: item.amount || 0,
-            class: item.class || '',
             department: item.department || '',
           }))
         );
@@ -91,7 +116,9 @@ export const InvoiceRightPanelForm: React.FC = () => {
 
     const processedData = Object.fromEntries(
       Object.entries(data).map(([key, value]) =>
-        typeof value === 'string' && value.trim() === '' ? [key, undefined] : [key, value]
+        typeof value === 'string' && value.trim() === ''
+          ? [key, undefined]
+          : [key, value]
       )
     );
 
@@ -109,8 +136,12 @@ export const InvoiceRightPanelForm: React.FC = () => {
         invoiceNumber: processedData.invoiceNumber,
         poNumber: processedData.poNumber,
         termsOfPayment: processedData.termsOfPayment,
-        invoiceDate: processedData.invoiceDate && convertDateToISO(processedData.invoiceDate as string),
-        paymentTerms: processedData.paymentTerms && convertDateToISO(processedData.paymentTerms as string),
+        invoiceDate:
+          processedData.invoiceDate &&
+          convertDateToISO(processedData.invoiceDate as string),
+        paymentTerms:
+          processedData.paymentTerms &&
+          convertDateToISO(processedData.paymentTerms as string),
         amount: processedData.amount,
         paymentTermDescription: processedData.paymentTermDescription,
         currency: processedData.currency,
@@ -118,14 +149,19 @@ export const InvoiceRightPanelForm: React.FC = () => {
         items: processedData.invoiceItems,
         comment: processedData.comment,
         fileUrl: extractedData?.fileUrl || selectedData?.fileUrl || '',
-        fileName: selectedImage?.label || "",
+        fileName: selectedImage?.label || '',
         vendorId: processedData.supplierId,
-        FiscalNumber: processedData.fiscalNumber,
-      }
-      postDraftInvoiceMutation.mutate(postData)
+        internalPartnerCode: processedData.internalPartnerCode,
+        amountWithOutVat: processedData.amountWithOutVat,
+        vatPercentage: processedData.vatPercentage,
+        location: processedData.location,
+        jciNumber: processedData.jciNumber,
+        isLocalInvoice: data.isLocalInvoice || false,
+      };
+      postDraftInvoiceMutation.mutate(postData);
     }
-    console.log("Draft Values ===> ", processedData);
-  }
+    console.log('Draft Values ===> ', processedData);
+  };
 
   const onSubmit: SubmitHandler<InvoiceFormSchema> = (data) => {
     console.log(data);
@@ -143,17 +179,23 @@ export const InvoiceRightPanelForm: React.FC = () => {
       items: data.invoiceItems,
       comment: data.comment,
       fileUrl: extractedData?.fileUrl || selectedData?.fileUrl || '',
-      fileName: selectedImage?.label || "",
-      vendorId: data.supplierId,
-      FiscalNumber: data.fiscalNumber,
+      fileName: selectedImage?.label || '',
+      vendorId: data.supplierId || '',
       vatNumber: extractedData?.vatNumber || data.supplierId || '',
-      matchedWithPO: extractedData?.matchedWithPO || selectedData?.matchedWithPO || false,
-    }
+      matchedWithPO:
+        extractedData?.matchedWithPO || selectedData?.matchedWithPO || false,
+      internalPartnerCode: data.internalPartnerCode,
+      amountWithOutVat: data.amountWithOutVat,
+      vatPercentage: data.vatPercentage,
+      location: data.location,
+      jciNumber: data.jciNumber || '',
+      isLocalInvoice: data.isLocalInvoice || false,
+    };
     if (!selectedData) {
       postInvoiceMutation.mutate(result);
     } else {
-      console.log(result)
-      updateInvoiceMutation.mutate(result)
+      console.log(result);
+      updateInvoiceMutation.mutate(result);
     }
   };
 
@@ -163,7 +205,12 @@ export const InvoiceRightPanelForm: React.FC = () => {
 
   return (
     <section className="bg-basicWhite mt-[1px] w-full h-full max-h-[calc(100dvh-6rem)] overflow-y-auto">
-      <button type='button' className='hidden' ref={draftBtnRef} onClick={handleDraftSubmit}></button>
+      <button
+        type="button"
+        className="hidden"
+        ref={draftBtnRef}
+        onClick={handleDraftSubmit}
+      ></button>
       {!formData ? (
         <>
           <button
@@ -182,8 +229,16 @@ export const InvoiceRightPanelForm: React.FC = () => {
                 paymentTermDescription: '',
                 comment: '',
                 invoiceItems: [],
-                fiscalNumber: "",
-                supplierId: ""
+                supplierId: '',
+                jciNumber: '',
+                location: '',
+                internalPartnerCode: '',
+                countryCode: COUNTRIES[0].value,
+                amountWithOutVat: 0,
+                vatPercentage: 0,
+                isLocalInvoice: false,
+                documentType: DOCUMENT_TYPES[0].value,
+                transactionType: TRANSACTION_TYPES[0].value,
               });
               setRows(1);
               if (fileInputRef.current) {
@@ -213,6 +268,7 @@ export const InvoiceRightPanelForm: React.FC = () => {
               rows={rows}
               addRow={addRow}
               termOfPaymentData={TERM_OF_PAYMENT}
+              setValue={setValue}
             />
           </div>
         </>
