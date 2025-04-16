@@ -5,7 +5,7 @@ const DocumentTableSkeleton: React.FC = () => {
     <div className="animate-pulse">
       <div className="h-4 bg-gray-300 rounded mb-4"></div>
       <div className="space-y-2">
-        {[...Array(5)].map((_, index) => (
+        {[...Array(20)].map((_, index) => (
           <div key={index} className="flex space-x-4">
             <div className="w-1/4 h-4 bg-gray-300 rounded"></div>
             <div className="w-1/2 h-4 bg-gray-300 rounded"></div>

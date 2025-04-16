@@ -171,6 +171,8 @@ export const InvoiceRightPanelForm: React.FC = () => {
         jciNumber: processedData.jciNumber,
         isLocalInvoice: data.isLocalInvoice || false,
         vatNumber: data.vatNumber,
+        documentType: data.documentType,
+        transactionType: data.transactionType,
       };
       postDraftInvoiceMutation.mutate(postData);
     }
@@ -204,6 +206,8 @@ export const InvoiceRightPanelForm: React.FC = () => {
       location: data.location,
       jciNumber: data.jciNumber || '',
       isLocalInvoice: data.isLocalInvoice || false,
+      documentType: data.documentType,
+      transactionType: data.transactionType,
     };
     if (!selectedData) {
       postInvoiceMutation.mutate(result);
