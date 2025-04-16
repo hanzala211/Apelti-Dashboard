@@ -57,7 +57,7 @@ export const InvoiceRightPanelForm: React.FC = () => {
       termsOfPayment: TERM_OF_PAYMENT[0].value,
       transactionType: TRANSACTION_TYPES[0].value,
       documentType: DOCUMENT_TYPES[0].value,
-      isLocalInvoice: false,
+      isLocalInvoice: true,
     },
   });
   const [rows, setRows] = useState<number>(extractedData?.items?.length || 1);
@@ -73,6 +73,7 @@ export const InvoiceRightPanelForm: React.FC = () => {
       setValue('supplierId', data.vendorId || '');
       setValue('paymentTermDescription', data.paymentTermDescription || '');
       setValue('comment', data.comment || '');
+      setValue('vatNumber', data.vatNumber || '');
       setValue('amountWithOutVat', data.amountWithOutVat || 0);
       setValue('vatPercentage', data.vatPercentage || 0);
       setValue('internalPartnerCode', data.internalPartnerCode || '');
@@ -157,6 +158,7 @@ export const InvoiceRightPanelForm: React.FC = () => {
         location: processedData.location,
         jciNumber: processedData.jciNumber,
         isLocalInvoice: data.isLocalInvoice || false,
+        vatNumber: data.vatNumber,
       };
       postDraftInvoiceMutation.mutate(postData);
     }
@@ -181,7 +183,7 @@ export const InvoiceRightPanelForm: React.FC = () => {
       fileUrl: extractedData?.fileUrl || selectedData?.fileUrl || '',
       fileName: selectedImage?.label || '',
       vendorId: data.supplierId || '',
-      vatNumber: extractedData?.vatNumber || data.supplierId || '',
+      vatNumber: extractedData?.vatNumber || data.vatNumber || '',
       matchedWithPO:
         extractedData?.matchedWithPO || selectedData?.matchedWithPO || false,
       internalPartnerCode: data.internalPartnerCode,

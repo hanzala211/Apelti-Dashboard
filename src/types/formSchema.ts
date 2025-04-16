@@ -32,6 +32,7 @@ export const invoiceForm = z.object({
   countryCode: z.string().min(1, { message: 'Country code is required.' }),
   comment: z.string().min(1, { message: 'Comment is required.' }),
   supplierId: z.string().optional(),
+  vatNumber: z.string().min(1, { message: 'VAT number is required.' }),
   internalPartnerCode: z.string().min(1, { message: 'Internal partner code is required.' }),
   amountWithOutVat: z.number().min(1, { message: 'Amount without VAT must be at least 1.' }),
   vatPercentage: z.number().min(1, { message: 'VAT percentage must be greater than 0.' }),

@@ -122,7 +122,7 @@ export const InvoiceFormContent: React.FC<InvoiceFormContentProps> = ({
           label="VAT Percentage"
         />
       </div>
-      <div className="grid px-7 lg:grid-cols-[1fr_1fr] grid-cols-1 gap-5">
+      <div className="grid px-7 lg:grid-cols-3 grid-cols-1 gap-5">
         {isLocalInvoice ? (
           <Input
             register={register('supplierId')}
@@ -143,6 +143,12 @@ export const InvoiceFormContent: React.FC<InvoiceFormContentProps> = ({
           error={errors['internalPartnerCode']?.message}
           type="text"
           label="Internal Partner Code"
+        />
+        <Input
+          register={register('vatNumber')}
+          error={errors['vatNumber']?.message}
+          type="text"
+          label="VAT Number"
         />
       </div>
       <div className="grid px-7 lg:grid-cols-[1fr_1fr] grid-cols-1 gap-5">
@@ -189,11 +195,15 @@ export const InvoiceFormContent: React.FC<InvoiceFormContentProps> = ({
           label="Invoice Description"
         />
       </div>
-      <div className="px-7 flex gap-2 items-center">
-        <label className="text-neutralGray" htmlFor="foreignInvoice">
-          Foreign Invoice
+      <div className="px-7 flex items-center gap-2">
+        <label className="text-neutralGray" htmlFor="localInvoice">
+          Local Invoice
         </label>
-        <Switch defaultChecked onChange={(checked) => setValue("isLocalInvoice", checked)} />
+        <Switch
+          id="localInvoice"
+          checked={isLocalInvoice}
+          onChange={(checked) => setValue('isLocalInvoice', checked)}
+        />
       </div>
       <div>
         <div className="w-fit px-7">
