@@ -106,9 +106,10 @@ export interface FilterTypes {
 }
 
 export interface IDocument {
-  name: string;
-  added: string;
-  section: string;
+  fileName: string;
+  createdAt: string;
+  documentType: string;
+  fileUrl: string;
 }
 
 export interface ChartState {
@@ -214,3 +215,8 @@ export interface ApprovalContextTypes {
   getApprovalInvoices: () => Promise<GetApprovalTypes | undefined>;
   changeStatus: (data: unknown, invoiceID: string | undefined) => Promise<void>;
 }
+
+export interface DocumentContextTypes {
+  getDocuments: () => Promise<IDocument[] | undefined>;
+}
+

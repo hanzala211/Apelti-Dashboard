@@ -141,6 +141,7 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
   const getInvoices = async () => {
     try {
       const response = await invoiceServices.getInvoices();
+      console.log(response);
       if (response.status === 200) {
         return response.data.data;
       }

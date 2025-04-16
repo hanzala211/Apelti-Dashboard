@@ -117,19 +117,22 @@ export const INVOICES_DATA = [
 
 export const DOCUMENTS_DATA = [
   {
-    name: 'InvoiceExample.jpg',
-    section: 'Company',
-    added: '20/02/2025',
+    fileName: 'InvoiceExample.jpg',
+    documentType: 'Company',
+    createdAt: '20/02/2025',
+    fileUrl: "https://res.cloudinary.com/dulovaduo/image/upload/v1743990211/invoices/invoice_1743990210810.jpg",
   },
   {
-    name: 'Contract.pdf',
-    section: 'Legal',
-    added: '10/01/2025',
+    fileName: 'Contract.pdf',
+    documentType: 'Legal',
+    createdAt: '10/01/2025',
+    fileUrl: '/assets/images/placeholder.jpg',
   },
   {
-    name: 'Receipt.png',
-    section: 'Finance',
-    added: '05/02/2025',
+    fileName: 'Receipt.png',
+    documentType: 'Finance',
+    createdAt: '05/02/2025',
+    fileUrl: '/assets/images/placeholder.jpg',
   },
 ];
 

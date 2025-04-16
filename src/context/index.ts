@@ -6,3 +6,4 @@ export * from './SettingContext';
 export * from './ReactQueryProvider';
 export * from './ApprovalContext';
 export * from './ProvidersWrapper';
+export * from './DocumentContext';

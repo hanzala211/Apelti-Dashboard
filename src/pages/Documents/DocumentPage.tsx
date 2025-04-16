@@ -3,7 +3,6 @@ import { DocumentTable } from './components/DocumentTable';
 import {
   APP_ACTIONS,
   DATE_FOMRAT,
-  DOCUMENTS_DATA,
   PERMISSIONS,
   ROUTES,
 } from '@constants';
@@ -11,16 +10,24 @@ import { IDocument } from '@types';
 import { useEffect, useState } from 'react';
 import { DatePicker, DatePickerProps } from 'antd';
 import dayjs from 'dayjs';
-import { useAuth } from '@context';
+import { useAuth, useDocument } from '@context';
 import { Navigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import DocumentTableSkeleton from './components/DocumentTableSkeleton';
+import { formatDate } from '@helpers';
 
 export const DocumentPage: React.FC = () => {
   const { userData } = useAuth();
+  const { getDocuments } = useDocument();
   const [searchData, setSearchData] = useState<IDocument[]>([]);
   const [searchInput, setSearchInput] = useState<string>('');
   const [searchDate, setSearchDate] = useState<string>('');
   const userPermissions =
     PERMISSIONS[userData?.role as keyof typeof PERMISSIONS];
+  const { data: documents, isLoading: isDocumentsLoading } = useQuery({
+    queryKey: ['documents'],
+    queryFn: getDocuments
+  })
 
   useEffect(() => {
     if (searchInput.length > 1 || searchDate) {
@@ -31,17 +38,27 @@ export const DocumentPage: React.FC = () => {
   }, [searchInput, searchDate]);
 
   const handleSearch = () => {
-    const foundSearches = DOCUMENTS_DATA.filter((item) => {
+    const foundSearches = documents && documents.filter((item) => {
       const matchesName =
-        searchInput.trim().length > 0
-          ? item.name.toLowerCase().includes(searchInput.toLowerCase())
+        item.fileName && searchInput.trim().length > 0
+          ? item.fileName.toLowerCase().includes(searchInput.toLowerCase())
           : false;
-      const matchesDate = searchDate ? item.added === searchDate : false;
+      const matchesDate = searchDate ? formatDate(item.createdAt) === searchDate : false;
 
       return matchesName || matchesDate;
+    }).map((item) => {
+      return {
+        fileName: item.fileName || '',
+        documentType: item.documentType || '',
+        createdAt: item.createdAt || '',
+        fileUrl: item.fileUrl || '',
+        name: item.fileName || '',
+        section: item.documentType || '',
+        added: item.createdAt || '',
+      };
     });
 
-    setSearchData(foundSearches);
+    setSearchData(foundSearches as IDocument[]);
   };
 
   const handleChange: DatePickerProps['onChange'] = (_, dateString) => {
@@ -87,7 +104,7 @@ export const DocumentPage: React.FC = () => {
           </div>
         </div>
         <div className="h-[55dvh] sm:h-[70dvh] lg:h-[73dvh] overflow-y-auto md:mt-4">
-          <DocumentTable searchData={searchData} />
+          {isDocumentsLoading ? <DocumentTableSkeleton /> : <DocumentTable searchData={searchData} document={documents} />}
         </div>
       </div>
     </section>

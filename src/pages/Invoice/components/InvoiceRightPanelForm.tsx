@@ -64,17 +64,19 @@ const processData = (data: Invoice) => ({
   transactionType: data.transactionType || TRANSACTION_TYPES[0].value,
   documentType: data.documentType || DOCUMENT_TYPES[0].value,
   isLocalInvoice: data.isLocalInvoice || false,
-  paymentTerms: data.paymentTerms?.length > 0 ? formatDate(data.paymentTerms) : '',
+  paymentTerms:
+    data.paymentTerms?.length > 0 ? formatDate(data.paymentTerms) : '',
   amount: data.amount || 0,
   invoiceDate: data.invoiceDate?.length > 0 ? formatDate(data.invoiceDate) : '',
-  invoiceItems: data.items?.map((item) => ({
-    lineItemNumber: String(item.lineItemNumber) || '',
-    quantity: Number(item.quantity) || 1,
-    description: item.description || '',
-    glAccount: item.glAccount || '',
-    amount: item.amount || 0,
-    department: item.department || '',
-  })) || [],
+  invoiceItems:
+    data.items?.map((item) => ({
+      lineItemNumber: String(item.lineItemNumber) || '',
+      quantity: Number(item.quantity) || 1,
+      description: item.description || '',
+      glAccount: item.glAccount || '',
+      amount: item.amount || 0,
+      department: item.department || '',
+    })) || [],
 });
 
 export const InvoiceRightPanelForm: React.FC = () => {
@@ -115,7 +117,9 @@ export const InvoiceRightPanelForm: React.FC = () => {
     if (extractedData || selectedData) {
       const data = extractedData || selectedData || ({} as Invoice);
       const processedData = processData(data);
-      Object.entries(processedData).forEach(([key, value]) => setValue(key as keyof InvoiceFormSchema, value));
+      Object.entries(processedData).forEach(([key, value]) =>
+        setValue(key as keyof InvoiceFormSchema, value)
+      );
       setRows(processedData.invoiceItems.length || 1);
     }
   }, [extractedData, selectedData, setValue]);
