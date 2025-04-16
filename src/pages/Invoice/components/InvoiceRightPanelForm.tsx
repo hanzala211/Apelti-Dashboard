@@ -21,6 +21,62 @@ import {
 } from '@constants';
 import InvoiceRightPanelOverview from './InvoiceRightPanelOverview';
 
+const getDefaultFormValues = () => ({
+  rarityInvoice: 'Once',
+  currency: CURRENCIES[0].value,
+  termsOfPayment: TERM_OF_PAYMENT[0].value,
+  transactionType: TRANSACTION_TYPES[0].value,
+  documentType: DOCUMENT_TYPES[0].value,
+  isLocalInvoice: true,
+  supplierName: '',
+  invoiceNumber: '',
+  poNumber: '',
+  paymentTerms: '',
+  amount: 0,
+  invoiceDate: '',
+  paymentTermDescription: '',
+  comment: '',
+  invoiceItems: [],
+  supplierId: '',
+  jciNumber: '',
+  location: '',
+  internalPartnerCode: '',
+  countryCode: COUNTRIES[0].value,
+  amountWithOutVat: 0,
+  vatPercentage: 0,
+});
+
+const processData = (data: Invoice) => ({
+  supplierName: data.supplierName || '',
+  invoiceNumber: data.invoiceNumber || '',
+  poNumber: data.poNumber || '',
+  currency: data.currency || CURRENCIES[0].value,
+  countryCode: data.countryCode || COUNTRIES[0].value,
+  supplierId: data.vendorId || '',
+  paymentTermDescription: data.paymentTermDescription || '',
+  comment: data.comment || '',
+  vatNumber: data.vatNumber || '',
+  amountWithOutVat: data.amountWithOutVat || 0,
+  vatPercentage: data.vatPercentage || 0,
+  internalPartnerCode: data.internalPartnerCode || '',
+  location: data.location || '',
+  jciNumber: data.jciNumber || '',
+  transactionType: data.transactionType || TRANSACTION_TYPES[0].value,
+  documentType: data.documentType || DOCUMENT_TYPES[0].value,
+  isLocalInvoice: data.isLocalInvoice || false,
+  paymentTerms: data.paymentTerms?.length > 0 ? formatDate(data.paymentTerms) : '',
+  amount: data.amount || 0,
+  invoiceDate: data.invoiceDate?.length > 0 ? formatDate(data.invoiceDate) : '',
+  invoiceItems: data.items?.map((item) => ({
+    lineItemNumber: String(item.lineItemNumber) || '',
+    quantity: Number(item.quantity) || 1,
+    description: item.description || '',
+    glAccount: item.glAccount || '',
+    amount: item.amount || 0,
+    department: item.department || '',
+  })) || [],
+});
+
 export const InvoiceRightPanelForm: React.FC = () => {
   const {
     selectedImage,
@@ -51,64 +107,16 @@ export const InvoiceRightPanelForm: React.FC = () => {
     setError,
   } = useForm<InvoiceFormSchema>({
     resolver: zodResolver(invoiceForm),
-    defaultValues: {
-      rarityInvoice: 'Once',
-      currency: CURRENCIES[0].value,
-      termsOfPayment: TERM_OF_PAYMENT[0].value,
-      transactionType: TRANSACTION_TYPES[0].value,
-      documentType: DOCUMENT_TYPES[0].value,
-      isLocalInvoice: true,
-    },
+    defaultValues: getDefaultFormValues(),
   });
   const [rows, setRows] = useState<number>(extractedData?.items?.length || 1);
 
   useEffect(() => {
     if (extractedData || selectedData) {
       const data = extractedData || selectedData || ({} as Invoice);
-      setValue('supplierName', data.supplierName || '');
-      setValue('invoiceNumber', data.invoiceNumber || '');
-      setValue('poNumber', data.poNumber || '');
-      setValue('currency', data.currency || CURRENCIES[0].value);
-      setValue('countryCode', data.countryCode || COUNTRIES[0].value);
-      setValue('supplierId', data.vendorId || '');
-      setValue('paymentTermDescription', data.paymentTermDescription || '');
-      setValue('comment', data.comment || '');
-      setValue('vatNumber', data.vatNumber || '');
-      setValue('amountWithOutVat', data.amountWithOutVat || 0);
-      setValue('vatPercentage', data.vatPercentage || 0);
-      setValue('internalPartnerCode', data.internalPartnerCode || '');
-      setValue('location', data.location || '');
-      setValue('jciNumber', data.jciNumber || '');
-      setValue(
-        'transactionType',
-        data.transactionType || TRANSACTION_TYPES[0].value
-      );
-      setValue('documentType', data.documentType || DOCUMENT_TYPES[0].value);
-      setValue('isLocalInvoice', data.isLocalInvoice || false);
-      if (data.paymentTerms?.length > 0) {
-        setValue('paymentTerms', formatDate(data.paymentTerms));
-      }
-
-      setValue('amount', data.amount || 0);
-
-      if (data.invoiceDate?.length > 0) {
-        setValue('invoiceDate', formatDate(data.invoiceDate));
-      }
-
-      if (data.items?.length > 0) {
-        setValue(
-          'invoiceItems',
-          data.items.map((item) => ({
-            lineItemNumber: String(item.lineItemNumber) || '',
-            quantity: Number(item.quantity) || 1,
-            description: item.description || '',
-            glAccount: item.glAccount || '',
-            amount: item.amount || 0,
-            department: item.department || '',
-          }))
-        );
-        setRows(data.items.length);
-      }
+      const processedData = processData(data);
+      Object.entries(processedData).forEach(([key, value]) => setValue(key as keyof InvoiceFormSchema, value));
+      setRows(processedData.invoiceItems.length || 1);
     }
   }, [extractedData, selectedData, setValue]);
 
@@ -218,30 +226,7 @@ export const InvoiceRightPanelForm: React.FC = () => {
           <button
             ref={removeDataBtnRef}
             onClick={() => {
-              reset({
-                rarityInvoice: 'Once',
-                currency: CURRENCIES[0].value,
-                termsOfPayment: TERM_OF_PAYMENT[0].value,
-                supplierName: '',
-                invoiceNumber: '',
-                poNumber: '',
-                paymentTerms: '',
-                amount: 0,
-                invoiceDate: '',
-                paymentTermDescription: '',
-                comment: '',
-                invoiceItems: [],
-                supplierId: '',
-                jciNumber: '',
-                location: '',
-                internalPartnerCode: '',
-                countryCode: COUNTRIES[0].value,
-                amountWithOutVat: 0,
-                vatPercentage: 0,
-                isLocalInvoice: false,
-                documentType: DOCUMENT_TYPES[0].value,
-                transactionType: TRANSACTION_TYPES[0].value,
-              });
+              reset(getDefaultFormValues());
               setRows(1);
               if (fileInputRef.current) {
                 fileInputRef.current.value = '';
