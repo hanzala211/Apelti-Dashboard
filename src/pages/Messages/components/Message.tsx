@@ -167,6 +167,7 @@ export const Message: React.FC<MessageProps> = ({
             placeholder="Comment"
           />
           <Button
+            disabled={comment.length === 0}
             btnText="Comment"
             className="rounded-md"
             isLoading={postCommentMessageMutation.isPending}
