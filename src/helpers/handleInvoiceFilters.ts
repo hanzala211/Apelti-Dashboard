@@ -6,7 +6,6 @@ export const handleInvoiceFilters = (
   invoices: Invoice[] | undefined,
   filters: FilterTypes[]
 ) => {
-  // Return original array if no invoices or no valid filters
   if (!invoices) return invoices;
   if (!filters.length || !filters.some(f => f.field && f.condition && f.value)) return invoices;
 
