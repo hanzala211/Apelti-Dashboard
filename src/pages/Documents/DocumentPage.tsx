@@ -103,7 +103,7 @@ export const DocumentPage: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="h-[55dvh] sm:h-[70dvh] lg:h-[73dvh] overflow-y-auto md:mt-4">
+        <div className="h-[100dvh] max-h-[calc(100dvh-238px)] overflow-y-auto md:mt-4">
           {isDocumentsLoading ? <DocumentTableSkeleton /> : <DocumentTable searchData={searchData} document={documents} />}
         </div>
       </div>

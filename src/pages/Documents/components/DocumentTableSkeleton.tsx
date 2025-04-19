@@ -2,7 +2,7 @@ import React from 'react';
 
 const DocumentTableSkeleton: React.FC = () => {
   return (
-    <div className="animate-pulse">
+    <div className="animate-pulse md:mt-0 mt-3">
       <div className="h-4 bg-gray-300 rounded mb-4"></div>
       <div className="space-y-2">
         {[...Array(27)].map((_, index) => (

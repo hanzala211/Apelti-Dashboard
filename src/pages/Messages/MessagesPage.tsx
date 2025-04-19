@@ -34,7 +34,7 @@ export const MessagesPage: React.FC = () => {
           Left={MessagesLeftPanel}
           Right={
             <div
-              className={`relative md:w-2/3 ${selectedMessage === null ? 'w-0' : 'w-full'
+              className={`relative md:w-2/3 h-[100dvh] max-h-[calc(100dvh-9rem)] overflow-y-auto ${selectedMessage === null ? 'w-0' : 'w-full'
                 }`}
             >
               <button

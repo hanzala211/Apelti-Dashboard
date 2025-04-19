@@ -35,11 +35,11 @@ export const DocumentTable: React.FC<{ searchData: IDocument[] | undefined, docu
           {searchData && document && (searchData?.length !== 0 ? searchData : document).map(
             (item, index) => (
               <tr key={index} className="cursor-pointer" onClick={() => handleDocumentClick(item)}>
-                <td className="px-4 py-2 flex gap-2 items-center">
-                  <ICONS.documentSVG /> {item.fileName}
+                <td className="px-4 py-2 text-[10px] md:text-[16px] flex gap-2 items-center">
+                  <ICONS.documentSVG size={window.innerWidth < 768 ? 16 : 20} /> {item.fileName}
                 </td>
-                <td className="px-4 py-2">{item.documentType}</td>
-                <td className="px-4 py-2">{formatDate(item.createdAt)}</td>
+                <td className="px-4 py-2 text-[10px] md:text-[16px]">{item.documentType}</td>
+                <td className="px-4 py-2 text-[10px] md:text-[16px]">{formatDate(item.createdAt)}</td>
               </tr>
             )
           )}
