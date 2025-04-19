@@ -1,82 +1,63 @@
-import { DATE_FOMRAT } from "@constants";
-import { FilterTypes, Invoice } from "@types";
-import dayjs from "dayjs";
+import { DATE_FOMRAT } from '@constants';
+import { FilterTypes, Invoice } from '@types';
+import dayjs from 'dayjs';
 
-export const handleInvoiceFilters = (invoices: Invoice[] | undefined, filters: FilterTypes[]) => {
-  let filteredValues = invoices;
-  if (!filteredValues) return;
+export const handleInvoiceFilters = (
+  invoices: Invoice[] | undefined,
+  filters: FilterTypes[]
+) => {
+  // Return original array if no invoices or no valid filters
+  if (!invoices) return invoices;
+  if (!filters.length || !filters.some(f => f.field && f.condition && f.value)) return invoices;
+
+  let filteredValues = [...invoices];
+
   filteredValues = filteredValues.filter((invoice) => {
     for (const filter of filters) {
       if (!filter.field || !filter.condition || !filter.value) continue;
 
+      const invoiceValue = invoice[filter.field as keyof Invoice];
+      if (invoiceValue === undefined || invoiceValue === null) return false;
+
       switch (filter.field) {
-        case 'supplierName': {
-          if (
-            filter.condition === 'contains' &&
-            !invoice[filter.field].toLowerCase().includes(filter.value.toLowerCase())
-          )
-            return false;
-          if (
-            filter.condition === 'equals' &&
-            invoice[filter.field].toLowerCase() !== filter.value.toLowerCase()
-          )
-            return false;
-          if (
-            filter.condition === 'startsWith' &&
-            !invoice[filter.field].toLowerCase().startsWith(filter.value.toLowerCase())
-          )
-            return false;
+        case 'supplierName':
+        case 'poNumber':
+        case 'invoiceNumber': {
+          const searchValue = String(filter.value).toLowerCase();
+          const fieldValue = String(invoiceValue).toLowerCase();
+
+          if (filter.condition === 'contains' && !fieldValue.includes(searchValue)) return false;
+          if (filter.condition === 'equals' && fieldValue !== searchValue) return false;
+          if (filter.condition === 'startsWith' && !fieldValue.startsWith(searchValue)) return false;
           break;
         }
 
         case 'invoiceDate':
         case 'paymentTerms': {
-          const filterDate = filter.value
-            ? dayjs(filter.value, DATE_FOMRAT)
-            : null;
-          const invoiceDate = invoice[filter.field]
-            ? dayjs(invoice[filter.field], DATE_FOMRAT)
-            : null;
+          if (typeof invoiceValue !== 'string') return false;
 
-          if (
-            filterDate &&
-            invoiceDate &&
-            filterDate.isValid() &&
-            invoiceDate.isValid()
-          ) {
-            if (
-              filter.condition === 'before' &&
-              !invoiceDate.isBefore(filterDate)
-            )
-              return false;
-            if (
-              filter.condition === 'after' &&
-              !invoiceDate.isAfter(filterDate)
-            )
-              return false;
-            if (
-              filter.condition === 'on' &&
-              !invoiceDate.isSame(filterDate, 'day')
-            )
-              return false;
-          } else {
-            return false;
-          }
+          const filterDate = dayjs(filter.value, DATE_FOMRAT);
+          const invoiceDate = dayjs(invoiceValue, DATE_FOMRAT);
+
+          if (!filterDate.isValid() || !invoiceDate.isValid()) return false;
+
+          if (filter.condition === 'before' && !invoiceDate.isBefore(filterDate)) return false;
+          if (filter.condition === 'after' && !invoiceDate.isAfter(filterDate)) return false;
+          if (filter.condition === 'on' && !invoiceDate.isSame(filterDate, 'day')) return false;
           break;
         }
 
-        case 'invoiceNumber':
-        case 'amount':
-        case 'poNumber': {
-          const filterAmount = parseFloat(filter.value);
-          const invoiceAmount = parseFloat(invoice[filter.field] as string);
+        case 'amount': {
+          if (typeof invoiceValue !== 'number') return false;
 
-          if (filter.condition === 'equal' && invoiceAmount !== filterAmount)
-            return false;
-          if (filter.condition === 'greater' && invoiceAmount <= filterAmount)
-            return false;
-          if (filter.condition === 'lesser' && invoiceAmount >= filterAmount)
-            return false;
+          const filterAmount = parseFloat(filter.value);
+          const invoiceAmount = invoiceValue;
+
+          if (isNaN(filterAmount)) return false;
+
+          if (filter.condition === 'equal' && invoiceAmount !== filterAmount) return false;
+          if (filter.condition === 'greater' && invoiceAmount <= filterAmount) return false;
+          if (filter.condition === 'lesser' && invoiceAmount >= filterAmount) return false;
           break;
         }
         default:
@@ -86,5 +67,5 @@ export const handleInvoiceFilters = (invoices: Invoice[] | undefined, filters: F
     return true;
   });
 
-  return filteredValues
+  return filteredValues;
 };

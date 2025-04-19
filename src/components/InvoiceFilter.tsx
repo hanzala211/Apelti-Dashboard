@@ -92,8 +92,7 @@ export const InvoiceFilter: React.FC<InvoiceFilterProps> = ({
                 {filter.field !== filterOptions[3].value &&
                   filter.field !== filterOptions[4].value &&
                   filter.field !== filterOptions[5].value &&
-                  filter.field !== filterOptions[2].value &&
-                  filter.field !== filterOptions[0].value && (
+                  filter.field !== filterOptions[2].value && (
                     <>
                       <option value="contains">contains</option>
                       <option value="equals">equals</option>
@@ -109,8 +108,7 @@ export const InvoiceFilter: React.FC<InvoiceFilterProps> = ({
                     </>
                   )}
                 {(filter.field === filterOptions[5].value ||
-                  filter.field === filterOptions[2].value ||
-                  filter.field === filterOptions[0].value) && (
+                  filter.field === filterOptions[2].value) && (
                     <>
                       <option value="equal">is equal to</option>
                       <option value="greater">greater than</option>
