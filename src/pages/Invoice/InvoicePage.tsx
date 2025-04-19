@@ -1,13 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth, useInvoice } from '@context';
 import { FilterTypes, Invoice } from '@types';
-import {
-  APP_ACTIONS,
-  COLORS,
-  ICONS,
-  PERMISSIONS,
-  ROUTES,
-} from '@constants';
+import { APP_ACTIONS, COLORS, ICONS, PERMISSIONS, ROUTES } from '@constants';
 import {
   Button,
   DraggableModal,
@@ -33,6 +27,7 @@ export const InvoicePage: React.FC = () => {
     setSelectedInvoice,
     setSelectedData,
     deleteInvoiceMutation,
+    downloadInvoices
   } = useInvoice();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [filteredInvoices, setFilteredInvoices] = useState<Invoice[]>([]);
@@ -51,7 +46,7 @@ export const InvoicePage: React.FC = () => {
   useEffect(() => {
     if (invoices && !isInvoiceLoading)
       setFilteredInvoices(
-        location.search.includes('unpaid')
+        location.search.includes('rejected')
           ? invoices.filter((item) => item.status === 'rejected')
           : location.search.includes('pending')
             ? invoices.filter((item) => item.status === 'pending')
@@ -166,9 +161,9 @@ export const InvoicePage: React.FC = () => {
           onClick={() => navigate('?all=true')}
         />
         <FilterBtn
-          label="Unpaid Invoices"
-          bool={location.search.includes('unpaid')}
-          onClick={() => navigate('?unpaid=true')}
+          label="Rejected Invoices"
+          bool={location.search.includes('rejected')}
+          onClick={() => navigate('?rejected=true')}
         />
         <FilterBtn
           label="Pending Invoices"
@@ -191,24 +186,35 @@ export const InvoicePage: React.FC = () => {
           Add Filters
         </button>
         {userPermissions.includes(APP_ACTIONS.postInvoice) && (
-          <DropDown
-            items={items}
-            label={
-              <button className="group transition-all duration-200">
-                <SvgIcon
-                  src={ICONS.table_setting}
-                  size={20}
-                  className="group-hover:text-primaryColor transition-all duration-200"
-                />
-              </button>
-            }
-          />
+          <div className='flex gap-6 items-baseline'>
+            <DropDown
+              items={items}
+              label={
+                <button className="group transition-all duration-200">
+                  <SvgIcon
+                    src={ICONS.table_setting}
+                    size={20}
+                    className="group-hover:text-primaryColor m-0 transition-all duration-200"
+                  />
+                </button>
+              }
+            />
+            <button onClick={downloadInvoices} className="group transition-all duration-200 m-0">
+              <SvgIcon
+                src={ICONS.download}
+                size={20}
+                className="group-hover:text-primaryColor transition-all duration-200"
+              />
+            </button>
+          </div>
         )}
         <DraggableModal
           okText="Add"
           handleOk={() => handleInvoiceFilters(invoices, filters)}
           heading="In this view show records"
-          modalItems={<InvoiceFilter filters={filters} setFilters={setFilters} />}
+          modalItems={
+            <InvoiceFilter filters={filters} setFilters={setFilters} />
+          }
           setOpen={setIsModalOpen}
           open={isModalOpen}
         />

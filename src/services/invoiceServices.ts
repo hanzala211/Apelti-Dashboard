@@ -34,5 +34,11 @@ export const invoiceServices = {
     method: "POST",
     data,
     isAuthIncluded: true
+  }),
+  downloadCompanyInvoices: () => sendRequest({
+    method: "GET",
+    isAuthIncluded: true,
+    url: `/invoice/export/excel`,
+    responseType: 'blob'
   })
 }

@@ -7,3 +7,5 @@ export * from './Signup/SignupPage';
 export * from './Team/TeamPage';
 export * from './ProfileSetting/ProfileSettingPage';
 export * from './Approval/ApprovalPage';
+export * from './ForgotPassword/ForgotPasswordPage';
+export * from './ResetPassword/ResetPasswordPage';

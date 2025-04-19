@@ -55,5 +55,6 @@ export const ICONS = {
   wallet: '/assets/icons/wallet.svg',
   wrench: '/assets/icons/wrench.svg',
   table_setting: '/assets/icons/table-setting.svg',
+  download: '/assets/icons/download.svg',
   load: IoReloadCircle
 };

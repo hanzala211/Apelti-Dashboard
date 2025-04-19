@@ -174,6 +174,7 @@ export interface InvoiceContextTypes {
   draftBtnRef: React.RefObject<HTMLButtonElement | null>;
   handleDraftBtnClick: () => void;
   postDraftInvoiceMutation: UseMutationResult<void, Error, unknown, unknown>;
+  downloadInvoices: () => Promise<void>;
 }
 
 export interface AuthContextTypes {
@@ -189,6 +190,8 @@ export interface AuthContextTypes {
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
   isAuthLoading: boolean;
   socketClient: Socket | null;
+  forgotPassword: (sendData: unknown) => Promise<void>;
+  resetPassword: (sendData: unknown) => Promise<void>;
 }
 
 export interface TeamContextTypes {
@@ -219,4 +222,3 @@ export interface ApprovalContextTypes {
 export interface DocumentContextTypes {
   getDocuments: () => Promise<IDocument[] | undefined>;
 }
-

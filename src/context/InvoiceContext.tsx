@@ -244,6 +244,33 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  const downloadInvoices = async () => {
+    try {
+      const response = await invoiceServices.downloadCompanyInvoices();
+
+      // Create a blob URL directly from the response data
+      const url = window.URL.createObjectURL(response.data);
+
+      // Create a temporary link element
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'company-invoices.xlsx'; // Set the file name
+
+      // Append to body, click and remove
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Clean up the URL
+      window.URL.revokeObjectURL(url);
+
+      toast.success("Download Started Successfully");
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed To Download", "Error Occurred");
+    }
+  }
+
   return (
     <InvoiceContext.Provider
       value={{
@@ -276,6 +303,7 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
         draftBtnRef,
         handleDraftBtnClick,
         postDraftInvoiceMutation,
+        downloadInvoices
       }}
     >
       {children}

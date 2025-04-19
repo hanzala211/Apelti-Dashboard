@@ -9,7 +9,7 @@ import {
   useState,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { socket } from '@helpers';
+import { socket, toast } from '@helpers';
 import { Socket } from 'socket.io-client';
 
 const AuthContext = createContext<AuthContextTypes | undefined>(undefined);
@@ -135,6 +135,58 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  const forgotPassword = async (sendData: unknown) => {
+    try {
+      setErrorMessage('');
+      setIsAuthLoading(true);
+      const response = await authService.forgotPassword(sendData);
+      if (response.status === 200) {
+        navigate(`${ROUTES.auth}/${ROUTES.reset}`);
+        toast.success(
+          'All set!',
+          'A link to reset your password is on its way to your inbox.'
+        );
+        setErrorMessage("")
+      }
+    } catch (error) {
+      console.log(error);
+      setErrorMessage(
+        typeof error === 'object' ? (error as Error).message : String(error)
+      );
+    }
+    finally {
+      setIsAuthLoading(false)
+    }
+  };
+
+
+
+  const resetPassword = async (sendData: unknown) => {
+    try {
+      setErrorMessage('');
+      setIsAuthLoading(true);
+      const response = await authService.resetPassword(sendData);
+      if (response.status === 200) {
+        navigate(`${ROUTES.auth}/${ROUTES.login}`);
+        toast.success(
+          'Password Updated!',
+          'Your password has been changed successfully.'
+        );
+        setErrorMessage("")
+      }
+    } catch (error) {
+      console.log(error);
+      setErrorMessage(
+        typeof error === 'object' ? (error as Error).message : String(error)
+      );
+    }
+    finally {
+      setIsAuthLoading(false)
+    }
+  };
+
+
+
   return (
     <AuthContext.Provider
       value={{
@@ -150,6 +202,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         isAuthLoading,
         setErrorMessage,
         socketClient,
+        forgotPassword,
+        resetPassword
       }}
     >
       {children}

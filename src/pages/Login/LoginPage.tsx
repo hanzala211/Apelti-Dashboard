@@ -4,7 +4,7 @@ import { useAuth } from '@context';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginForm, LoginFormSchema } from '@types';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { MoonLoader } from 'react-spinners';
 
 export const LoginPage: React.FC = () => {
@@ -17,6 +17,7 @@ export const LoginPage: React.FC = () => {
   } = useForm<LoginFormSchema>({
     resolver: zodResolver(loginForm),
   });
+  const navigate = useNavigate()
 
   const onSubmit: SubmitHandler<LoginFormSchema> = (e) => {
     console.log(e);
@@ -61,6 +62,7 @@ export const LoginPage: React.FC = () => {
           <button
             type="button"
             className="text-basicBlack underline font-medium text-[14px]"
+            onClick={() => navigate(`${ROUTES.auth}/${ROUTES.forgotPassword}`)}
           >
             Forgot Password
           </button>

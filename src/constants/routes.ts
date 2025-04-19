@@ -15,4 +15,6 @@ export const ROUTES = {
   settings: '/settings',
   not_available: '/not-available',
   profile: 'profile',
+  forgotPassword: 'forgot-password',
+  reset: "reset-password"
 };

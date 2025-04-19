@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { SidebarItem } from './SidebarItem';
 import { APP_ACTIONS, ICONS, PERMISSIONS, ROUTES } from '@constants';
 import { useAuth } from '@context';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const Sidebar: React.FC = () => {
   const { setUserData, setIsMainLoading, userData } = useAuth();
@@ -10,6 +11,7 @@ export const Sidebar: React.FC = () => {
   const sideBarRef = useRef<HTMLDivElement>(null);
   const sideBarButtonRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
+  const queryClient = useQueryClient();
   const userPermissions =
     PERMISSIONS[userData?.role as keyof typeof PERMISSIONS];
 
@@ -35,11 +37,12 @@ export const Sidebar: React.FC = () => {
 
   const handleLogout = () => {
     setIsMainLoading(true);
+    queryClient.removeQueries();
     setUserData(null);
     localStorage.removeItem('token');
     setTimeout(() => {
       setIsMainLoading(false);
-    }, 500);
+    }, 1000);
   };
 
   return (

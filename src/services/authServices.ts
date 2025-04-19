@@ -21,4 +21,18 @@ export const authService = {
       isAuthIncluded: true,
       method: 'GET',
     }),
+  forgotPassword: (data: unknown) =>
+    sendRequest({
+      data,
+      url: '/user/forgot-password',
+      isAuthIncluded: false,
+      method: 'POST',
+    }),
+  resetPassword: (data: unknown) =>
+    sendRequest({
+      data,
+      url: '/user/reset-password',
+      isAuthIncluded: false,
+      method: 'POST',
+    }),
 };

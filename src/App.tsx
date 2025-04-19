@@ -5,10 +5,12 @@ import {
   ApprovalPage,
   DashboardPage,
   DocumentPage,
+  ForgotPasswordPage,
   InvoicePage,
   LoginPage,
   MessagesPage,
   ProfileSettingPage,
+  ResetPasswordPage,
   SignupPage,
   TeamPage,
 } from '@pages';
@@ -26,6 +28,8 @@ const App: React.FC = () => {
                 <Route index element={<LoginPage />} />
                 <Route path={ROUTES.login} element={<LoginPage />} />
                 <Route path={ROUTES.signup} element={<SignupPage />} />
+                <Route path={ROUTES.forgotPassword} element={<ForgotPasswordPage />} />
+                <Route path={ROUTES.reset} element={<ResetPasswordPage />} />
               </Route>
 
               <Route element={<AppLayout />} path="/">

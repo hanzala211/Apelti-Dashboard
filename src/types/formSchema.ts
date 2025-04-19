@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const RoleEnum = z.enum([
   'admin',
@@ -17,40 +17,58 @@ export const invoiceItemSchema = z.object({
   lineItemNumber: z.string(),
 });
 
-export const invoiceForm = z.object({
-  supplierName: z.string().min(1, { message: 'Vendor name is required.' }),
-  invoiceNumber: z.string().min(1, { message: 'Invoice number is required.' }),
-  poNumber: z.string().min(1, { message: 'Purchase order number is required.' }),
-  termsOfPayment: z.string().min(1, { message: 'Terms of payment are required.' }),
-  invoiceDate: z.string().min(1, { message: 'Invoice date is required.' }),
-  paymentTerms: z.string().min(1, { message: 'Payment terms are required.' }),
-  amount: z.number().min(1, { message: 'Amount must be at least 1.' }),
-  paymentTermDescription: z.string(),
-  rarityInvoice: z.string(),
-  invoiceItems: z.array(invoiceItemSchema),
-  currency: z.string().min(1, { message: 'Currency is required.' }),
-  countryCode: z.string().min(1, { message: 'Country code is required.' }),
-  comment: z.string().min(1, { message: 'Comment is required.' }),
-  supplierId: z.string().optional(),
-  vatNumber: z.string().min(1, { message: 'VAT number is required.' }),
-  internalPartnerCode: z.string().min(1, { message: 'Internal partner code is required.' }),
-  amountWithOutVat: z.number().min(1, { message: 'Amount without VAT must be at least 1.' }),
-  vatPercentage: z.number().min(1, { message: 'VAT percentage must be greater than 0.' }),
-  location: z.string().min(1, { message: 'Invoice location is required.' }),
-  jciNumber: z.string().optional(),
-  transactionType: z.string(),
-  documentType: z.string(),
-  isLocalInvoice: z.boolean(),
-}).refine((data) => {
-  if (data.isLocalInvoice) {
-    return !!data.supplierId;
-  } else {
-    return !!data.jciNumber;
-  }
-}, {
-  message: "Vendor ID is required when the invoice is local, and JCI Number is required when the invoice is foreign.",
-  path: ["supplierId", "jciNumber"],
-});
+export const invoiceForm = z
+  .object({
+    supplierName: z.string().min(1, { message: 'Vendor name is required.' }),
+    invoiceNumber: z
+      .string()
+      .min(1, { message: 'Invoice number is required.' }),
+    poNumber: z
+      .string()
+      .min(1, { message: 'Purchase order number is required.' }),
+    termsOfPayment: z
+      .string()
+      .min(1, { message: 'Terms of payment are required.' }),
+    invoiceDate: z.string().min(1, { message: 'Invoice date is required.' }),
+    paymentTerms: z.string().min(1, { message: 'Payment terms are required.' }),
+    amount: z.number().min(1, { message: 'Amount must be at least 1.' }),
+    paymentTermDescription: z.string(),
+    rarityInvoice: z.string(),
+    invoiceItems: z.array(invoiceItemSchema),
+    currency: z.string().min(1, { message: 'Currency is required.' }),
+    countryCode: z.string().min(1, { message: 'Country code is required.' }),
+    comment: z.string().min(1, { message: 'Comment is required.' }),
+    supplierId: z.string().optional(),
+    vatNumber: z.string().min(1, { message: 'VAT number is required.' }),
+    internalPartnerCode: z
+      .string()
+      .min(1, { message: 'Internal partner code is required.' }),
+    amountWithOutVat: z
+      .number()
+      .min(1, { message: 'Amount without VAT must be at least 1.' }),
+    vatPercentage: z
+      .number()
+      .min(1, { message: 'VAT percentage must be greater than 0.' }),
+    location: z.string().min(1, { message: 'Invoice location is required.' }),
+    jciNumber: z.string().optional(),
+    transactionType: z.string(),
+    documentType: z.string(),
+    isLocalInvoice: z.boolean(),
+  })
+  .refine(
+    (data) => {
+      if (data.isLocalInvoice) {
+        return !!data.supplierId;
+      } else {
+        return !!data.jciNumber;
+      }
+    },
+    {
+      message:
+        'Vendor ID is required when the invoice is local, and JCI Number is required when the invoice is foreign.',
+      path: ['supplierId', 'jciNumber'],
+    }
+  );
 
 export const optionalInvoiceForm = z.object({
   supplierName: z.string().optional(),
@@ -126,3 +144,21 @@ export const profileSchema = z.object({
 });
 
 export type ProfileFormValues = z.infer<typeof profileSchema>;
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().email(),
+});
+
+export type ForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
+
+export const resetPasswordSchema = z.object({
+  email: z.string().email({ message: 'Please enter a valid email address.' }),
+  forgotPasswordCode: z
+    .string()
+    .length(6, { message: 'Please enter the 6‑digit verification code.' }),
+  newPassword: z
+    .string()
+    .min(8, { message: 'Your new password must be at least 8 characters.' }),
+});
+
+export type ResetPasswordSchema = z.infer<typeof resetPasswordSchema>;
