@@ -21,5 +21,6 @@ export const COLORS = {
   temporaryRed: '#FFF2F2',
   temporaryGray: '#F8F9FA',
   columnGraphBg: "#1f2a44",
-  columnGraphGradient: "#2e3450"
+  columnGraphGradient: "#2e3450",
+  permanentGreen: "#34C6BD",
 };

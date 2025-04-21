@@ -9,3 +9,4 @@ export * from './ProfileSetting/ProfileSettingPage';
 export * from './Approval/ApprovalPage';
 export * from './ForgotPassword/ForgotPasswordPage';
 export * from './ResetPassword/ResetPasswordPage';
+export * from './InvoiceConfiguration/InvoiceConfigurationPage';

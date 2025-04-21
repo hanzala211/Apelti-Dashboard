@@ -15,4 +15,17 @@ export const settingServices = {
       isAuthIncluded: true,
       data,
     }),
+  changeInvoiceExportFormat: (data: unknown) =>
+    sendRequest({
+      method: 'POST',
+      url: `/invoice-mapping`,
+      isAuthIncluded: true,
+      data,
+    }),
+  getInvoiceFormatExport: () =>
+    sendRequest({
+      method: 'GET',
+      url: `/invoice-mapping`,
+      isAuthIncluded: true,
+    }),
 };

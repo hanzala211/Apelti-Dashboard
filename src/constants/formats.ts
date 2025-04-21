@@ -466,3 +466,41 @@ export const INVOICE_ITEMS_HEADER = [
   'Quantity',
   'Description',
 ];
+
+export const INVOICE_FIELD_OPTIONS = [
+  { label: "Supplier Name", value: "supplierName" },
+  { label: "PO Number", value: "poNumber" },
+  { label: "Invoice Number", value: "invoiceNumber" },
+  { label: "Invoice Date", value: "invoiceDate" },
+  { label: "Currency", value: "currency" },
+  { label: "Vendor ID", value: "vendorId" },
+  { label: "VAT Number", value: "vatNumber" },
+  { label: "Payment Terms", value: "paymentTerms" },
+  { label: "Payment Term Description", value: "paymentTermDescription" },
+  { label: "Rarity Invoice", value: "rarityInvoice" },
+  { label: "Amount", value: "amount" },
+  { label: "Amount Without VAT", value: "amountWithoutVat" },
+  { label: "VAT Percentage", value: "vatPercentage" },
+  { label: "Terms of Payment", value: "termsOfPayment" },
+  { label: "File URL", value: "fileUrl" },
+  { label: "Comment", value: "comment" },
+  { label: "Matched With PO", value: "matchedWithPO" },
+  { label: "Is Duplicate", value: "isDuplicate" },
+  { label: "File Name", value: "fileName" },
+  { label: "JCI Number", value: "jciNumber" },
+  { label: "Location", value: "location" },
+  { label: "Internal Partner Code", value: "internalPartnerCode" },
+  { label: "Country Code", value: "countryCode" },
+  { label: "Is Local Invoice", value: "isLocalInvoice" },
+  { label: "Transaction Type", value: "transactionType" },
+  { label: "Document Type", value: "documentType" },
+];
+
+export const INVOICE_ITEM_MAPPING_OPTIONS = [
+  { label: "GL Account", value: "glAccount" },
+  { label: "Amount", value: "amount" },
+  { label: "Description", value: "description" },
+  { label: "Department", value: "department" },
+  { label: "Quantity", value: "quantity" },
+  { label: "Line Item Number", value: "lineItemNumber" },
+];

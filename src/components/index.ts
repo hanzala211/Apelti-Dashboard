@@ -20,4 +20,5 @@ export * from './SvgIcon';
 export * from './InvoiceWidget';
 export * from './InvoiceFilter';
 export * from './DocumentNotFound';
+export * from './UncontrolledInput';
 

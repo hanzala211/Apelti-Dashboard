@@ -52,7 +52,7 @@ export const SettingSidebar: React.FC = () => {
       label: 'Integration',
       links: [
         { link: `/`, value: 'Preferences' },
-        { link: `/`, value: 'Import & Export' },
+        { link: `${ROUTES.settings}/${ROUTES.export_configuration}`, value: 'Export Configuration' },
       ],
       isBorderBottom: true,
     },

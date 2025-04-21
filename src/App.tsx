@@ -6,6 +6,7 @@ import {
   DashboardPage,
   DocumentPage,
   ForgotPasswordPage,
+  InvoiceConfigurationPage,
   InvoicePage,
   LoginPage,
   MessagesPage,
@@ -46,6 +47,7 @@ const App: React.FC = () => {
               <Route path={ROUTES.settings} element={<SettingsLayout />}>
                 <Route index element={<ProfileSettingPage />} />
                 <Route path={ROUTES.profile} element={<ProfileSettingPage />} />
+                <Route path={ROUTES.export_configuration} element={<InvoiceConfigurationPage />} />
               </Route>
             </Routes>
           </ProvidersWrapper>

@@ -46,9 +46,27 @@ export const SettingProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  const changeInvoiceExportFormat = async (data: unknown) => {
+    try {
+      const response = await settingServices.changeInvoiceExportFormat(data);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getInvoiceFormatExport = async () => {
+    try {
+      const response = await settingServices.getInvoiceFormatExport();
+      console.log(response);
+      return response.data.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <SettingContext.Provider
-      value={{ changePassword, errorMessage, changeUserData }}
+      value={{ changePassword, errorMessage, changeUserData, changeInvoiceExportFormat, getInvoiceFormatExport }}
     >
       {children}
     </SettingContext.Provider>

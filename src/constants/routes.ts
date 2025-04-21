@@ -16,5 +16,6 @@ export const ROUTES = {
   not_available: '/not-available',
   profile: 'profile',
   forgotPassword: 'forgot-password',
-  reset: "reset-password"
+  reset: "reset-password",
+  export_configuration: 'export-configuration',
 };

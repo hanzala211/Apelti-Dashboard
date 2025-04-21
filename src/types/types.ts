@@ -208,6 +208,8 @@ export interface SettingContextTypes {
   changePassword: (data: unknown) => void;
   errorMessage: string;
   changeUserData: (data: unknown) => void;
+  changeInvoiceExportFormat: MutationFunction<unknown, unknown>;
+  getInvoiceFormatExport: () => Promise<Record<string, string>>;
 }
 
 export interface ApprovalContextTypes {
@@ -221,4 +223,15 @@ export interface ApprovalContextTypes {
 
 export interface DocumentContextTypes {
   getDocuments: () => Promise<IDocument[] | undefined>;
+}
+
+export interface ExportFormat {
+  id: string;
+  headerTitle: string;
+  poNumber: string;
+}
+
+export interface ExportFormatState {
+  formatName: string;
+  formats: ExportFormat[];
 }
