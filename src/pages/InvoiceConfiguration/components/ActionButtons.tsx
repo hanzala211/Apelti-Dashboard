@@ -1,26 +1,33 @@
 import { Button, ErrorMessage } from '@components';
-import { useAuth } from '@context';
-import { useInvoiceConfig } from '@hooks';
+import { useMutation } from '@tanstack/react-query';
 
 interface ActionButtonsProps {
-  addColumn: () => void;
-  removeLastColumn: () => void;
+  addColumn(): void;
+  removeLastColumn(): void;
   columnsCount: number;
-  isFormValid: boolean;
   showError: boolean;
-  selectedFormat: Record<string, string | string[]> | null
+  selectedFormat: Record<string, string | string[]> | null;
+  validateFields(): boolean;
+  transformColumnsForSaving(): Record<string, unknown>;
+  setShowError(flag: boolean): void;
+  selectExportFormatMutation: ReturnType<typeof useMutation>;
+  updateExportFieldsFormatMutation: ReturnType<typeof useMutation>;
+  userData: { exportFormatMethodId?: string } | null;
 }
 
 export const ActionButtons: React.FC<ActionButtonsProps> = ({
   addColumn,
   removeLastColumn,
   columnsCount,
-  isFormValid,
   showError,
-  selectedFormat
+  selectedFormat,
+  validateFields,
+  transformColumnsForSaving,
+  setShowError,
+  selectExportFormatMutation,
+  updateExportFieldsFormatMutation,
+  userData
 }) => {
-  const { selectExportFormatMutation, updateExportFieldsFormatMutation, validateFields, transformColumnsForSaving, setShowError, fieldOrder } = useInvoiceConfig();
-  const { userData } = useAuth();
 
   const selectFormat = () => {
     if (userData?.exportFormatMethodId !== selectedFormat?._id) {
@@ -36,8 +43,7 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
     setShowError(false);
 
     const transformedData = transformColumnsForSaving();
-    console.log('Saving data:', { ...transformedData, _id: selectedFormat?._id, fieldOrder: fieldOrder });
-    updateExportFieldsFormatMutation.mutate({ ...transformedData, fieldOrder: fieldOrder });
+    updateExportFieldsFormatMutation.mutate({ ...transformedData });
   };
 
   return (
@@ -58,7 +64,7 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
           btnText="Save Export Format"
           handleClick={handleSave}
           className={`!bg-permanentGreen cursor-pointer hover:!bg-permanentGreen/80 !rounded-md !px-4 w-full sm:w-auto ${updateExportFieldsFormatMutation.isPending ? 'cursor-not-allowed opacity-40' : 'cursor-pointer'}`}
-          disabled={!isFormValid || updateExportFieldsFormatMutation.isPending}
+          disabled={updateExportFieldsFormatMutation.isPending}
           isLoading={updateExportFieldsFormatMutation.isPending}
         />
         <Button

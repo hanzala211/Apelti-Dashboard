@@ -5,6 +5,20 @@ import { ApexOptions } from 'apexcharts';
 
 export type Role = 'admin' | 'clerk' | 'approver' | 'accountant' | 'payer';
 
+export interface ItemMappingValue {
+  header: string;
+  value: string;
+}
+
+export interface ColumnConfig {
+  id: string;
+  headerName: string;
+  headerValue: string;
+  itemMapping?: {
+    [key: string]: ItemMappingValue;
+  };
+}
+
 export interface IMessage {
   companyName: string;
   isDuplicate: boolean;

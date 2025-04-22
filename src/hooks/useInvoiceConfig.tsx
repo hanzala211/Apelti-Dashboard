@@ -7,20 +7,7 @@ import {
   INVOICE_ITEM_MAPPING_OPTIONS,
   INVOICE_FIELD_OPTIONS,
 } from '@constants';
-
-interface ItemMappingValue {
-  header: string;
-  value: string;
-}
-
-export interface ColumnConfig {
-  id: string;
-  headerName: string;
-  headerValue: string;
-  itemMapping?: {
-    [key: string]: ItemMappingValue;
-  };
-}
+import { ColumnConfig, ItemMappingValue } from '@types';
 
 export const useInvoiceConfig = () => {
   const {
@@ -47,10 +34,7 @@ export const useInvoiceConfig = () => {
   const createInvoiceExportFormatMutation = useMutation({
     mutationFn: createInvoiceExportFormat,
     onSuccess: () => {
-      console.log('Invoice export format changed successfully');
       toast.success('Invoice export format saved successfully');
-      setIsAddingNewImport(false);
-      setExportFormatName('');
       queryClient.invalidateQueries({ queryKey: ['invoiceFormat'] });
     },
     onError: (error) => {
@@ -62,7 +46,6 @@ export const useInvoiceConfig = () => {
   const selectExportFormatMutation = useMutation({
     mutationFn: (data: unknown) => selectExportFormat(data),
     onSuccess: () => {
-      console.log('Export format selected successfully');
       toast.success('Export format selected successfully');
       setUserData((prev) =>
         prev
@@ -80,7 +63,6 @@ export const useInvoiceConfig = () => {
     mutationFn: (data: unknown) =>
       updateExportFieldsFormat(selectedFormat?._id as string, data),
     onSuccess: () => {
-      console.log('Export fields format updated successfully');
       toast.success('Export fields format updated successfully');
       queryClient.invalidateQueries({ queryKey: ['invoiceFormat'] });
     },
@@ -94,41 +76,24 @@ export const useInvoiceConfig = () => {
     queryKey: ['invoiceFormat'],
     queryFn: getInvoiceFormatExport,
   });
+  useEffect(() => {
+    if (!invoiceFormat || invoiceFormat.length === 0) return;
+    const first: Record<string, string | string[]> = invoiceFormat[0];
+    if (selectedFormat && first._id === selectedFormat._id) return;
+
+    setSelectedFormat(first);
+    setExportFormat(first.exportFormateName as string);
+    setFieldOrder(first.fieldOrder as string[]);
+    setColumns(formatInvoiceColumns(first));
+  }, [invoiceFormat]);
 
   useEffect(() => {
-    if (!invoiceFormat || isFormatLoading || invoiceFormat.length === 0) return;
-    setSelectedFormat(invoiceFormat[0]);
-    if (invoiceFormat[0].exportFormateName) {
-      setExportFormat(invoiceFormat[0].exportFormateName as string);
-    }
+    if (!selectedFormat) return;
 
-    if (
-      invoiceFormat[0].fieldOrder &&
-      Array.isArray(invoiceFormat[0].fieldOrder)
-    ) {
-      setFieldOrder(invoiceFormat[0].fieldOrder as string[]);
-    }
-
-    const formattedColumns = formatInvoiceColumns(invoiceFormat[0]);
-    if (formattedColumns.length > 0) {
-      setColumns(formattedColumns);
-    }
-  }, [invoiceFormat, isFormatLoading]);
-
-  useEffect(() => {
-    if (selectedFormat) {
-      const formattedColumns = formatInvoiceColumns(selectedFormat);
-      if (formattedColumns.length > 0) {
-        setColumns(formattedColumns);
-        setExportFormat(selectedFormat.exportFormateName as string);
-      }
-
-      if (
-        selectedFormat.fieldOrder &&
-        Array.isArray(selectedFormat.fieldOrder)
-      ) {
-        setFieldOrder(selectedFormat.fieldOrder as string[]);
-      }
+    setColumns(formatInvoiceColumns(selectedFormat));
+    setExportFormat(selectedFormat.exportFormateName as string);
+    if (Array.isArray(selectedFormat.fieldOrder)) {
+      setFieldOrder(selectedFormat.fieldOrder as string[]);
     }
   }, [selectedFormat]);
 
@@ -141,14 +106,10 @@ export const useInvoiceConfig = () => {
       ? (invoiceFormat.fieldOrder as string[])
       : [];
 
-    // If we have a fieldOrder array, use it to order the columns
     if (fieldOrderArray.length > 0) {
-      // Track if we need an item mapping column
       let hasItemMappingFields = false;
 
-      // Process fields according to fieldOrder
       fieldOrderArray.forEach((fieldKey) => {
-        // If this is an item mapping field, mark that we need an item mapping column
         if (
           INVOICE_ITEM_MAPPING_OPTIONS.some(
             (option) => option.value === fieldKey
@@ -158,7 +119,6 @@ export const useInvoiceConfig = () => {
           return;
         }
 
-        // Regular field
         const isValidOption = INVOICE_FIELD_OPTIONS.some(
           (option) => option.value === fieldKey
         );
@@ -172,7 +132,6 @@ export const useInvoiceConfig = () => {
         }
       });
 
-      // Add item mapping column if needed
       if (
         hasItemMappingFields &&
         invoiceFormat.itemMapping &&
@@ -186,11 +145,10 @@ export const useInvoiceConfig = () => {
         );
       }
     } else {
-      // Fallback to the original implementation if no fieldOrder
       Object.entries(invoiceFormat).forEach(([key, value]) => {
         if (
           key === 'itemMapping' ||
-          key === 'exportFormatName' ||
+          key === 'exportFormateName' ||
           key === 'fieldOrder'
         )
           return;
@@ -262,8 +220,21 @@ export const useInvoiceConfig = () => {
   };
 
   const removeLastColumn = () => {
-    setColumns((prev) => prev.slice(0, -1));
-    updateFieldOrderInSelectedFormat();
+    setColumns((prev) => {
+      const updatedColumns = prev.slice(0, -1);
+      const newFieldOrder = updatedColumns.flatMap((col): string[] => {
+        if (col.headerValue === 'itemMapping' && col.itemMapping) {
+          return Object.values(col.itemMapping)
+            .filter((mapping) => mapping.header.trim() !== '')
+            .map((mapping) => mapping.value);
+        } else if (col.headerValue) {
+          return [col.headerValue];
+        }
+        return [];
+      });
+      setFieldOrder(newFieldOrder);
+      return updatedColumns;
+    });
   };
 
   const updateColumn = (
@@ -351,7 +322,6 @@ export const useInvoiceConfig = () => {
       return [];
     });
 
-    console.log('New field order:', newFieldOrder);
     setFieldOrder(newFieldOrder);
   };
 
@@ -371,18 +341,20 @@ export const useInvoiceConfig = () => {
       return true;
     });
   };
-
   const transformColumnsForSaving = (): Record<string, unknown> => {
-    const result = columns.reduce((acc, col) => {
-      if (col.headerValue === 'itemMapping' && col.itemMapping) {
-        acc[col.headerValue] = transformItemMappingForSaving(col.itemMapping);
-      } else {
-        acc[col.headerValue] = col.headerName;
-      }
-      return acc;
-    }, {} as Record<string, unknown>);
+    const result = {} as Record<string, unknown>;
 
+    columns.forEach((col) => {
+      if (col.headerValue === 'itemMapping' && col.itemMapping) {
+        result[col.headerValue] = transformItemMappingForSaving(
+          col.itemMapping
+        );
+      } else {
+        result[col.headerValue] = col.headerName;
+      }
+    });
     result.fieldOrder = fieldOrder;
+    console.log(fieldOrder, result)
 
     if (exportFormatName) {
       result.exportFormateName = exportFormatName;
@@ -423,8 +395,6 @@ export const useInvoiceConfig = () => {
       return [];
     });
 
-    console.log(newFieldOrder);
-
     setFieldOrder(newFieldOrder);
   };
 
@@ -453,6 +423,7 @@ export const useInvoiceConfig = () => {
     invoiceFormat,
     selectExportFormatMutation,
     updateExportFieldsFormatMutation,
+    setFieldOrder
   };
 };
 
