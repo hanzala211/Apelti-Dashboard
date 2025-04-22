@@ -82,13 +82,13 @@ export const useInvoiceConfig = () => {
   useEffect(() => {
     if (!invoiceFormat || invoiceFormat.length === 0) return;
     const first: Record<string, string | string[]> = invoiceFormat[0];
-    if (selectedFormat && first._id === selectedFormat._id) return;
+    if (selectedFormat && first._id !== selectedFormat._id) return;
 
     setSelectedFormat(first);
     setExportFormat(first.exportFormateName as string);
     setFieldOrder(first.fieldOrder as string[]);
     setColumns(formatInvoiceColumns(first));
-  }, []);
+  }, [invoiceFormat]);
 
   useEffect(() => {
     if (!selectedFormat) return;
