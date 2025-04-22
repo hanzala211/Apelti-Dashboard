@@ -36,6 +36,8 @@ export const useInvoiceConfig = () => {
     onSuccess: () => {
       toast.success('Invoice export format saved successfully');
       queryClient.invalidateQueries({ queryKey: ['invoiceFormat'] });
+      setIsAddingNewImport(false);
+      setExportFormatName('');
     },
     onError: (error) => {
       console.error('Error changing invoice export format:', error);
@@ -76,6 +78,7 @@ export const useInvoiceConfig = () => {
     queryKey: ['invoiceFormat'],
     queryFn: getInvoiceFormatExport,
   });
+
   useEffect(() => {
     if (!invoiceFormat || invoiceFormat.length === 0) return;
     const first: Record<string, string | string[]> = invoiceFormat[0];
@@ -85,7 +88,7 @@ export const useInvoiceConfig = () => {
     setExportFormat(first.exportFormateName as string);
     setFieldOrder(first.fieldOrder as string[]);
     setColumns(formatInvoiceColumns(first));
-  }, [invoiceFormat]);
+  }, []);
 
   useEffect(() => {
     if (!selectedFormat) return;
@@ -368,8 +371,9 @@ export const useInvoiceConfig = () => {
   const transformItemMappingForSaving = (
     itemMapping: Record<string, ItemMappingValue>
   ): Record<string, string> => {
+    console.log(itemMapping)
     return Object.entries(itemMapping).reduce((itemAcc, [key, value]) => {
-      itemAcc[value.header] = key;
+      itemAcc[key] = value.header;
       return itemAcc;
     }, {} as Record<string, string>);
   };
