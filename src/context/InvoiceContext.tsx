@@ -1,5 +1,5 @@
 import { formatDate, handleFileChange, toast } from '@helpers';
-import { invoiceServices } from '@services';
+import { invoiceServices, settingServices } from '@services';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Invoice, InvoiceContextTypes } from '@types';
 import {
@@ -10,6 +10,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { useAuth } from './AuthContext';
 
 const InvoiceContext = createContext<InvoiceContextTypes | undefined>(
   undefined
@@ -18,6 +19,7 @@ const InvoiceContext = createContext<InvoiceContextTypes | undefined>(
 export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
+  const { userData } = useAuth()
   const [selectedImage, setSelectedImage] = useState<{
     label: string;
     value: string;
@@ -247,29 +249,24 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
   const downloadInvoices = async () => {
     try {
       const response = await invoiceServices.downloadCompanyInvoices();
-
-      // Create a blob URL directly from the response data
-      const url = window.URL.createObjectURL(response.data);
-
-      // Create a temporary link element
+      const invoiceExportName = await settingServices.getSingleExportFormat(userData?.exportFormatMethodId || "")
+      const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'company-invoices.xlsx'; // Set the file name
 
-      // Append to body, click and remove
+
+      link.setAttribute('download', `${invoiceExportName?.data?.data?.exportFormateName}.xlsx`);
+
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
 
-      // Clean up the URL
-      window.URL.revokeObjectURL(url);
-
-      toast.success("Download Started Successfully");
+      toast.success('Export Successful', 'Invoices exported successfully');
     } catch (error) {
       console.log(error);
-      toast.error("Failed To Download", "Error Occurred");
+      toast.error('Export Failed', 'Failed to export invoices');
     }
-  }
+  };
 
   return (
     <InvoiceContext.Provider
@@ -303,7 +300,7 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
         draftBtnRef,
         handleDraftBtnClick,
         postDraftInvoiceMutation,
-        downloadInvoices
+        downloadInvoices,
       }}
     >
       {children}

@@ -45,6 +45,7 @@ export interface IUser {
   _v: number;
   createdAt: string;
   updatedAt: string;
+  exportFormatMethodId?: string;
 }
 
 export interface InvoiceItem {
@@ -208,8 +209,10 @@ export interface SettingContextTypes {
   changePassword: (data: unknown) => void;
   errorMessage: string;
   changeUserData: (data: unknown) => void;
-  changeInvoiceExportFormat: MutationFunction<unknown, unknown>;
-  getInvoiceFormatExport: () => Promise<Record<string, string>>;
+  createInvoiceExportFormat: MutationFunction<unknown, unknown>;
+  getInvoiceFormatExport: () => Promise<Record<string, string>[]>;
+  selectExportFormat: (data: unknown) => Promise<unknown>
+  updateExportFieldsFormat: (formatId: string, data: unknown) => Promise<unknown>
 }
 
 export interface ApprovalContextTypes {

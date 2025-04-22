@@ -19,7 +19,10 @@ export const SettingProvider: React.FC<{ children: ReactNode }> = ({
       setErrorMessage('');
       const response = await settingServices.changePassword(data);
       console.log(response);
-      toast.success('Update Complete', 'Your password has been successfully updated.');
+      toast.success(
+        'Update Complete',
+        'Your password has been successfully updated.'
+      );
       return response;
     } catch (error) {
       console.log(error);
@@ -37,7 +40,10 @@ export const SettingProvider: React.FC<{ children: ReactNode }> = ({
       );
       setUserData(response.data.data);
       console.log('Checking the update');
-      toast.success('Update Complete', 'The data has been updated successfully.');
+      toast.success(
+        'Update Complete',
+        'The data has been updated successfully.'
+      );
     } catch (error) {
       console.log(error);
       setErrorMessage(
@@ -46,12 +52,13 @@ export const SettingProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  const changeInvoiceExportFormat = async (data: unknown) => {
+  const createInvoiceExportFormat = async (data: unknown) => {
     try {
-      const response = await settingServices.changeInvoiceExportFormat(data);
+      const response = await settingServices.createInvoiceExportFormat(data);
       console.log(response);
     } catch (error) {
       console.log(error);
+      throw error;
     }
   };
 
@@ -64,9 +71,42 @@ export const SettingProvider: React.FC<{ children: ReactNode }> = ({
       console.log(error);
     }
   };
+
+  const selectExportFormat = async (data: unknown) => {
+    try {
+      const response = await settingServices.selectExportFormat(data);
+      console.log(response);
+      return response.data.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  const updateExportFieldsFormat = async (formatId: string, data: unknown) => {
+    try {
+      const response = await settingServices.updateExportFieldsFormat(
+        formatId,
+        data
+      );
+      console.log(response);
+      return response.data.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
   return (
     <SettingContext.Provider
-      value={{ changePassword, errorMessage, changeUserData, changeInvoiceExportFormat, getInvoiceFormatExport }}
+      value={{
+        changePassword,
+        errorMessage,
+        changeUserData,
+        createInvoiceExportFormat,
+        getInvoiceFormatExport,
+        selectExportFormat,
+        updateExportFieldsFormat
+      }}
     >
       {children}
     </SettingContext.Provider>

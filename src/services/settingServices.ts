@@ -15,17 +15,37 @@ export const settingServices = {
       isAuthIncluded: true,
       data,
     }),
-  changeInvoiceExportFormat: (data: unknown) =>
+  createInvoiceExportFormat: (data: unknown) =>
     sendRequest({
       method: 'POST',
-      url: `/invoice-mapping`,
+      url: `/mapping`,
       isAuthIncluded: true,
       data,
     }),
   getInvoiceFormatExport: () =>
     sendRequest({
       method: 'GET',
-      url: `/invoice-mapping`,
+      url: `/mapping/all`,
+      isAuthIncluded: true,
+    }),
+  selectExportFormat: (data: unknown) =>
+    sendRequest({
+      method: 'PUT',
+      url: `/mapping/user`,
+      isAuthIncluded: true,
+      data,
+    }),
+  updateExportFieldsFormat: (formatId: string, data: unknown) =>
+    sendRequest({
+      method: 'PUT',
+      url: `/mapping/${formatId}`,
+      isAuthIncluded: true,
+      data,
+    }),
+  getSingleExportFormat: (formatId: string) =>
+    sendRequest({
+      method: 'GET',
+      url: `/mapping/${formatId}`,
       isAuthIncluded: true,
     }),
 };
