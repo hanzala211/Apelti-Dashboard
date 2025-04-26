@@ -1,4 +1,4 @@
-export * from './fileChange';
+export * from './handleFileChange';
 export * from './sendRequest';
 export * from './toast';
 export * from './socketClient';

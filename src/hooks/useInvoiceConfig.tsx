@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { DropResult } from '@hello-pangea/dnd';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useAuth, useSetting } from '@context';
+import { useSetting } from '@context';
 import { toast } from '@helpers';
 import {
   INVOICE_ITEM_MAPPING_OPTIONS,
@@ -16,7 +16,6 @@ export const useInvoiceConfig = () => {
     selectExportFormat,
     updateExportFieldsFormat,
   } = useSetting();
-  const { setUserData } = useAuth();
   const queryClient = useQueryClient();
   const [exportFormat, setExportFormat] = useState<string>('');
   const [columns, setColumns] = useState<ColumnConfig[]>([
@@ -49,11 +48,6 @@ export const useInvoiceConfig = () => {
     mutationFn: (data: unknown) => selectExportFormat(data),
     onSuccess: () => {
       toast.success('Export format selected successfully');
-      setUserData((prev) =>
-        prev
-          ? { ...prev, exportFormatMethodId: selectedFormat?._id as string }
-          : prev
-      );
     },
     onError: (error) => {
       console.error('Error selecting export format:', error);
@@ -357,8 +351,6 @@ export const useInvoiceConfig = () => {
       }
     });
     result.fieldOrder = fieldOrder;
-    console.log(fieldOrder, result)
-
     if (exportFormatName) {
       result.exportFormateName = exportFormatName;
     } else if (exportFormat) {
@@ -371,7 +363,6 @@ export const useInvoiceConfig = () => {
   const transformItemMappingForSaving = (
     itemMapping: Record<string, ItemMappingValue>
   ): Record<string, string> => {
-    console.log(itemMapping)
     return Object.entries(itemMapping).reduce((itemAcc, [key, value]) => {
       itemAcc[key] = value.header;
       return itemAcc;

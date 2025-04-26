@@ -96,9 +96,24 @@ export const SettingProvider: React.FC<{ children: ReactNode }> = ({
       throw error;
     }
   };
+
+  const uploadPoData = async (data: unknown) => {
+    try {
+      const formData = new FormData()
+      formData.append('excelFile', data as File, 'po-dataset.xlsx')
+      const response = await settingServices.uploadPoData(formData)
+      console.log(response)
+      return response.data
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
   return (
     <SettingContext.Provider
       value={{
+        uploadPoData,
         changePassword,
         errorMessage,
         changeUserData,

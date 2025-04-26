@@ -18,4 +18,6 @@ export const ROUTES = {
   forgotPassword: 'forgot-password',
   reset: "reset-password",
   export_configuration: 'export-configuration',
+  import_dataset: "import-dataset",
+  export_invoice: "export-invoice"
 };

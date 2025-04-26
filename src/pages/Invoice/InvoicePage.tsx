@@ -27,7 +27,6 @@ export const InvoicePage: React.FC = () => {
     setSelectedInvoice,
     setSelectedData,
     deleteInvoiceMutation,
-    downloadInvoices
   } = useInvoice();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [filteredInvoices, setFilteredInvoices] = useState<Invoice[]>([]);
@@ -199,13 +198,6 @@ export const InvoicePage: React.FC = () => {
                 </button>
               }
             />
-            <button onClick={downloadInvoices} className="group transition-all duration-200 m-0">
-              <SvgIcon
-                src={ICONS.download}
-                size={20}
-                className="group-hover:text-primaryColor transition-all duration-200"
-              />
-            </button>
           </div>
         )}
         <DraggableModal

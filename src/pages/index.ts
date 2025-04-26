@@ -10,3 +10,5 @@ export * from './Approval/ApprovalPage';
 export * from './ForgotPassword/ForgotPasswordPage';
 export * from './ResetPassword/ResetPasswordPage';
 export * from './InvoiceConfiguration/InvoiceConfigurationPage';
+export * from './ImportDataSet/ImportDateSetPage';
+export * from './ExportInvoice/ExportInvoicePage';

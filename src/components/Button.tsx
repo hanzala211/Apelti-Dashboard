@@ -11,7 +11,7 @@ export const Button: React.FC<ButtonProps> = ({ btnText, handleClick, className,
     <button
       onClick={handleClick}
       disabled={isLoading || disabled}
-      className={`${className} ${isLoading ? "bg-blue-900 cursor-not-allowed" : "hover:bg-opacity-70"} bg-primaryColor md:text-[16px] transition-all duration-200 text-basicWhite p-2 rounded-full text-[14px]`}
+      className={`${className} ${isLoading ? "!bg-blue-900 !cursor-not-allowed" : "hover:bg-opacity-70"} bg-primaryColor md:text-[16px] transition-all duration-200 text-basicWhite p-2 rounded-full text-[14px]`}
     >
       {btnText}
     </button>

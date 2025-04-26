@@ -48,4 +48,10 @@ export const settingServices = {
       url: `/mapping/${formatId}`,
       isAuthIncluded: true,
     }),
+  uploadPoData: (data: unknown) => sendRequest({
+    method: "POST",
+    url: `/excel/upload`,
+    isAuthIncluded: true,
+    data,
+  })
 };

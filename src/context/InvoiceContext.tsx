@@ -19,7 +19,7 @@ const InvoiceContext = createContext<InvoiceContextTypes | undefined>(
 export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const { userData } = useAuth()
+  const { userData } = useAuth();
   const [selectedImage, setSelectedImage] = useState<{
     label: string;
     value: string;
@@ -29,6 +29,7 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
   const [selectedData, setSelectedData] = useState<Invoice | null>(null);
   const [formData, setFormData] = useState<Invoice | null>(null);
   const [selectedInvoice, setSelectedInvoice] = useState<number | null>(null);
+  const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const formInputRef = useRef<HTMLInputElement>(null);
   const removeDataBtnRef = useRef<HTMLButtonElement>(null);
@@ -107,8 +108,10 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const foundValue = handleFileChange(event);
-    if (foundValue !== undefined) setSelectedImage(foundValue);
+    const foundValue = handleFileChange(event, 'image');
+    if (foundValue && 'label' in foundValue) {
+      setSelectedImage(foundValue as { label: string; value: string });
+    }
   };
 
   const extractData = async () => {
@@ -248,14 +251,19 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
 
   const downloadInvoices = async () => {
     try {
+      setIsDownloading(true)
       const response = await invoiceServices.downloadCompanyInvoices();
-      const invoiceExportName = await settingServices.getSingleExportFormat(userData?.exportFormatMethodId || "")
+      const invoiceExportName = await settingServices.getSingleExportFormat(
+        userData?.exportFormatMethodId || ''
+      );
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
 
-
-      link.setAttribute('download', `${invoiceExportName?.data?.data?.exportFormateName}.xlsx`);
+      link.setAttribute(
+        'download',
+        `${invoiceExportName?.data?.data?.exportFormateName}.xlsx`
+      );
 
       document.body.appendChild(link);
       link.click();
@@ -265,6 +273,8 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
     } catch (error) {
       console.log(error);
       toast.error('Export Failed', 'Failed to export invoices');
+    } finally {
+      setIsDownloading(false)
     }
   };
 
@@ -301,6 +311,8 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
         handleDraftBtnClick,
         postDraftInvoiceMutation,
         downloadInvoices,
+        isDownloading,
+        setIsDownloading,
       }}
     >
       {children}

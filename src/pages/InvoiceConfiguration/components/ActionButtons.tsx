@@ -6,13 +6,10 @@ interface ActionButtonsProps {
   removeLastColumn(): void;
   columnsCount: number;
   showError: boolean;
-  selectedFormat: Record<string, string | string[]> | null;
   validateFields(): boolean;
   transformColumnsForSaving(): Record<string, unknown>;
   setShowError(flag: boolean): void;
-  selectExportFormatMutation: ReturnType<typeof useMutation>;
   updateExportFieldsFormatMutation: ReturnType<typeof useMutation>;
-  userData: { exportFormatMethodId?: string } | null;
 }
 
 export const ActionButtons: React.FC<ActionButtonsProps> = ({
@@ -20,20 +17,11 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
   removeLastColumn,
   columnsCount,
   showError,
-  selectedFormat,
   validateFields,
   transformColumnsForSaving,
   setShowError,
-  selectExportFormatMutation,
   updateExportFieldsFormatMutation,
-  userData
 }) => {
-
-  const selectFormat = () => {
-    if (userData?.exportFormatMethodId !== selectedFormat?._id) {
-      selectExportFormatMutation.mutate({ mappingId: selectedFormat?._id });
-    }
-  };
 
   const handleSave = () => {
     if (!validateFields()) {
@@ -66,13 +54,6 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
           className={`!bg-permanentGreen cursor-pointer hover:!bg-permanentGreen/80 !rounded-md !px-4 w-full sm:w-auto ${updateExportFieldsFormatMutation.isPending ? 'cursor-not-allowed opacity-40' : 'cursor-pointer'}`}
           disabled={updateExportFieldsFormatMutation.isPending}
           isLoading={updateExportFieldsFormatMutation.isPending}
-        />
-        <Button
-          btnText={userData?.exportFormatMethodId !== selectedFormat?._id ? "Select Export Format" : "Selected"}
-          handleClick={selectFormat}
-          className={`!bg-primaryColor ${selectExportFormatMutation.isPending ? '!cursor-not-allowed !opacity-40' : '!cursor-pointer hover:!bg-primaryColor/80'} !rounded-md !px-4 w-full sm:w-auto`}
-          disabled={selectExportFormatMutation.isPending}
-          isLoading={selectExportFormatMutation.isPending}
         />
       </div>
       <ErrorMessage

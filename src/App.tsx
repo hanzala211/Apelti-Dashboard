@@ -5,7 +5,9 @@ import {
   ApprovalPage,
   DashboardPage,
   DocumentPage,
+  ExportInvoicePage,
   ForgotPasswordPage,
+  ImportDataSetPage,
   InvoiceConfigurationPage,
   InvoicePage,
   LoginPage,
@@ -48,6 +50,8 @@ const App: React.FC = () => {
                 <Route index element={<ProfileSettingPage />} />
                 <Route path={ROUTES.profile} element={<ProfileSettingPage />} />
                 <Route path={ROUTES.export_configuration} element={<InvoiceConfigurationPage />} />
+                <Route path={ROUTES.import_dataset} element={<ImportDataSetPage />} />
+                <Route path={ROUTES.export_invoice} element={<ExportInvoicePage />} />
               </Route>
             </Routes>
           </ProvidersWrapper>

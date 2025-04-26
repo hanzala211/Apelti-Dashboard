@@ -6,10 +6,8 @@ import ActionButtons from './components/ActionButtons';
 import { SyncLoader } from 'react-spinners';
 import { COLORS } from '@constants';
 import { Button, UncontrolledInput } from '@components';
-import { useAuth } from '@context';
 
 export const InvoiceConfigurationPage: React.FC = () => {
-  const { userData } = useAuth();
   const invoice = useInvoiceConfig();
 
   const handleNewFormatClick = () => {
@@ -87,15 +85,12 @@ export const InvoiceConfigurationPage: React.FC = () => {
                 removeLastColumn={invoice.removeLastColumn}
                 columnsCount={invoice.columns.length}
                 showError={invoice.showError}
-                selectedFormat={invoice.selectedFormat}
                 validateFields={invoice.validateFields}
                 transformColumnsForSaving={invoice.transformColumnsForSaving}
                 setShowError={invoice.setShowError}
-                selectExportFormatMutation={invoice.selectExportFormatMutation}
                 updateExportFieldsFormatMutation={
                   invoice.updateExportFieldsFormatMutation
                 }
-                userData={userData}
               />
             </div>
           </div>

@@ -190,6 +190,8 @@ export interface InvoiceContextTypes {
   handleDraftBtnClick: () => void;
   postDraftInvoiceMutation: UseMutationResult<void, Error, unknown, unknown>;
   downloadInvoices: () => Promise<void>;
+  isDownloading: boolean;
+  setIsDownloading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface AuthContextTypes {
@@ -225,8 +227,12 @@ export interface SettingContextTypes {
   changeUserData: (data: unknown) => void;
   createInvoiceExportFormat: MutationFunction<unknown, unknown>;
   getInvoiceFormatExport: () => Promise<Record<string, string>[]>;
-  selectExportFormat: (data: unknown) => Promise<unknown>
-  updateExportFieldsFormat: (formatId: string, data: unknown) => Promise<unknown>
+  selectExportFormat: (data: unknown) => Promise<unknown>;
+  updateExportFieldsFormat: (
+    formatId: string,
+    data: unknown
+  ) => Promise<unknown>;
+  uploadPoData: (data: unknown) => Promise<{ errors: { error: string; }[]; }>;
 }
 
 export interface ApprovalContextTypes {
