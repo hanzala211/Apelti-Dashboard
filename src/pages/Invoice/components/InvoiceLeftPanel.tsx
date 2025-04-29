@@ -11,10 +11,14 @@ export const InvoiceLeftPanel: React.FC = () => {
     fileInputRef,
     selectedData,
     setSelectedData,
-    formData
+    formData,
   } = useInvoice();
 
-  return (!selectedData || selectedImage ? selectedImage === null : !selectedData.fileUrl) ? (
+  return (
+    !selectedData || selectedImage
+      ? selectedImage === null
+      : !selectedData.fileUrl
+  ) ? (
     <div className="bg-mistGray h-full md:w-full w-0 hidden mt-0.5 md:flex flex-col items-center justify-center">
       <ReactSVG
         src={ICONS.add_invoice}
@@ -22,7 +26,7 @@ export const InvoiceLeftPanel: React.FC = () => {
           if (window.innerWidth < 1024) {
             svg.classList.add('w-44');
             svg.classList.add('h-44');
-            svg.classList.add("text-primaryColor")
+            svg.classList.add('text-primaryColor');
           }
         }}
       />
@@ -44,29 +48,42 @@ export const InvoiceLeftPanel: React.FC = () => {
     </div>
   ) : (
     <div className="w-full md:block bg-mistGray hidden h-full">
-      {!formData && <div className="bg-basicWhite border-b flex justify-between items-center border-basicSilver py-4 px-3 mt-0.5">
-        <p className='m-0'>{selectedImage?.label || selectedData?.fileName}</p>
-        <button onClick={() => {
-          if (selectedData) {
-            setSelectedData({
-              ...selectedData,
-              fileUrl: ""
-            })
-          } else {
-            setSelectedImage(null)
-          }
-        }}>
-          <ReactSVG src={ICONS.close} />
-        </button>
-      </div>}
-      <div className={`w-full ${formData ? "h-[90vh]" : "h-[82vh]"} flex items-center justify-center overflow-hidden`}>
+      {!formData && (
+        <div className="bg-basicWhite border-b flex justify-between items-center border-basicSilver py-4 px-3 mt-0.5">
+          <p className="m-0">
+            {selectedImage?.label || selectedData?.fileName}
+          </p>
+          <button
+            onClick={() => {
+              if (selectedData) {
+                setSelectedData({
+                  ...selectedData,
+                  fileUrl: '',
+                });
+              } else {
+                setSelectedImage(null);
+              }
+            }}
+          >
+            <ReactSVG src={ICONS.close} />
+          </button>
+        </div>
+      )}
+      <div
+        className={`w-full ${formData ? 'h-[90vh]' : 'h-[82vh]'
+          } flex items-center justify-center overflow-hidden`}
+      >
         <img
-          src={!selectedData || selectedImage ? selectedImage?.value : selectedData.fileUrl}
+          src={
+            !selectedData || selectedImage
+              ? selectedImage?.value
+              : selectedData.fileUrl
+          }
           alt={`${selectedImage?.label || 'Invoice'} Image`}
           className="max-w-full max-h-full object-contain"
         />
       </div>
-    </div >
+    </div>
   );
 };
 

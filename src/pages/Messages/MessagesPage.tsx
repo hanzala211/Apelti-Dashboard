@@ -1,12 +1,7 @@
 import { DocumentNotFound, PageHeading, ResizableSlider } from '@components';
 import { MessagesLeftPanel } from './components/MessagesLeftPanel';
 import { MessagesRightPanel } from './components/MessagesRightPanel';
-import {
-  APP_ACTIONS,
-  ICONS,
-  PERMISSIONS,
-  ROUTES,
-} from '@constants';
+import { APP_ACTIONS, ICONS, PERMISSIONS, ROUTES } from '@constants';
 import { useAuth, useMessage } from '@context';
 import { Navigate } from 'react-router-dom';
 
@@ -44,7 +39,16 @@ export const MessagesPage: React.FC = () => {
               >
                 <ICONS.leftArrow />
               </button>
-              {selectedMessage ? <MessagesRightPanel /> : <div className={`${selectedMessage ? "" : "md:block hidden"} w-full h-full`}><DocumentNotFound /></div>}
+              {selectedMessage ? (
+                <MessagesRightPanel />
+              ) : (
+                <div
+                  className={`${selectedMessage ? '' : 'md:block hidden'
+                    } w-full h-full`}
+                >
+                  <DocumentNotFound />
+                </div>
+              )}
             </div>
           }
         />

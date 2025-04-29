@@ -154,13 +154,11 @@ export const InvoiceRightPanelOverview: React.FC = () => {
       </div>
       <div className="w-full overflow-x-auto md:px-4 px-2 sm:px-0">
         <div className="grid grid-cols-6 min-w-[600px] w-full px-5 sm:px-2 gap-4 place-items-center border border-slateGrey">
-          {INVOICE_ITEMS_HEADER.map(
-            (header) => (
-              <h4 key={header} className="m-0 py-3 text-center font-medium">
-                {header}
-              </h4>
-            )
-          )}
+          {INVOICE_ITEMS_HEADER.map((header) => (
+            <h4 key={header} className="m-0 py-3 text-center font-medium">
+              {header}
+            </h4>
+          ))}
         </div>
         {[...Array(formData?.items)].map((item, index) => (
           <div

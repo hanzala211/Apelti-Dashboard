@@ -185,7 +185,7 @@ export const InvoicePage: React.FC = () => {
           Add Filters
         </button>
         {userPermissions.includes(APP_ACTIONS.postInvoice) && (
-          <div className='flex gap-6 items-baseline'>
+          <div className="flex gap-6 items-baseline">
             <DropDown
               items={items}
               label={
@@ -202,7 +202,9 @@ export const InvoicePage: React.FC = () => {
         )}
         <DraggableModal
           okText="Add"
-          handleOk={() => setFilteredInvoices(handleInvoiceFilters(invoices, filters) || [])}
+          handleOk={() =>
+            setFilteredInvoices(handleInvoiceFilters(invoices, filters) || [])
+          }
           heading="In this view show records"
           modalItems={
             <InvoiceFilter filters={filters} setFilters={setFilters} />
