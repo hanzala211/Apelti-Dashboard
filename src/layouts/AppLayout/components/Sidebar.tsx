@@ -51,7 +51,7 @@ export const Sidebar: React.FC = () => {
     <>
       <button
         ref={sideBarButtonRef}
-        className={`md:hidden fixed top-4 sm:left-0 -left-1 p-3 h-fit bg-transparent rounded-md z-50 transition-all duration-300 ${isOpen ? 'opacity-0 pointer-events-none' : ''
+        className={`md:hidden fixed top-3 sm:left-0 -left-1 p-3 h-fit bg-transparent rounded-md z-50 transition-all duration-300 ${isOpen ? 'opacity-0 pointer-events-none' : ''
           }`}
         onClick={() => setIsOpen(!isOpen)}
       >
