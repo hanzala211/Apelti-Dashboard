@@ -89,7 +89,13 @@ export const MultipleImageUploadModal: React.FC = () => {
             <CommonLoader color={COLORS.primaryColor} />
           </div>
         ) : (
-          <p className="text-base text-gray-600">Choose images to upload</p>
+          <div className="flex flex-col items-center justify-center gap-4 w-full h-full p-6 border-2 border-dashed border-gray-400 rounded-lg hover:border-primaryColor hover:bg-gray-100 transition-all duration-200">
+            <div className="text-5xl text-gray-500">
+              <ICONS.uploadCloud className="w-16 h-16" />
+            </div>
+            <p className="text-base font-medium text-gray-700">Choose images to upload</p>
+            <p className="text-sm text-gray-500">Click or drag files here</p>
+          </div>
         )}
 
         <input
