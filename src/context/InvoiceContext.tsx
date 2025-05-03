@@ -30,7 +30,7 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
   const [isInvoiceModelOpen, setIsInvoiceModelOpen] = useState<boolean>(false);
   const [extractedData, setExtractedData] = useState<Invoice | null>(null);
   const [selectedData, setSelectedData] = useState<Invoice | null>(null);
-  const [formData, setFormData] = useState<Invoice | null>(null);
+  const [reviewData, setReviewData] = useState<Invoice | null>(null);
   const [selectedInvoice, setSelectedInvoice] = useState<number | null>(null);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [multipleInvoicesExtractedData, setMultipleInvoicesExtractedData] =
@@ -126,7 +126,7 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
     setIsInvoiceModelOpen(false);
     setTimeout(() => {
       extractDataMutation.reset();
-      setFormData(null);
+      setReviewData(null);
       setSelectedImage(null);
       setExtractedData(null);
       setSelectedData(null);
@@ -179,10 +179,10 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
 
   const updateInvoice = async (data: unknown) => {
     try {
-      const invoiceId = selectedData?._id || formData?._id || '';
+      const invoiceId = selectedData?._id || reviewData?._id || '';
       const response = await invoiceServices.updateInvoice(invoiceId, data);
       console.log(response);
-      setFormData({
+      setReviewData({
         supplierName: response.data.data.supplierName,
         invoiceNumber: response.data.data.invoiceNumber,
         poNumber: response.data.data.poNumber,
@@ -221,7 +221,7 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
       const response = await invoiceServices.postInvoice(data);
       console.log(response);
       if (response.status === 200) {
-        setFormData({
+        setReviewData({
           supplierName: response.data.data.supplierName,
           invoiceNumber: response.data.data.invoiceNumber,
           poNumber: response.data.data.poNumber,
@@ -349,8 +349,8 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
         updateInvoice,
         handleFormClick,
         formInputRef,
-        formData,
-        setFormData,
+        reviewData,
+        setReviewData,
         setExtractedData,
         handleBtnClick,
         removeDataBtnRef,

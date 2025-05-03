@@ -97,7 +97,7 @@ export const InvoiceRightPanelForm: React.FC = () => {
     setSelectedImage,
     fileInputRef,
     extractedData,
-    formData,
+    reviewData,
     removeDataBtnRef,
     selectedData,
     postInvoiceMutation,
@@ -111,7 +111,7 @@ export const InvoiceRightPanelForm: React.FC = () => {
     setSelectedData,
     isMultipleInvoicesModalOpen,
     handleBtnClick,
-    setFormData
+    setReviewData
   } = useInvoice();
 
 
@@ -249,7 +249,7 @@ export const InvoiceRightPanelForm: React.FC = () => {
       setIsInvoiceModelOpen(false);
       setIsMultipleInvoicesModalOpen(true);
       setSelectedData(null);
-      setFormData(null)
+      setReviewData(null)
       reset(getDefaultFormValues())
       handleBtnClick()
     }
@@ -267,7 +267,7 @@ export const InvoiceRightPanelForm: React.FC = () => {
         ref={draftBtnRef}
         onClick={handleDraftSubmit}
       ></button>
-      {!formData ? (
+      {!reviewData ? (
         <>
           <button
             ref={removeDataBtnRef}

@@ -37,8 +37,8 @@ export const MultipleImageUploadModal: React.FC = () => {
             const result = await extractData(file);
             return {
               ...result,
-              _id: uuidv4()
-            }
+              _id: uuidv4(),
+            };
           })
         );
         if (extractedData.length > 0) {
@@ -61,8 +61,8 @@ export const MultipleImageUploadModal: React.FC = () => {
   return (
     <div
       className={`${isMultipleImageUploadOpen
-        ? 'opacity-100'
-        : 'opacity-0 pointer-events-none'
+          ? 'opacity-100'
+          : 'opacity-0 pointer-events-none'
         }`}
     >
       <div

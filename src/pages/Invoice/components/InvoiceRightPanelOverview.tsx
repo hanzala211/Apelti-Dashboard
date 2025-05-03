@@ -4,16 +4,16 @@ import { SyncLoader } from 'react-spinners';
 import { ReactSVG } from 'react-svg';
 
 export const InvoiceRightPanelOverview: React.FC = () => {
-  const { formData, setFormData, setSelectedData, deleteInvoiceMutation } =
+  const { reviewData, setReviewData, setSelectedData, deleteInvoiceMutation } =
     useInvoice();
 
   const handleEdit = () => {
-    setSelectedData(formData);
-    setFormData(null);
+    setSelectedData(reviewData);
+    setReviewData(null);
   };
 
   const handleDelete = () => {
-    deleteInvoiceMutation.mutate(formData?._id || '');
+    deleteInvoiceMutation.mutate(reviewData?._id || '');
   };
 
   return (
@@ -21,7 +21,7 @@ export const InvoiceRightPanelOverview: React.FC = () => {
       <div className="md:px-4 px-2 py-7 flex justify-between border-b-[1px] border-silverGray items-baseline">
         <div>
           <h1 className="font-semibold md:text-[20px] text-[16px]">
-            {formData?.supplierName}
+            {reviewData?.supplierName}
           </h1>
         </div>
         <div className="flex flex-col gap-2 items-center md:items-start">
@@ -52,7 +52,7 @@ export const InvoiceRightPanelOverview: React.FC = () => {
               Amount of the Vendor
             </h2>
             <p className="font-medium">
-              {formData?.currency} {formData?.amount}
+              {reviewData?.currency} {reviewData?.amount}
             </p>
           </div>
         </div>
@@ -67,13 +67,13 @@ export const InvoiceRightPanelOverview: React.FC = () => {
           <div>
             <p className="text-neutralGray text-[14px]">Amount To Pay</p>
             <h3 className="font-semibold md:text-[18px] text-[14px]">
-              {formData?.currency} {formData?.amount}
+              {reviewData?.currency} {reviewData?.amount}
             </h3>
           </div>
           <div>
             <p className="text-neutralGray text-[14px]">Paid Amount</p>
             <h3 className="font-semibold md:text-[18px] text-[14px]">
-              {formData?.currency} 0
+              {reviewData?.currency} 0
             </h3>
           </div>
           <div>
@@ -94,37 +94,37 @@ export const InvoiceRightPanelOverview: React.FC = () => {
           <div>
             <p className="text-neutralGray text-[14px]">Invoice Amount</p>
             <h3 className="font-semibold md:text-[18px] text-[15px]">
-              {formData?.currency} {formData?.amount}
+              {reviewData?.currency} {reviewData?.amount}
             </h3>
           </div>
           <div>
             <p className="text-neutralGray text-[14px]">Invoice Number</p>
             <h3 className="font-semibold md:text-[18px] text-[15px]">
-              {formData?.invoiceNumber} 0
+              {reviewData?.invoiceNumber} 0
             </h3>
           </div>
           <div>
             <p className="text-neutralGray text-[14px]">PO no.</p>
             <h3 className="font-semibold md:text-[18px] text-[15px]">
-              {formData?.poNumber}
+              {reviewData?.poNumber}
             </h3>
           </div>
           <div>
             <p className="text-neutralGray text-[14px]">Terms of Payment</p>
             <h3 className="font-semibold md:text-[18px] text-[15px]">
-              {formData?.termsOfPayment}
+              {reviewData?.termsOfPayment}
             </h3>
           </div>
           <div>
             <p className="text-neutralGray text-[14px]">Invoice Date</p>
             <h3 className="font-semibold md:text-[18px] text-[15px]">
-              {formData?.invoiceDate}
+              {reviewData?.invoiceDate}
             </h3>
           </div>
           <div>
             <p className="text-neutralGray text-[14px]">Payment Terms</p>
             <h3 className="font-semibold md:text-[18px] text-[15px]">
-              {formData?.paymentTerms}
+              {reviewData?.paymentTerms}
             </h3>
           </div>
         </div>
@@ -140,14 +140,14 @@ export const InvoiceRightPanelOverview: React.FC = () => {
             Notes For Invoice
           </h3>
           <p className="md:text-[18px] text-[14px] font-medium">
-            {formData?.comment}
+            {reviewData?.comment}
           </p>
         </div>
       </div>
       <div>
         <div className="w-fit px-7">
           <h2 className="text-[18px] font-semibold relative before:absolute before:w-full before:left-0 before:h-1 before:bg-darkBlue before:-bottom-[9px]">
-            Costs ({formData?.amount} {formData?.currency})
+            Costs ({reviewData?.amount} {reviewData?.currency})
           </h2>
         </div>
         <div className="w-full h-[1px] bg-black"></div>
@@ -160,7 +160,7 @@ export const InvoiceRightPanelOverview: React.FC = () => {
             </h4>
           ))}
         </div>
-        {[...Array(formData?.items)].map((item, index) => (
+        {[...Array(reviewData?.items)].map((item, index) => (
           <div
             key={index}
             className="grid grid-cols-6 min-w-[600px] w-full border-b py-4 px-5 sm:px-2 gap-4 place-items-center"

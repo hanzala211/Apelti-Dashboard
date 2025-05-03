@@ -35,8 +35,8 @@ export const InvoiceConfigurationPage: React.FC = () => {
                   }}
                   key={index}
                   className={`border-[2px] p-2 rounded-md cursor-pointer hover:bg-colorMint hover:border-primaryColor hover:text-basicBlack font-medium hover:font-semibold transition-all duration-200 ${invoice.selectedFormat?._id === item._id
-                    ? 'bg-colorMint border-primaryColor text-basicBlack font-semibold'
-                    : ''
+                      ? 'bg-colorMint border-primaryColor text-basicBlack font-semibold'
+                      : ''
                     }`}
                 >
                   {item.exportFormateName}

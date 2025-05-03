@@ -16,7 +16,7 @@ export const InvoiceModelHeader: React.FC<InvoiceModelHeaderProps> = ({
   const {
     handleFormClick,
     handleBtnClick,
-    formData,
+    reviewData,
     postInvoiceMutation,
     selectedData,
     setSelectedData,
@@ -29,7 +29,7 @@ export const InvoiceModelHeader: React.FC<InvoiceModelHeaderProps> = ({
     isMultipleInvoicesModalOpen,
     multipleInvoicesExtractedData,
     postInvoiceWithoutFormDataMutation,
-    setFormData,
+    setReviewData,
   } = useInvoice();
 
   const handleClose = () => {
@@ -44,7 +44,7 @@ export const InvoiceModelHeader: React.FC<InvoiceModelHeaderProps> = ({
   };
 
   const handleClick = async () => {
-    if (!formData && !isMultipleInvoicesModalOpen) {
+    if (!reviewData && !isMultipleInvoicesModalOpen) {
       handleFormClick();
     } else if (isMultipleInvoicesModalOpen) {
       const hasError = multipleInvoicesExtractedData.some((item) => {
@@ -99,7 +99,7 @@ export const InvoiceModelHeader: React.FC<InvoiceModelHeaderProps> = ({
             <div>
               <SyncLoader color={COLORS.temporaryGray} size={10} />
             </div>
-          ) : formData ? (
+          ) : reviewData ? (
             'Pay'
           ) : selectedData ? (
             'Edit'
@@ -112,9 +112,9 @@ export const InvoiceModelHeader: React.FC<InvoiceModelHeaderProps> = ({
         {!isAddingMultipleInvoices && !isGoingBack && (
           <button
             onClick={() => {
-              if (formData) {
-                setSelectedData(formData);
-                setFormData(null);
+              if (reviewData) {
+                setSelectedData(reviewData);
+                setReviewData(null);
               } else {
                 handleDraftBtnClick();
               }
@@ -125,7 +125,7 @@ export const InvoiceModelHeader: React.FC<InvoiceModelHeaderProps> = ({
               <div>
                 <SyncLoader color={COLORS.primaryColor} size={10} />
               </div>
-            ) : !formData ? (
+            ) : !reviewData ? (
               'Draft'
             ) : (
               'Edit'

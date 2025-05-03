@@ -182,8 +182,8 @@ export interface InvoiceContextTypes {
     invoiceId: string,
     data: unknown
   ) => Promise<Invoice | undefined>;
-  formData: Invoice | null;
-  setFormData: React.Dispatch<React.SetStateAction<Invoice | null>>;
+  reviewData: Invoice | null;
+  setReviewData: React.Dispatch<React.SetStateAction<Invoice | null>>;
   handleBtnClick: () => void;
   removeDataBtnRef: RefObject<HTMLButtonElement | null>;
   postInvoice: (data: unknown) => Promise<Invoice | undefined>;

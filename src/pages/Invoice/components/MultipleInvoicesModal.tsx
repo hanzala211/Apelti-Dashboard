@@ -15,7 +15,7 @@ export const MultipleInvoicesModal: React.FC = () => {
     setSelectedData,
     setIsInvoiceModelOpen,
     selectedMultipleImages,
-    setIsAddingMultipleInvoices
+    setIsAddingMultipleInvoices,
   } = useInvoice();
   const [multipleSelectedInvoices, setMultipleSelectedInvoices] = useState<
     Invoice[]
@@ -48,8 +48,10 @@ export const MultipleInvoicesModal: React.FC = () => {
     setMultipleInvoicesExtractedData((prev) =>
       prev.filter(
         (item) =>
-          !multipleSelectedInvoices.some(
-            (selected) => item._id ? selected._id === item._id : selected.invoiceNumber === item.invoiceNumber
+          !multipleSelectedInvoices.some((selected) =>
+            item._id
+              ? selected._id === item._id
+              : selected.invoiceNumber === item.invoiceNumber
           )
       )
     );
@@ -68,7 +70,7 @@ export const MultipleInvoicesModal: React.FC = () => {
     setIsMultipleInvoicesModalOpen(false);
     setTimeout(() => {
       setIsAddingMultipleInvoices(true);
-    }, 400)
+    }, 400);
   };
 
   const headings = [
@@ -111,8 +113,8 @@ export const MultipleInvoicesModal: React.FC = () => {
   return (
     <div
       className={`fixed inset-0 flex flex-col transition-opacity duration-300 z-50 ${isMultipleInvoicesModalOpen
-        ? 'opacity-100'
-        : 'opacity-0 pointer-events-none'
+          ? 'opacity-100'
+          : 'opacity-0 pointer-events-none'
         }`}
     >
       <InvoiceModelHeader
@@ -164,8 +166,8 @@ export const MultipleInvoicesModal: React.FC = () => {
                       <td
                         key={colIndex}
                         className={`px-6 py-4 text-[14px] border-t border-b ${hasError
-                          ? 'border-l border-basicRed bg-red-100'
-                          : 'border-l border-gray-200'
+                            ? 'border-l border-basicRed bg-red-100'
+                            : 'border-l border-gray-200'
                           } border-r`}
                       >
                         {key === keys[3] || key === keys[4]

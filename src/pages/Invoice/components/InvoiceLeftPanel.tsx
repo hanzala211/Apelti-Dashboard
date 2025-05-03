@@ -11,7 +11,7 @@ export const InvoiceLeftPanel: React.FC = () => {
     fileInputRef,
     selectedData,
     setSelectedData,
-    formData,
+    reviewData,
   } = useInvoice();
 
 
@@ -49,7 +49,7 @@ export const InvoiceLeftPanel: React.FC = () => {
     </div>
   ) : (
     <div className="w-full md:block bg-mistGray hidden h-full">
-      {!formData && (
+      {!reviewData && (
         <div className="bg-basicWhite border-b flex justify-between items-center border-basicSilver py-4 px-3 mt-0.5">
           <p className="m-0">
             {selectedImage?.label || selectedData?.fileName}
@@ -71,7 +71,7 @@ export const InvoiceLeftPanel: React.FC = () => {
         </div>
       )}
       <div
-        className={`w-full ${formData ? 'h-[90vh]' : 'h-[82vh]'
+        className={`w-full ${reviewData ? 'h-[90vh]' : 'h-[82vh]'
           } flex items-center justify-center overflow-hidden`}
       >
         <img
