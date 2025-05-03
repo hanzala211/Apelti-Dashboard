@@ -1,6 +1,6 @@
 import { Bell, Menu, ScrollText, Search, UserRound } from 'lucide-react';
 import { FaArrowCircleLeft, FaUserEdit } from 'react-icons/fa';
-import { FiPlus, FiUploadCloud, FiUploadCloud } from 'react-icons/fi';
+import { FiPlus, FiUploadCloud } from 'react-icons/fi';
 import { IoIosArrowDown } from 'react-icons/io';
 import {
   MdDeleteOutline,
