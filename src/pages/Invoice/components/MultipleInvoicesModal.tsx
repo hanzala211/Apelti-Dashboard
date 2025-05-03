@@ -113,8 +113,8 @@ export const MultipleInvoicesModal: React.FC = () => {
   return (
     <div
       className={`fixed inset-0 flex flex-col transition-opacity duration-300 z-50 ${isMultipleInvoicesModalOpen
-          ? 'opacity-100'
-          : 'opacity-0 pointer-events-none'
+        ? 'opacity-100'
+        : 'opacity-0 pointer-events-none'
         }`}
     >
       <InvoiceModelHeader
@@ -122,7 +122,7 @@ export const MultipleInvoicesModal: React.FC = () => {
         isAddingMultipleInvoices={true}
       />
       <div className="w-full h-full mt-[1px] bg-basicWhite">
-        <div className="overflow-auto w-[100dvw] max-w-[calc(100dvw-0rem)] h-[100dvh] max-h-[calc(100dvh-6.5rem)]">
+        <div className="overflow-auto w-[100dvw] max-w-[calc(100dvw-0rem)] h-[100dvh] max-h-[calc(100dvh-10rem)]">
           <table className="w-full text-center text-sm text-gray-700 table-auto border-separate border-spacing-x-[0px]">
             <thead className="sticky top-0 z-20 bg-paleGray border-silverGray border-b">
               <tr>
@@ -166,8 +166,8 @@ export const MultipleInvoicesModal: React.FC = () => {
                       <td
                         key={colIndex}
                         className={`px-6 py-4 text-[14px] border-t border-b ${hasError
-                            ? 'border-l border-basicRed bg-red-100'
-                            : 'border-l border-gray-200'
+                          ? 'border-l border-basicRed bg-red-100'
+                          : 'border-l border-gray-200'
                           } border-r`}
                       >
                         {key === keys[3] || key === keys[4]
@@ -187,24 +187,24 @@ export const MultipleInvoicesModal: React.FC = () => {
               ))}
             </tbody>
           </table>
-          <div className="mt-5 flex justify-evenly w-full">
+        </div>
+        <div className="pt-3 border-t-[1px] flex justify-around w-full">
+          <Button
+            btnText="Select All"
+            handleClick={handleSelectAll}
+            className="!rounded-md"
+          />
+          <div className="flex gap-5">
             <Button
-              btnText="Select All"
-              handleClick={handleSelectAll}
+              btnText="Remove"
+              handleClick={handleRemove}
+              className="!rounded-md !bg-basicRed hover:!bg-red-300"
+            />
+            <Button
+              btnText="Add"
+              handleClick={handleAdd}
               className="!rounded-md"
             />
-            <div className="flex gap-5">
-              <Button
-                btnText="Remove"
-                handleClick={handleRemove}
-                className="!rounded-md !bg-basicRed hover:!bg-red-300"
-              />
-              <Button
-                btnText="Add"
-                handleClick={handleAdd}
-                className="!rounded-md"
-              />
-            </div>
           </div>
         </div>
       </div>
