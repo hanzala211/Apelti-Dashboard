@@ -21,7 +21,7 @@ export const InvoiceConfigurationPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-[100dvh] max-h-[calc(100dvh-50px)] overflow-auto pb-4 lg:pb-0 px-4 md:px-20">
+    <div className="w-full h-[100dvh] max-h-[calc(100dvh-80px)] overflow-auto pb-4 lg:pb-0 px-4 md:px-20">
       <PageHeader />
       {!invoice.isLoading ? (
         <div className="grid xl:grid-cols-[1fr_2fr] grid-cols-1 gap-4 items-start">

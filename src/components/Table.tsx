@@ -28,7 +28,7 @@ export const Table = <T,>({
   }
 
   return (
-    <div className="w-full mt-5 sm:max-h-[calc(100vh-270px)] max-h-[calc(100dvh-240px)] overflow-auto">
+    <div className="w-full mt-5 sm:max-h-[calc(100vh-270px)] max-h-[calc(100dvh-280px)] overflow-auto">
       <table className="w-full text-sm text-left text-gray-700">
         <thead className="sticky top-0 z-20 bg-paleGray border-silverGray border-b">
           <tr>
