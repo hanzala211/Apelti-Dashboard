@@ -241,10 +241,11 @@ export const InvoiceRightPanelForm: React.FC = () => {
         _id: selectedData?._id || uuidv4(),
       };
       console.log(resultWithId)
-      setMultipleInvoicesExtractedData((prev) => [
-        ...prev.filter((item) => item._id !== resultWithId._id),
-        resultWithId,
-      ]);
+      setMultipleInvoicesExtractedData((prev) =>
+        prev.map((item) =>
+          item._id === resultWithId._id ? resultWithId : item
+        )
+      );
       setIsInvoiceModelOpen(false);
       setIsMultipleInvoicesModalOpen(true);
       setSelectedData(null);
