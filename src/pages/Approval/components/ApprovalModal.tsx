@@ -4,7 +4,7 @@ import { useApproval } from '@context';
 import { toast } from '@helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { GetApprovalTypes } from '@types';
-import { SyncLoader } from 'react-spinners';
+import { CommonLoader } from "@components"
 
 export const ApprovalModal: React.FC<{
   isModalOpen: boolean;
@@ -82,7 +82,7 @@ export const ApprovalModal: React.FC<{
           >
             {changeStatusApprovedMutation.isPending ? (
               <div>
-                <SyncLoader color={COLORS.temporaryGray} size={10} />
+                <CommonLoader color={COLORS.temporaryGray} size={10} />
               </div>
             ) : (
               'Approve'
@@ -103,7 +103,7 @@ export const ApprovalModal: React.FC<{
           >
             {changeStatusRejectedMutation.isPending ? (
               <div>
-                <SyncLoader color={COLORS.temporaryGray} size={10} />
+                <CommonLoader color={COLORS.temporaryGray} size={10} />
               </div>
             ) : (
               'Reject'

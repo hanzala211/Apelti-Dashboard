@@ -9,7 +9,7 @@ import {
 import { CommentResponse, IMessage } from '@types';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SyncLoader } from 'react-spinners';
+import { CommonLoader } from "@components"
 
 interface MessageProps {
   onCheckChange: (value: boolean) => void;
@@ -142,7 +142,7 @@ export const Message: React.FC<MessageProps> = ({
                 } transition-all duration-200 m-0`}
             >
               {isCommentsLoading ? (
-                <SyncLoader color={COLORS.primaryColor} size={5} />
+                <CommonLoader color={COLORS.primaryColor} size={5} />
               ) : (
                 'Add Comments'
               )}

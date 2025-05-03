@@ -2,7 +2,7 @@ import { SvgIcon } from '@components';
 import { COLORS, ICONS } from '@constants';
 import { useInvoice } from '@context';
 import { toast } from '@helpers';
-import { SyncLoader } from 'react-spinners';
+import { CommonLoader } from "@components"
 
 interface InvoiceModelHeaderProps {
   setIsInvoiceModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -97,7 +97,7 @@ export const InvoiceModelHeader: React.FC<InvoiceModelHeaderProps> = ({
         >
           {updateInvoiceMutation.isPending || postInvoiceMutation.isPending || postInvoiceWithoutFormDataMutation.isPending ? (
             <div>
-              <SyncLoader color={COLORS.temporaryGray} size={10} />
+              <CommonLoader color={COLORS.temporaryGray} size={10} />
             </div>
           ) : reviewData ? (
             'Pay'
@@ -123,7 +123,7 @@ export const InvoiceModelHeader: React.FC<InvoiceModelHeaderProps> = ({
           >
             {postDraftInvoiceMutation.isPending ? (
               <div>
-                <SyncLoader color={COLORS.primaryColor} size={10} />
+                <CommonLoader color={COLORS.primaryColor} size={10} />
               </div>
             ) : !reviewData ? (
               'Draft'

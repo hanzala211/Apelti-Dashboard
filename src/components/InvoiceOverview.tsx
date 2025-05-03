@@ -1,6 +1,6 @@
 import { ICONS, INVOICE_ITEMS_HEADER } from '@constants';
 import { ReactSVG } from 'react-svg';
-import { SyncLoader } from 'react-spinners';
+import { CommonLoader } from "@components"
 
 type InvoiceItem = {
   lineItemNumber?: string;
@@ -63,7 +63,7 @@ export const InvoiceOverview: React.FC<InvoiceOverviewProps> = ({
               </button>
               {isDeleting ? (
                 <div>
-                  <SyncLoader color={deleteButtonColor} size={10} />
+                  <CommonLoader color={deleteButtonColor} size={10} />
                 </div>
               ) : (
                 <button

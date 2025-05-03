@@ -3,7 +3,7 @@ import PageHeader from './components/PageHeader';
 import ExportFormatInput from './components/ExportFormatInput';
 import ColumnList from './components/ColumnList';
 import ActionButtons from './components/ActionButtons';
-import { SyncLoader } from 'react-spinners';
+import { CommonLoader } from "@components"
 import { COLORS } from '@constants';
 import { Button, UncontrolledInput } from '@components';
 
@@ -35,8 +35,8 @@ export const InvoiceConfigurationPage: React.FC = () => {
                   }}
                   key={index}
                   className={`border-[2px] p-2 rounded-md cursor-pointer hover:bg-colorMint hover:border-primaryColor hover:text-basicBlack font-medium hover:font-semibold transition-all duration-200 ${invoice.selectedFormat?._id === item._id
-                      ? 'bg-colorMint border-primaryColor text-basicBlack font-semibold'
-                      : ''
+                    ? 'bg-colorMint border-primaryColor text-basicBlack font-semibold'
+                    : ''
                     }`}
                 >
                   {item.exportFormateName}
@@ -63,7 +63,7 @@ export const InvoiceConfigurationPage: React.FC = () => {
               />
             ) : (
               <div className="flex items-center justify-center">
-                <SyncLoader color={COLORS.primaryColor} />
+                <CommonLoader color={COLORS.primaryColor} />
               </div>
             )}
           </div>
@@ -97,7 +97,7 @@ export const InvoiceConfigurationPage: React.FC = () => {
         </div>
       ) : (
         <div className="flex justify-center mt-20">
-          <SyncLoader color={COLORS.primaryColor} />
+          <CommonLoader color={COLORS.primaryColor} />
         </div>
       )}
     </div>

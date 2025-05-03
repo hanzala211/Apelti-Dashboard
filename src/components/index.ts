@@ -22,4 +22,5 @@ export * from './InvoiceFilter';
 export * from './DocumentNotFound';
 export * from './UncontrolledInput';
 export * from './InvoiceOverview';
+export * from './CommonLoader';
 

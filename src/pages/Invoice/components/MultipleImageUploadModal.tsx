@@ -2,7 +2,7 @@ import { COLORS, ICONS } from '@constants';
 import { useInvoice } from '@context';
 import { handleFileChange } from '@helpers';
 import { useRef, useState } from 'react';
-import { SyncLoader } from 'react-spinners';
+import { CommonLoader } from "@components"
 import { v4 as uuidv4 } from 'uuid';
 
 export const MultipleImageUploadModal: React.FC = () => {
@@ -61,8 +61,8 @@ export const MultipleImageUploadModal: React.FC = () => {
   return (
     <div
       className={`${isMultipleImageUploadOpen
-          ? 'opacity-100'
-          : 'opacity-0 pointer-events-none'
+        ? 'opacity-100'
+        : 'opacity-0 pointer-events-none'
         }`}
     >
       <div
@@ -86,7 +86,7 @@ export const MultipleImageUploadModal: React.FC = () => {
             <p className="text-lg font-medium text-gray-700 text-center">
               Extracting data from your invoices...
             </p>
-            <SyncLoader color={COLORS.primaryColor} />
+            <CommonLoader color={COLORS.primaryColor} />
           </div>
         ) : (
           <p className="text-base text-gray-600">Choose images to upload</p>
