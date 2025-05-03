@@ -86,6 +86,10 @@ export const ProfileSettingPage: React.FC = () => {
     if (inputRef.current !== null) inputRef.current.click();
   };
 
+  const resetForm = () => {
+    reset();
+  };
+
   const roles = [
     { label: 'Admin', value: 'admin' },
     { label: 'Clerk', value: 'clerk' },
@@ -159,6 +163,7 @@ export const ProfileSettingPage: React.FC = () => {
                     open={isModalOpen}
                     setOpen={setIsModalOpen}
                     okText="Edit"
+                    onReset={resetForm}
                   />
                 </div>
               </div>

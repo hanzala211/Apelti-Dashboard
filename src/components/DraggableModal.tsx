@@ -10,6 +10,7 @@ interface DraggableModalProps {
   heading: string;
   handleOk: () => void;
   okText?: string;
+  onReset?: () => void;
 }
 
 export const DraggableModal: React.FC<DraggableModalProps> = ({
@@ -19,6 +20,7 @@ export const DraggableModal: React.FC<DraggableModalProps> = ({
   heading,
   handleOk: handleChange,
   okText = 'Ok',
+  onReset,
 }) => {
   const [disabled, setDisabled] = useState(true);
   const [bounds, setBounds] = useState({
@@ -38,6 +40,15 @@ export const DraggableModal: React.FC<DraggableModalProps> = ({
   const handleCancel = (e: React.MouseEvent<HTMLElement>) => {
     console.log(e);
     setOpen(false);
+    if (onReset) {
+      onReset();
+    }
+  };
+
+  const afterClose = () => {
+    if (onReset) {
+      onReset();
+    }
   };
 
   const onStart = (_event: DraggableEvent, uiData: DraggableData) => {
@@ -76,6 +87,7 @@ export const DraggableModal: React.FC<DraggableModalProps> = ({
         okText={okText}
         onOk={handleOk}
         onCancel={handleCancel}
+        afterClose={afterClose}
         okButtonProps={{
           className:
             'bg-primaryColor border-none hover:!bg-opacity-50 text-white hover:!bg-primaryColor active:!bg-primaryColor focus:!bg-primaryColor',

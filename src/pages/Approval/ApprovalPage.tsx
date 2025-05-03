@@ -33,6 +33,10 @@ export const ApprovalPage: React.FC = () => {
     setIsFilterModalOpen(true);
   }
 
+  const resetFilters = () => {
+    setFilters([{ id: 1, field: '', condition: '', value: '' }]);
+  }
+
   const showApprovalModal = () => {
     if (selectedApprovalInvoice !== null) {
       setIsApprovalModalOpen(true)
@@ -108,6 +112,7 @@ export const ApprovalPage: React.FC = () => {
           }
           setOpen={setIsFilterModalOpen}
           open={isFilterModalOpen}
+          onReset={resetFilters}
         />
       </div>
 

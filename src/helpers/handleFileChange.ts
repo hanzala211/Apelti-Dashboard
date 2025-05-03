@@ -1,5 +1,3 @@
-
-
 const EXCEL_MIME_TYPES = [
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   "application/vnd.ms-excel",
@@ -7,7 +5,7 @@ const EXCEL_MIME_TYPES = [
 
 export const handleFileChange = (
   event: React.ChangeEvent<HTMLInputElement>,
-  mode: "image" | "excel"
+  mode: "image" | "excel" | "images"
 ) => {
   const files = event.target.files;
   if (!files || files.length === 0) return null;
@@ -33,6 +31,14 @@ export const handleFileChange = (
     }
   }
 
-  // (shouldn't happen)
+  if (mode === "images") {
+    const images = Array.from(files)
+      .filter((item): item is File => item.type.startsWith("image/"))
+      .map((item) => {
+        const url = URL.createObjectURL(item)
+        return { label: item.name, value: url }
+      })
+    return images
+  }
   return null;
 }

@@ -17,6 +17,8 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { formatDate, handleInvoiceFilters } from '@helpers';
 import { MenuProps } from 'antd';
+import MultipleImageUploadModal from './components/MultipleImageUploadModal';
+import MultipleInvoicesModal from './components/MultipleInvoicesModal';
 
 export const InvoicePage: React.FC = () => {
   const { userData } = useAuth();
@@ -27,6 +29,7 @@ export const InvoicePage: React.FC = () => {
     setSelectedInvoice,
     setSelectedData,
     deleteInvoiceMutation,
+    setIsMultipleImageUploadOpen,
   } = useInvoice();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [filteredInvoices, setFilteredInvoices] = useState<Invoice[]>([]);
@@ -61,6 +64,10 @@ export const InvoicePage: React.FC = () => {
 
   const showModal = () => {
     setIsModalOpen(true);
+  };
+
+  const resetFilters = () => {
+    setFilters([{ id: 1, field: '', condition: '', value: '' }]);
   };
 
   const handleDelete = () => {
@@ -149,7 +156,13 @@ export const InvoicePage: React.FC = () => {
       <div className="md:px-14 px-2 flex justify-between items-center">
         <PageHeading label="Invoices" />
         {userPermissions.includes(APP_ACTIONS.postInvoice) && (
-          <Button btnText="Add Invoice" handleClick={handleClick} />
+          <div className="flex items-center md:flex-row flex-col gap-2">
+            <Button
+              btnText="Add Multiple Invoices"
+              handleClick={() => setIsMultipleImageUploadOpen(true)}
+            />
+            <Button btnText="Add Single Invoice" handleClick={handleClick} />
+          </div>
         )}
       </div>
 
@@ -211,6 +224,7 @@ export const InvoicePage: React.FC = () => {
           }
           setOpen={setIsModalOpen}
           open={isModalOpen}
+          onReset={resetFilters}
         />
       </div>
 
@@ -223,6 +237,8 @@ export const InvoicePage: React.FC = () => {
         isLoading={isInvoiceLoading}
       />
       <InvoiceModel />
+      <MultipleImageUploadModal />
+      <MultipleInvoicesModal />
     </section>
   );
 };

@@ -24,24 +24,38 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
     label: string;
     value: string;
   } | null>(null);
+  const [selectedMultipleImages, setSelectedMultipleImages] = useState<
+    { label: string; value: string }[]
+  >([]);
   const [isInvoiceModelOpen, setIsInvoiceModelOpen] = useState<boolean>(false);
   const [extractedData, setExtractedData] = useState<Invoice | null>(null);
   const [selectedData, setSelectedData] = useState<Invoice | null>(null);
   const [formData, setFormData] = useState<Invoice | null>(null);
   const [selectedInvoice, setSelectedInvoice] = useState<number | null>(null);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
+  const [multipleInvoicesExtractedData, setMultipleInvoicesExtractedData] =
+    useState<Invoice[]>([]);
+  const [isMultipleImageUploadOpen, setIsMultipleImageUploadOpen] =
+    useState<boolean>(false);
+  const [isMultipleInvoicesModalOpen, setIsMultipleInvoicesModalOpen] =
+    useState<boolean>(false);
+  const [isAddingMultipleInvoices, setIsAddingMultipleInvoices] =
+    useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const formInputRef = useRef<HTMLInputElement>(null);
   const removeDataBtnRef = useRef<HTMLButtonElement>(null);
   const draftBtnRef = useRef<HTMLButtonElement>(null);
   const queryClient = useQueryClient();
   const extractDataMutation = useMutation({
-    mutationFn: async () => {
-      const result = await extractData();
+    mutationFn: async (data: { label: string; value: string }) => {
+      const result = await extractData(data);
       return result || null;
     },
     onSuccess: (data) => {
       if (data) {
+        if (!data.matchInfo.match) {
+          toast.error('Missing PO Dataset', data.matchInfo.reason);
+        }
         setExtractedData(data);
       }
     },
@@ -52,8 +66,21 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['invoices'] });
       setExtractedData(null);
+      setSelectedData(null);
     },
   });
+
+  const postInvoiceWithoutFormDataMutation = useMutation({
+    mutationFn: (data: unknown) => postInvoiceWithoutFormData(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['invoices'] });
+      setExtractedData(null);
+      setIsMultipleInvoicesModalOpen(false);
+      setSelectedData(null);
+      setIsAddingMultipleInvoices(false)
+    },
+  });
+
   const updateInvoiceMutation = useMutation({
     mutationFn: (data: unknown) => updateInvoice(data),
     onSuccess: () => {
@@ -79,7 +106,7 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
 
   useEffect(() => {
     if (selectedImage?.value) {
-      extractDataMutation.mutate();
+      extractDataMutation.mutate(selectedImage);
     }
   }, [selectedImage?.value]);
 
@@ -114,24 +141,18 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  const extractData = async () => {
+  const extractData = async (sendImage: { label: string; value: string }) => {
     try {
-      if (!selectedImage?.value) return;
+      if (!sendImage?.value) return;
       const formData = new FormData();
 
-      const response = await fetch(selectedImage.value);
+      const response = await fetch(sendImage.value);
       if (!response.ok) throw new Error('Failed to fetch image');
       const blob = await response.blob();
-      const fileName = selectedImage?.label || 'uploaded_file';
+      const fileName = sendImage?.label || 'uploaded_file';
       formData.append('file', blob, fileName);
       const extractedData = await invoiceServices.extractData(formData);
       console.log('Extracted Data:', extractedData);
-      if (!extractedData.data.data.matchInfo.match) {
-        toast.error(
-          'Missing PO Dataset',
-          extractedData.data.data.matchInfo.reason
-        );
-      }
       return extractedData.data.data;
     } catch (error) {
       console.error('Error extracting data:', error);
@@ -179,6 +200,15 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
         vendorId: response.data.data.vendorId || response.data.data?.vatNumber,
         items: response.data.data?.items || [],
         _id: response.data.data._id,
+        isLocalInvoice: response.data.data.isLocalInvoice,
+        amountWithOutVat: response.data.data.amountWithOutVat,
+        internalPartnerCode: response.data.data.internalPartnerCode,
+        vatPercentage: response.data.data.vatPercentage,
+        countryCode: response.data.data.countryCode,
+        documentType: response.data.data.documentType,
+        transactionType: response.data.data.transactionType,
+        location: response.data.data.location,
+        jciNumber: response.data.data.jciNumber,
       });
       return response.data.data;
     } catch (error) {
@@ -210,7 +240,32 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
             response.data.data.vendorId || response.data.data?.vatNumber,
           items: response.data.data?.items || [],
           _id: response.data.data._id,
+          isLocalInvoice: response.data.data.isLocalInvoice,
+          amountWithOutVat: response.data.data.amountWithOutVat,
+          internalPartnerCode: response.data.data.internalPartnerCode,
+          vatPercentage: response.data.data.vatPercentage,
+          countryCode: response.data.data.countryCode,
+          documentType: response.data.data.documentType,
+          transactionType: response.data.data.transactionType,
+          location: response.data.data.location,
+          jciNumber: response.data.data.jciNumber,
         });
+        return response.data.data;
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        'Error',
+        typeof error === 'object' ? (error as Error).message : String(error)
+      );
+    }
+  };
+
+  const postInvoiceWithoutFormData = async (data: unknown) => {
+    try {
+      const response = await invoiceServices.postInvoice(data);
+      console.log(response);
+      if (response.status === 200) {
         return response.data.data;
       }
     } catch (error) {
@@ -251,7 +306,7 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
 
   const downloadInvoices = async () => {
     try {
-      setIsDownloading(true)
+      setIsDownloading(true);
       const response = await invoiceServices.downloadCompanyInvoices();
       const invoiceExportName = await settingServices.getSingleExportFormat(
         userData?.exportFormatMethodId || ''
@@ -274,7 +329,7 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
       console.log(error);
       toast.error('Export Failed', 'Failed to export invoices');
     } finally {
-      setIsDownloading(false)
+      setIsDownloading(false);
     }
   };
 
@@ -313,6 +368,18 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
         downloadInvoices,
         isDownloading,
         setIsDownloading,
+        isMultipleImageUploadOpen,
+        setIsMultipleImageUploadOpen,
+        selectedMultipleImages,
+        setSelectedMultipleImages,
+        extractData,
+        multipleInvoicesExtractedData,
+        setMultipleInvoicesExtractedData,
+        isMultipleInvoicesModalOpen,
+        setIsMultipleInvoicesModalOpen,
+        isAddingMultipleInvoices,
+        setIsAddingMultipleInvoices,
+        postInvoiceWithoutFormDataMutation,
       }}
     >
       {children}

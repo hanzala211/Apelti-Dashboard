@@ -166,7 +166,15 @@ export interface InvoiceContextTypes {
   formInputRef: RefObject<HTMLInputElement | null>;
   isInvoiceModelOpen: boolean;
   setIsInvoiceModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  extractDataMutation: UseMutationResult<Invoice | null, Error, void, unknown>;
+  extractDataMutation: UseMutationResult<
+    unknown,
+    Error,
+    {
+      label: string;
+      value: string;
+    },
+    unknown
+  >;
   extractedData: Invoice | null;
   setExtractedData: React.Dispatch<React.SetStateAction<Invoice | null>>;
   getInvoices: () => Promise<Invoice[] | undefined>;
@@ -184,6 +192,7 @@ export interface InvoiceContextTypes {
   selectedData: Invoice | null;
   setSelectedData: React.Dispatch<React.SetStateAction<Invoice | null>>;
   postInvoiceMutation: UseMutationResult<Invoice, Error, unknown, unknown>;
+  postInvoiceWithoutFormDataMutation: UseMutationResult<Invoice, Error, unknown, unknown>;
   updateInvoiceMutation: UseMutationResult<Invoice, Error, unknown, unknown>;
   deleteInvoiceMutation: UseMutationResult<void, Error, string, unknown>;
   draftBtnRef: React.RefObject<HTMLButtonElement | null>;
@@ -192,6 +201,24 @@ export interface InvoiceContextTypes {
   downloadInvoices: () => Promise<void>;
   isDownloading: boolean;
   setIsDownloading: React.Dispatch<React.SetStateAction<boolean>>;
+  isMultipleImageUploadOpen: boolean;
+  setIsMultipleImageUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedMultipleImages: { label: string; value: string }[];
+  setSelectedMultipleImages: React.Dispatch<
+    React.SetStateAction<{ label: string; value: string }[]>
+  >;
+  extractData: (sendImage: {
+    label: string;
+    value: string;
+  }) => Promise<Invoice>;
+  multipleInvoicesExtractedData: Invoice[];
+  setMultipleInvoicesExtractedData: React.Dispatch<
+    React.SetStateAction<Invoice[]>
+  >;
+  isMultipleInvoicesModalOpen: boolean;
+  setIsMultipleInvoicesModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isAddingMultipleInvoices: boolean;
+  setIsAddingMultipleInvoices: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface AuthContextTypes {
@@ -232,7 +259,7 @@ export interface SettingContextTypes {
     formatId: string,
     data: unknown
   ) => Promise<unknown>;
-  uploadPoData: (data: unknown) => Promise<{ errors: { error: string; }[]; }>;
+  uploadPoData: (data: unknown) => Promise<{ errors: { error: string }[] }>;
 }
 
 export interface ApprovalContextTypes {

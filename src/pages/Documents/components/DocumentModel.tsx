@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal } from 'antd';
-import { ZoomInOutlined, ZoomOutOutlined, CloseOutlined } from '@ant-design/icons';
+import { ICONS } from '@constants';
 
 interface DocumentModelProps {
   fileUrl: string;
@@ -17,9 +17,9 @@ const DocumentModel: React.FC<DocumentModelProps> = ({ fileUrl, visible, onClose
   return (
     <>
       <div className="absolute z-[2000] right-2 top-2 flex gap-2.5 text-basicWhite text-xl cursor-pointer">
-        <ZoomInOutlined onClick={handleZoomIn} className="hover:text-basicBlack" />
-        <ZoomOutOutlined onClick={handleZoomOut} className="hover:text-basicBlack" />
-        <CloseOutlined onClick={onClose} className="hover:text-basicBlack" />
+        <ICONS.zoomIn onClick={handleZoomIn} className="hover:text-basicBlack" />
+        <ICONS.zoomOut onClick={handleZoomOut} className="hover:text-basicBlack" />
+        <ICONS.antDClose onClick={onClose} className="hover:text-basicBlack" />
       </div>
       <Modal
         visible={visible}

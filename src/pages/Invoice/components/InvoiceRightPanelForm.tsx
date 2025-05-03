@@ -20,6 +20,7 @@ import {
   TRANSACTION_TYPES,
 } from '@constants';
 import InvoiceRightPanelOverview from './InvoiceRightPanelOverview';
+import { v4 as uuidv4 } from 'uuid';
 
 const getDefaultFormValues = () => ({
   rarityInvoice: 'Once',
@@ -44,6 +45,15 @@ const getDefaultFormValues = () => ({
   countryCode: COUNTRIES[0].value,
   amountWithOutVat: 0,
   vatPercentage: 0,
+  vatNumber: "",
+  items: [{
+    lineItemNumber: '',
+    quantity: 0,
+    description: '',
+    glAccount: '',
+    amount: 0,
+    department: '',
+  }]
 });
 
 const processData = (data: Invoice) => ({
@@ -94,7 +104,16 @@ export const InvoiceRightPanelForm: React.FC = () => {
     updateInvoiceMutation,
     draftBtnRef,
     postDraftInvoiceMutation,
+    isAddingMultipleInvoices,
+    setMultipleInvoicesExtractedData,
+    setIsInvoiceModelOpen,
+    setIsMultipleInvoicesModalOpen,
+    setSelectedData,
+    isMultipleInvoicesModalOpen,
+    handleBtnClick,
+    setFormData
   } = useInvoice();
+
 
   const {
     register,
@@ -179,7 +198,8 @@ export const InvoiceRightPanelForm: React.FC = () => {
     console.log('Draft Values ===> ', processedData);
   };
 
-  const onSubmit: SubmitHandler<InvoiceFormSchema> = (data) => {
+
+  const onSubmit: SubmitHandler<InvoiceFormSchema> = async (data) => {
     console.log(data);
     const result = {
       supplierName: data.supplierName,
@@ -195,7 +215,7 @@ export const InvoiceRightPanelForm: React.FC = () => {
       items: data.invoiceItems,
       comment: data.comment,
       fileUrl: extractedData?.fileUrl || selectedData?.fileUrl || '',
-      fileName: selectedImage?.label || '',
+      fileName: selectedData?.fileName || selectedImage?.label || '',
       vendorId: data.supplierId || '',
       vatNumber: extractedData?.vatNumber || data.vatNumber || '',
       matchedWithPO:
@@ -209,11 +229,28 @@ export const InvoiceRightPanelForm: React.FC = () => {
       documentType: data.documentType,
       transactionType: data.transactionType,
     };
-    if (!selectedData) {
+
+    if (!selectedData && !isAddingMultipleInvoices) {
       postInvoiceMutation.mutate(result);
-    } else {
-      console.log(result);
+    } else if (!isAddingMultipleInvoices) {
       updateInvoiceMutation.mutate(result);
+    } else if (isAddingMultipleInvoices && !isMultipleInvoicesModalOpen) {
+      console.log(selectedData)
+      const resultWithId = {
+        ...result,
+        _id: selectedData?._id || uuidv4(),
+      };
+      console.log(resultWithId)
+      setMultipleInvoicesExtractedData((prev) => [
+        ...prev.filter((item) => item._id !== resultWithId._id),
+        resultWithId,
+      ]);
+      setIsInvoiceModelOpen(false);
+      setIsMultipleInvoicesModalOpen(true);
+      setSelectedData(null);
+      setFormData(null)
+      reset(getDefaultFormValues())
+      handleBtnClick()
     }
   };
 

@@ -5,14 +5,14 @@ import { useInvoice } from '@context';
 import InvoiceRightPanelForm from './InvoiceRightPanelForm';
 
 export const InvoiceModel: React.FC = () => {
-  const { isInvoiceModelOpen } = useInvoice();
+  const { isInvoiceModelOpen, setIsInvoiceModelOpen } = useInvoice();
 
   return (
     <div
       className={`fixed inset-0 flex flex-col transition-opacity duration-300 z-50 ${isInvoiceModelOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
     >
-      <InvoiceModelHeader />
+      <InvoiceModelHeader setIsInvoiceModelOpen={setIsInvoiceModelOpen} />
       <div className="w-full h-full">
         <ResizableSlider
           minLeftWidth={window.innerWidth > 1280 ? 650 : 300}

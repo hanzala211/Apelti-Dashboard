@@ -14,6 +14,7 @@ import { CgFileDocument } from 'react-icons/cg';
 import { IoReloadCircle, IoSettingsOutline } from 'react-icons/io5';
 import { BiLogIn } from 'react-icons/bi';
 import { FaRegPenToSquare } from 'react-icons/fa6';
+import { CloseOutlined, ZoomInOutlined, ZoomOutOutlined } from '@ant-design/icons';
 
 export const ICONS = {
   documentSVG: CgFileDocument,
@@ -56,5 +57,8 @@ export const ICONS = {
   wrench: '/assets/icons/wrench.svg',
   table_setting: '/assets/icons/table-setting.svg',
   download: '/assets/icons/download.svg',
-  load: IoReloadCircle
+  load: IoReloadCircle,
+  antDClose: CloseOutlined,
+  zoomIn: ZoomInOutlined,
+  zoomOut: ZoomOutOutlined,
 };

@@ -14,6 +14,7 @@ export const InvoiceLeftPanel: React.FC = () => {
     formData,
   } = useInvoice();
 
+
   return (
     !selectedData || selectedImage
       ? selectedImage === null
