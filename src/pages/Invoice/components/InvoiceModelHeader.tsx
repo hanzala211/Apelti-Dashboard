@@ -3,6 +3,7 @@ import { COLORS, ICONS } from '@constants';
 import { useInvoice } from '@context';
 import { toast } from '@helpers';
 import { CommonLoader } from "@components"
+import { useEffect, useState } from 'react';
 
 interface InvoiceModelHeaderProps {
   setIsInvoiceModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,51 +32,67 @@ export const InvoiceModelHeader: React.FC<InvoiceModelHeaderProps> = ({
     postInvoiceWithoutFormDataMutation,
     setReviewData,
   } = useInvoice();
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  useEffect(() => {
+    if (selectedData) {
+      setIsEditMode(true);
+    }
+  }, [selectedData]);
 
   const handleClose = () => {
     handleBtnClick();
     setIsInvoiceModelOpen(false);
-    if (isGoingBack) {
+    setIsAddingMultipleInvoices(false);
+
+    if (isGoingBack && !isEditMode) {
       setTimeout(() => {
         setIsMultipleInvoicesModalOpen(true);
       }, 200);
     }
-    setIsAddingMultipleInvoices(false);
+
+    setIsEditMode(false);
   };
 
   const handleClick = async () => {
-    if (!reviewData && !isMultipleInvoicesModalOpen) {
-      handleFormClick();
-    } else if (isMultipleInvoicesModalOpen) {
-      const hasError = multipleInvoicesExtractedData.some((item) => {
-        const fieldsToCheck = Object.entries(item).filter(([key]) => {
-          if (item.isLocalInvoice) {
-            return key !== 'jciNumber';
-          } else {
-            return key !== 'vendorId';
-          }
+    try {
+      if (!reviewData && !isMultipleInvoicesModalOpen) {
+        handleFormClick();
+      } else if (isMultipleInvoicesModalOpen) {
+        const hasError = multipleInvoicesExtractedData.some((item) => {
+          const fieldsToCheck = Object.entries(item).filter(([key]) => {
+            if (item.isLocalInvoice) {
+              return key !== 'jciNumber';
+            } else {
+              return key !== 'vendorId';
+            }
+          });
+
+
+          return fieldsToCheck.some(
+            ([, value]) =>
+              value === '' ||
+              value === undefined ||
+              value === null ||
+              (Array.isArray(value) && value.length === 0)
+          );
         });
-
-
-        return fieldsToCheck.some(
-          ([, value]) =>
-            value === '' ||
-            value === undefined ||
-            value === null ||
-            (Array.isArray(value) && value.length === 0)
+        if (hasError) {
+          toast.error("Couldn't Upload Invoices", "Some Fields Are Empty.");
+          return;
+        }
+        await Promise.all(
+          multipleInvoicesExtractedData.map((item) => {
+            const invoice = { ...item };
+            delete invoice._id;
+            return postInvoiceWithoutFormDataMutation.mutate(invoice);
+          })
         );
-      });
-      if (hasError) {
-        toast.error('Couldn’t Upload Invoices', 'Some Fields Are Empty.');
-        return;
       }
-      await Promise.all(
-        multipleInvoicesExtractedData.map((item) => {
-          const invoice = { ...item };
-          delete invoice._id;
-          return postInvoiceWithoutFormDataMutation.mutate(invoice);
-        })
-      );
+    }
+    catch (error) {
+      console.log(error)
+      toast.error("Error Occured", "Failed to upload Invoices.")
     }
   };
 

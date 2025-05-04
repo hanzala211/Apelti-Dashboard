@@ -1,5 +1,5 @@
 import { COLORS } from '@constants';
-import { ChartState } from '@types';
+import { ChartState, InvoiceRules } from '@types';
 
 export const INVOICES_DATA = [
   {
@@ -253,3 +253,94 @@ export const COLUMN_CHART = {
     // in the parent container or by using chart.background
   }
 }
+
+export const DEFINE_RULES_DATA: InvoiceRules[] = [
+  {
+    keyWord: "discount",
+    invoiceArea: "billing",
+    field: "amount",
+    action: "subtract",
+    value: 10,
+    status: "active",
+  },
+  {
+    keyWord: "tax",
+    invoiceArea: "finance",
+    field: "rate",
+    action: "add",
+    value: 5,
+    status: "inactive",
+  },
+  {
+    keyWord: "late_fee",
+    invoiceArea: "payment",
+    field: "penalty",
+    action: "add",
+    value: 20,
+    status: "active",
+  },
+  {
+    keyWord: "promo_code",
+    invoiceArea: "checkout",
+    field: "code",
+    action: "apply",
+    value: "SAVE10",
+    status: "active",
+  },
+  {
+    keyWord: "promo_code",
+    invoiceArea: "checkout",
+    field: "code",
+    action: "apply",
+    value: "SAVE10",
+    status: "active",
+  },
+  {
+    keyWord: "promo_code",
+    invoiceArea: "checkout",
+    field: "code",
+    action: "apply",
+    value: "SAVE10",
+    status: "active",
+  },
+  {
+    keyWord: "promo_code",
+    invoiceArea: "checkout",
+    field: "code",
+    action: "apply",
+    value: "SAVE10",
+    status: "active",
+  },
+  {
+    keyWord: "promo_code",
+    invoiceArea: "checkout",
+    field: "code",
+    action: "apply",
+    value: "SAVE10",
+    status: "active",
+  },
+  {
+    keyWord: "promo_code",
+    invoiceArea: "checkout",
+    field: "code",
+    action: "apply",
+    value: "SAVE10",
+    status: "active",
+  },
+  {
+    keyWord: "promo_code",
+    invoiceArea: "checkout",
+    field: "code",
+    action: "apply",
+    value: "SAVE10",
+    status: "active",
+  },
+  {
+    keyWord: "promo_code",
+    invoiceArea: "checkout",
+    field: "code",
+    action: "apply",
+    value: "SAVE10",
+    status: "active",
+  },
+];

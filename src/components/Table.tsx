@@ -123,7 +123,7 @@ export const Table = <T,>({
                           : item[key] === 'rejected'
                             ? 'bg-temporaryRed text-basicRed'
                             : 'bg-gray-200 text-gray-800'
-                          }`}
+                          } ${item[key] === "active" && "text-primaryColor"} ${item[key] === "inactive" && "text-red-500"}`}
                       >
                         {((item[key] as string) || "").slice(0, 1).toUpperCase() +
                           ((item[key] as string) || "").slice(1)}

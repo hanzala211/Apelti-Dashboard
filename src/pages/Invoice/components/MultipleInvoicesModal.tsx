@@ -72,6 +72,16 @@ export const MultipleInvoicesModal: React.FC = () => {
     }, 400);
   };
 
+  const validateCell = (item: Invoice, key: keyof Invoice): boolean => {
+    if (key === "jciNumber" && item.isLocalInvoice) {
+      return true;
+    }
+    if (key === "vendorId" && !item.isLocalInvoice) {
+      return true;
+    }
+    return !!item[key];
+  };
+
   const headings = [
     "Invoice Number",
     "Supplier",
@@ -107,16 +117,6 @@ export const MultipleInvoicesModal: React.FC = () => {
     "jciNumber",
     "comment",
   ];
-
-  const validateCell = (item: Invoice, key: keyof Invoice): boolean => {
-    if (key === "jciNumber" && item.isLocalInvoice) {
-      return true;
-    }
-    if (key === "vendorId" && !item.isLocalInvoice) {
-      return true;
-    }
-    return !!item[key];
-  };
 
   const dateFields: Array<keyof Invoice> = ["invoiceDate", "paymentTerms"];
 

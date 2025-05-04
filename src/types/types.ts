@@ -5,6 +5,15 @@ import { ApexOptions } from 'apexcharts';
 
 export type Role = 'admin' | 'clerk' | 'approver' | 'accountant' | 'payer';
 
+export interface InvoiceRules {
+  keyWord: string,
+  invoiceArea: string,
+  field: string,
+  action: string,
+  value: number | string,
+  status: string
+}
+
 export interface ItemMappingValue {
   header: string;
   value: string;
