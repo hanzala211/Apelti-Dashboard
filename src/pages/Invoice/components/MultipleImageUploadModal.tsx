@@ -1,9 +1,9 @@
-import { COLORS, ICONS } from '@constants';
-import { useInvoice } from '@context';
-import { handleFileChange } from '@helpers';
-import { useRef, useState } from 'react';
-import { CommonLoader } from '@components';
-import { v4 as uuidv4 } from 'uuid';
+import { COLORS, ICONS } from "@constants";
+import { useInvoice } from "@context";
+import { handleFileChange } from "@helpers";
+import { useRef, useState } from "react";
+import { CommonLoader } from "@components";
+import { v4 as uuidv4 } from "uuid";
 
 export const MultipleImageUploadModal: React.FC = () => {
   const {
@@ -30,7 +30,7 @@ export const MultipleImageUploadModal: React.FC = () => {
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       setIsExtractingData(true);
-      const foundValue = handleFileChange(e, 'images');
+      const foundValue = handleFileChange(e, "images");
       if (Array.isArray(foundValue) && foundValue.length > 0) {
         const extractedData = await Promise.all(
           foundValue.map(async (file) => {
@@ -53,21 +53,23 @@ export const MultipleImageUploadModal: React.FC = () => {
     } finally {
       setIsExtractingData(false);
       if (fileInputRef.current) {
-        fileInputRef.current.value = '';
+        fileInputRef.current.value = "";
       }
     }
   };
 
   return (
     <div
-      className={`${isMultipleImageUploadOpen
-          ? 'opacity-100'
-          : 'opacity-0 pointer-events-none'
-        }`}
+      className={`${
+        isMultipleImageUploadOpen
+          ? "opacity-100"
+          : "opacity-0 pointer-events-none"
+      }`}
     >
       <div
-        className={`${isMultipleImageUploadOpen ? 'opacity-100' : 'opacity-0'
-          } fixed inset-0 bg-black bg-opacity-50 transition-all duration-200 z-[1000]`}
+        className={`${
+          isMultipleImageUploadOpen ? "opacity-100" : "opacity-0"
+        } fixed inset-0 bg-black bg-opacity-50 transition-all duration-200 z-[1000]`}
         onClick={handleClose}
       />
       <div className="absolute z-[2000] right-2 top-2 flex gap-2.5 text-basicWhite text-xl cursor-pointer">
@@ -78,8 +80,9 @@ export const MultipleImageUploadModal: React.FC = () => {
       </div>
       <div
         onClick={handleFileRefClick}
-        className={`fixed flex items-center ${isExtractingData ? '' : 'cursor-pointer'
-          } justify-center md:w-[34rem] rounded-lg md:h-[28rem] w-[20rem] h-[20rem] bg-temporaryGray z-[20000] inset-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`}
+        className={`fixed flex items-center ${
+          isExtractingData ? "" : "cursor-pointer"
+        } justify-center md:w-[34rem] rounded-lg md:h-[28rem] w-[20rem] h-[20rem] bg-temporaryGray z-[20000] inset-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`}
       >
         {isExtractingData ? (
           <div className="flex flex-col items-center justify-center gap-4">

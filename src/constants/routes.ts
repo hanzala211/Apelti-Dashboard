@@ -19,5 +19,6 @@ export const ROUTES = {
   reset: "reset-password",
   export_configuration: 'export-configuration',
   import_dataset: "import-dataset",
-  export_invoice: "export-invoice"
+  export_invoice: "export-invoice",
+  define_rules: "define-rules"
 };

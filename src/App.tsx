@@ -10,6 +10,7 @@ import {
   ImportDataSetPage,
   InvoiceConfigurationPage,
   InvoicePage,
+  InvoiceRulesPage,
   LoginPage,
   MessagesPage,
   ProfileSettingPage,
@@ -52,6 +53,7 @@ const App: React.FC = () => {
                 <Route path={ROUTES.export_configuration} element={<InvoiceConfigurationPage />} />
                 <Route path={ROUTES.import_dataset} element={<ImportDataSetPage />} />
                 <Route path={ROUTES.export_invoice} element={<ExportInvoicePage />} />
+                <Route path={ROUTES.define_rules} element={<InvoiceRulesPage />} />
               </Route>
             </Routes>
           </ProvidersWrapper>

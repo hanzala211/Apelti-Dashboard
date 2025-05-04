@@ -53,6 +53,7 @@ export const SettingSidebar: React.FC = () => {
       links: [
         { link: `/`, value: 'Preferences' },
         { link: `${ROUTES.settings}/${ROUTES.export_configuration}`, value: 'Export Configuration' },
+        {link: `${ROUTES.settings}/${ROUTES.define_rules}`, value: "Define Invoice Rules"},
         { link: `${ROUTES.settings}/${ROUTES.import_dataset}`, value: 'Import Dataset' },
         { link: `${ROUTES.settings}/${ROUTES.export_invoice}`, value: 'Export Invoices' },
       ],

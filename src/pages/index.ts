@@ -12,3 +12,4 @@ export * from './ResetPassword/ResetPasswordPage';
 export * from './InvoiceConfiguration/InvoiceConfigurationPage';
 export * from './ImportDataSet/ImportDateSetPage';
 export * from './ExportInvoice/ExportInvoicePage';
+export * from './InvoiceRules/InvoiceRulesPage';
