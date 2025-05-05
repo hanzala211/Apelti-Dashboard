@@ -53,5 +53,27 @@ export const settingServices = {
     url: `/excel/upload`,
     isAuthIncluded: true,
     data,
-  })
+  }),
+  postInvoiceRules: (data: unknown) => sendRequest({
+    url: `/invoice-rules`,
+    data,
+    isAuthIncluded: true,
+    method: "POST"
+  }),
+  getInvoiceRules: () => sendRequest({
+    url: `/invoice-rules`,
+    isAuthIncluded: true,
+    method: "GET"
+  }),
+  updateInvoiceRuleStatus: (ruleId: string, data: unknown) => sendRequest({
+    url: `/invoice-rules/status/${ruleId}`,
+    data,
+    isAuthIncluded: true,
+    method: "PUT"
+  }),
+  deleteInvoiceRules: (ruleId: string) => sendRequest({
+    url: `/invoice-rules/${ruleId}`,
+    isAuthIncluded: true,
+    method: "DELETE"
+  }),
 };

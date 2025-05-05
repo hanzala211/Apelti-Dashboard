@@ -32,7 +32,7 @@ export const InvoiceModelHeader: React.FC<InvoiceModelHeaderProps> = ({
     postInvoiceWithoutFormDataMutation,
     setReviewData,
   } = useInvoice();
-  const [isEditMode, setIsEditMode] = useState(false);
+  const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectedData) {

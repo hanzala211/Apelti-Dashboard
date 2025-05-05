@@ -5,7 +5,7 @@ import Draggable from 'react-draggable';
 
 interface DraggableModalProps {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>> | ((open: boolean) => void);
   modalItems: ReactElement;
   heading: string;
   handleOk: () => void;
@@ -33,7 +33,6 @@ export const DraggableModal: React.FC<DraggableModalProps> = ({
 
   const handleOk = (e: React.MouseEvent<HTMLElement>) => {
     console.log(e);
-    setOpen(false);
     handleChange();
   };
 

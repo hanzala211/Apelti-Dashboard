@@ -1,17 +1,18 @@
-import { MutationFunction, UseMutationResult } from '@tanstack/react-query';
-import { RefObject } from 'react';
-import { Socket } from 'socket.io-client';
-import { ApexOptions } from 'apexcharts';
+import { MutationFunction, UseMutationResult } from "@tanstack/react-query";
+import { RefObject } from "react";
+import { Socket } from "socket.io-client";
+import { ApexOptions } from "apexcharts";
 
-export type Role = 'admin' | 'clerk' | 'approver' | 'accountant' | 'payer';
+export type Role = "admin" | "clerk" | "approver" | "accountant" | "payer";
 
 export interface InvoiceRules {
-  keyWord: string,
-  invoiceArea: string,
-  field: string,
-  action: string,
-  value: number | string,
-  status: string
+  keyword: string;
+  invoiceArea: string;
+  field: string;
+  action: string;
+  value: number | string;
+  status: string;
+  _id?: string;
 }
 
 export interface ItemMappingValue {
@@ -201,7 +202,12 @@ export interface InvoiceContextTypes {
   selectedData: Invoice | null;
   setSelectedData: React.Dispatch<React.SetStateAction<Invoice | null>>;
   postInvoiceMutation: UseMutationResult<Invoice, Error, unknown, unknown>;
-  postInvoiceWithoutFormDataMutation: UseMutationResult<Invoice, Error, unknown, unknown>;
+  postInvoiceWithoutFormDataMutation: UseMutationResult<
+    Invoice,
+    Error,
+    unknown,
+    unknown
+  >;
   updateInvoiceMutation: UseMutationResult<Invoice, Error, unknown, unknown>;
   deleteInvoiceMutation: UseMutationResult<void, Error, string, unknown>;
   draftBtnRef: React.RefObject<HTMLButtonElement | null>;
@@ -269,6 +275,18 @@ export interface SettingContextTypes {
     data: unknown
   ) => Promise<unknown>;
   uploadPoData: (data: unknown) => Promise<{ errors: { error: string }[] }>;
+  postInvoiceRulesMutation: UseMutationResult<void, Error, unknown, unknown>;
+  getInvoiceRules: () => Promise<InvoiceRules[] | undefined>;
+  updateInvoiceRulesMutation: UseMutationResult<
+    unknown,
+    Error,
+    {
+      ruleId: string;
+      data: unknown;
+    },
+    unknown
+  >;
+  deleteInvoiceRulesMutation: UseMutationResult<void, Error, string, unknown>;
 }
 
 export interface ApprovalContextTypes {
