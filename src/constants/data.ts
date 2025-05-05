@@ -254,7 +254,7 @@ export const COLUMN_CHART = {
   }
 }
 
-export const DEFINE_RULES_DATA: InvoiceRules[] = [
+export const DEFINE_RULES_DATA = [
   {
     keyWord: "discount",
     invoiceArea: "billing",
