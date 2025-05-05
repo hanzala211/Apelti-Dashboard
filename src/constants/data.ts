@@ -1,5 +1,5 @@
 import { COLORS } from '@constants';
-import { ChartState, InvoiceRules } from '@types';
+import { ChartState } from '@types';
 
 export const INVOICES_DATA = [
   {
