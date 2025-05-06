@@ -1,13 +1,13 @@
-import React from 'react';
-import { ReactSVG } from 'react-svg';
-import { ICONS } from '@constants';
+import React from "react";
+import { ReactSVG } from "react-svg";
+import { ICONS } from "@constants";
 
 interface ImageUploadProps {
   selectedImage: { value: string; label: string } | string | null;
   handleFile: () => void;
   fileInputRef: React.RefObject<HTMLInputElement | null>;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  setSelectedImage: (image: { label: string, value: string } | null) => void;
+  setSelectedImage: (image: { label: string; value: string } | null) => void;
 }
 
 export const ImageUpload: React.FC<ImageUploadProps> = ({
@@ -27,16 +27,30 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
           >
             Browse Folders
           </button>
-          <input ref={fileInputRef} onChange={handleChange} type="file" className="hidden" />
+          <input
+            ref={fileInputRef}
+            onChange={handleChange}
+            type="file"
+            className="hidden"
+          />
         </div>
       ) : (
         <div className="relative w-full border-b-[1px] flex justify-center">
-          <button className="absolute right-2 top-2" onClick={() => setSelectedImage(null)}>
+          <button
+            className="absolute right-2 top-2"
+            onClick={() => setSelectedImage(null)}
+          >
             <ReactSVG src={ICONS.close} />
           </button>
           <img
-            src={typeof selectedImage === "string" ? selectedImage : selectedImage.value}
-            alt={`${typeof selectedImage !== "string" && selectedImage.label} Image`}
+            src={
+              typeof selectedImage === "string"
+                ? selectedImage
+                : selectedImage.value
+            }
+            alt={`${
+              typeof selectedImage !== "string" && selectedImage.label
+            } Image`}
             className="w-52 object-contain"
           />
         </div>

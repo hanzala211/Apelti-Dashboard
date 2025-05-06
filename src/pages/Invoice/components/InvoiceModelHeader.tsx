@@ -45,7 +45,7 @@ export const InvoiceModelHeader: React.FC<InvoiceModelHeaderProps> = ({
     setIsInvoiceModelOpen(false);
     setIsAddingMultipleInvoices(false);
 
-    if (isGoingBack && !isEditMode) {
+    if (isGoingBack && isEditMode) {
       setTimeout(() => {
         setIsMultipleInvoicesModalOpen(true);
       }, 200);

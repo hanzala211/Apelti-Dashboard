@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Modal } from 'antd';
-import { ICONS } from '@constants';
+import React, { useState } from "react";
+import { Modal } from "antd";
+import { ICONS } from "@constants";
 
 interface DocumentModelProps {
   fileUrl: string;
@@ -8,17 +8,28 @@ interface DocumentModelProps {
   onClose: () => void;
 }
 
-const DocumentModel: React.FC<DocumentModelProps> = ({ fileUrl, visible, onClose }) => {
+const DocumentModel: React.FC<DocumentModelProps> = ({
+  fileUrl,
+  visible,
+  onClose,
+}) => {
   const [zoom, setZoom] = useState(1);
 
   const handleZoomIn = () => setZoom((prevZoom) => Math.min(prevZoom + 0.1, 3));
-  const handleZoomOut = () => setZoom((prevZoom) => Math.max(prevZoom - 0.1, 0.1));
+  const handleZoomOut = () =>
+    setZoom((prevZoom) => Math.max(prevZoom - 0.1, 0.1));
 
   return (
     <>
       <div className="absolute z-[2000] right-2 top-2 flex gap-2.5 text-basicWhite text-xl cursor-pointer">
-        <ICONS.zoomIn onClick={handleZoomIn} className="hover:text-basicBlack" />
-        <ICONS.zoomOut onClick={handleZoomOut} className="hover:text-basicBlack" />
+        <ICONS.zoomIn
+          onClick={handleZoomIn}
+          className="hover:text-basicBlack"
+        />
+        <ICONS.zoomOut
+          onClick={handleZoomOut}
+          className="hover:text-basicBlack"
+        />
         <ICONS.antDClose onClick={onClose} className="hover:text-basicBlack" />
       </div>
       <Modal
@@ -27,7 +38,15 @@ const DocumentModel: React.FC<DocumentModelProps> = ({ fileUrl, visible, onClose
         footer={null}
         centered
         keyboard
-        styles={{ content: { backgroundColor: "transparent", border: "none", boxShadow: "none", padding: "0px", margin: "0px" } }}
+        styles={{
+          content: {
+            backgroundColor: "transparent",
+            border: "none",
+            boxShadow: "none",
+            padding: "0px",
+            margin: "0px",
+          },
+        }}
         closeIcon={null}
       >
         <div className="flex flex-col items-center justify-center relative">
@@ -43,4 +62,4 @@ const DocumentModel: React.FC<DocumentModelProps> = ({ fileUrl, visible, onClose
   );
 };
 
-export default DocumentModel; 
+export default DocumentModel;
