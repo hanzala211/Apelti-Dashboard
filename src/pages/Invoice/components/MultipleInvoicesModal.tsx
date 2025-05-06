@@ -59,15 +59,15 @@ export const MultipleInvoicesModal: React.FC = () => {
   };
 
   const handleEdit = (item: Invoice, index: number) => {
-    setIsInvoiceModelOpen(true);
     setSelectedData({
       ...item,
       fileName: selectedMultipleImages[index]
-        ? selectedMultipleImages[index].label
-        : "",
+      ? selectedMultipleImages[index].label
+      : "",
     });
     setIsMultipleInvoicesModalOpen(false);
     setTimeout(() => {
+      setIsInvoiceModelOpen(true);
       setIsAddingMultipleInvoices(true);
     }, 400);
   };

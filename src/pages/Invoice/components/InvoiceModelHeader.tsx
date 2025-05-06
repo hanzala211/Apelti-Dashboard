@@ -43,12 +43,12 @@ export const InvoiceModelHeader: React.FC<InvoiceModelHeaderProps> = ({
   const handleClose = () => {
     handleBtnClick();
     setIsInvoiceModelOpen(false);
-    setIsAddingMultipleInvoices(false);
 
     if (isGoingBack && isEditMode) {
       setTimeout(() => {
+        setIsAddingMultipleInvoices(false);
         setIsMultipleInvoicesModalOpen(true);
-      }, 200);
+      }, 500);
     }
 
     setIsEditMode(false);
