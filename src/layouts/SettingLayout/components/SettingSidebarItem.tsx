@@ -46,7 +46,7 @@ export const SettingSidebarItem: React.FC<SettingSidebarItemProps> = ({
               key={index}
               to={item.link}
               className={({ isActive }) =>
-                `${isActive ? 'text-basicBlack' : 'text-neutralGray'
+                `${ isActive ? 'text-basicBlack' : 'text-neutralGray'
                 } transition-all duration-150 hover:text-basicBlack`
               }
             >

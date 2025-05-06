@@ -23,4 +23,5 @@ export const COLORS = {
   columnGraphBg: "#1f2a44",
   columnGraphGradient: "#2e3450",
   permanentGreen: "#34C6BD",
+  darkRed: "#C62828"
 };

@@ -215,8 +215,10 @@ export const InvoicePage: React.FC = () => {
         )}
         <DraggableModal
           okText="Add"
-          handleOk={() =>
+          handleOk={() =>{
             setFilteredInvoices(handleInvoiceFilters(invoices, filters) || [])
+            setIsModalOpen(false)
+          }
           }
           heading="In this view show records"
           modalItems={
