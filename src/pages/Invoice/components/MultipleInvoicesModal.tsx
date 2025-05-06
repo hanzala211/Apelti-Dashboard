@@ -23,10 +23,10 @@ export const MultipleInvoicesModal: React.FC = () => {
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>, item: Invoice) => {
     setMultipleSelectedInvoices((prev) =>
       e.target.checked
-        ? prev.some((inv) => inv.invoiceNumber === item.invoiceNumber)
+        ? prev.some((inv) => inv._id === item._id)
           ? prev
           : [...prev, item]
-        : prev.filter((inv) => inv.invoiceNumber !== item.invoiceNumber)
+        : prev.filter((inv) => inv._id !== item._id)
     );
   };
 
@@ -67,8 +67,8 @@ export const MultipleInvoicesModal: React.FC = () => {
     });
     setIsMultipleInvoicesModalOpen(false);
     setTimeout(() => {
-      setIsInvoiceModelOpen(true);
       setIsAddingMultipleInvoices(true);
+      setIsInvoiceModelOpen(true);
     }, 400);
   };
 
