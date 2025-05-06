@@ -97,6 +97,8 @@ export const ApprovalPage: React.FC = () => {
           : "",
     })) ?? [];
 
+  console.log(filters, "filteredInvoices")
+
   return (
     <section className="md:py-9 pt-20 w-screen md:max-w-[calc(100vw-256px)] h-[100dvh] overflow-y-auto">
       <div className="md:px-14 px-2 flex justify-between items-center">

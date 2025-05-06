@@ -11,6 +11,7 @@ interface DraggableModalProps {
   handleOk: () => void;
   okText?: string;
   onReset?: () => void;
+  afterCloseReset?: boolean
 }
 
 export const DraggableModal: React.FC<DraggableModalProps> = ({
@@ -21,6 +22,7 @@ export const DraggableModal: React.FC<DraggableModalProps> = ({
   handleOk: handleChange,
   okText = 'Ok',
   onReset,
+  afterCloseReset = false
 }) => {
   const [disabled, setDisabled] = useState(true);
   const [bounds, setBounds] = useState({
@@ -45,7 +47,7 @@ export const DraggableModal: React.FC<DraggableModalProps> = ({
   };
 
   const afterClose = () => {
-    if (onReset) {
+    if (afterCloseReset && onReset) {
       onReset();
     }
   };

@@ -266,6 +266,7 @@ export const InvoiceRulesPage: React.FC = () => {
             onSubmit={onSubmit}
           />
         }
+        afterCloseReset={true}
         setOpen={setIsModelFormOpen}
         handleOk={handleOK}
       />
