@@ -1,6 +1,6 @@
-import { ROUTES } from '@constants';
-import { ReactQueryProvider, ProvidersWrapper } from '@context';
-import { AppLayout, AuthLayout, PageNotFound, SettingsLayout } from '@layouts';
+import { ROUTES } from "@constants";
+import { ReactQueryProvider, ProvidersWrapper } from "@context";
+import { AppLayout, AuthLayout, PageNotFound, SettingsLayout } from "@layouts";
 import {
   ApprovalPage,
   DashboardPage,
@@ -17,9 +17,9 @@ import {
   ResetPasswordPage,
   SignupPage,
   TeamPage,
-} from '@pages';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import 'antd/dist/reset.css';
+} from "@pages";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "antd/dist/reset.css";
 
 const App: React.FC = () => {
   return (
@@ -32,7 +32,10 @@ const App: React.FC = () => {
                 <Route index element={<LoginPage />} />
                 <Route path={ROUTES.login} element={<LoginPage />} />
                 <Route path={ROUTES.signup} element={<SignupPage />} />
-                <Route path={ROUTES.forgotPassword} element={<ForgotPasswordPage />} />
+                <Route
+                  path={ROUTES.forgotPassword}
+                  element={<ForgotPasswordPage />}
+                />
                 <Route path={ROUTES.reset} element={<ResetPasswordPage />} />
               </Route>
 
@@ -45,15 +48,27 @@ const App: React.FC = () => {
                 <Route path={ROUTES.invoices} element={<InvoicePage />} />
                 <Route path={ROUTES.team} element={<TeamPage />} />
                 <Route path={ROUTES.approval} element={<ApprovalPage />} />
+                <Route
+                  path={ROUTES.export_invoice}
+                  element={<ExportInvoicePage />}
+                />
               </Route>
 
               <Route path={ROUTES.settings} element={<SettingsLayout />}>
                 <Route index element={<ProfileSettingPage />} />
                 <Route path={ROUTES.profile} element={<ProfileSettingPage />} />
-                <Route path={ROUTES.export_configuration} element={<InvoiceConfigurationPage />} />
-                <Route path={ROUTES.import_dataset} element={<ImportDataSetPage />} />
-                <Route path={ROUTES.export_invoice} element={<ExportInvoicePage />} />
-                <Route path={ROUTES.define_rules} element={<InvoiceRulesPage />} />
+                <Route
+                  path={ROUTES.export_configuration}
+                  element={<InvoiceConfigurationPage />}
+                />
+                <Route
+                  path={ROUTES.import_dataset}
+                  element={<ImportDataSetPage />}
+                />
+                <Route
+                  path={ROUTES.define_rules}
+                  element={<InvoiceRulesPage />}
+                />
               </Route>
             </Routes>
           </ProvidersWrapper>

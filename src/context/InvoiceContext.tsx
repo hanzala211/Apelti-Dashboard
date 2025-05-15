@@ -1,7 +1,7 @@
-import { formatDate, handleFileChange, toast } from '@helpers';
-import { invoiceServices, settingServices } from '@services';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Invoice, InvoiceContextTypes } from '@types';
+import { formatDate, handleFileChange, toast } from "@helpers";
+import { invoiceServices, settingServices } from "@services";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Invoice, InvoiceContextTypes } from "@types";
 import {
   createContext,
   ReactNode,
@@ -9,8 +9,8 @@ import {
   useEffect,
   useRef,
   useState,
-} from 'react';
-import { useAuth } from './AuthContext';
+} from "react";
+import { useAuth } from "./AuthContext";
 
 const InvoiceContext = createContext<InvoiceContextTypes | undefined>(
   undefined
@@ -54,7 +54,7 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
     onSuccess: (data) => {
       if (data) {
         if (!data.matchInfo.match) {
-          toast.error('Missing PO Dataset', data.matchInfo.reason);
+          toast.error("Missing PO Dataset", data.matchInfo.reason);
         }
         setExtractedData(data);
       }
@@ -64,7 +64,7 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
   const postInvoiceMutation = useMutation({
     mutationFn: (data: unknown) => postInvoice(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['invoices'] });
+      queryClient.invalidateQueries({ queryKey: ["invoices"] });
       setExtractedData(null);
       setSelectedData(null);
     },
@@ -73,32 +73,32 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
   const postInvoiceWithoutFormDataMutation = useMutation({
     mutationFn: (data: unknown) => postInvoiceWithoutFormData(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['invoices'] });
+      queryClient.invalidateQueries({ queryKey: ["invoices"] });
       setExtractedData(null);
       setIsMultipleInvoicesModalOpen(false);
       setSelectedData(null);
-      setIsAddingMultipleInvoices(false)
+      setIsAddingMultipleInvoices(false);
     },
   });
 
   const updateInvoiceMutation = useMutation({
     mutationFn: (data: unknown) => updateInvoice(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['invoices'] });
+      queryClient.invalidateQueries({ queryKey: ["invoices"] });
       setExtractedData(null);
     },
   });
   const postDraftInvoiceMutation = useMutation({
     mutationFn: (data: unknown) => postDraftInvoice(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['invoices'] });
+      queryClient.invalidateQueries({ queryKey: ["invoices"] });
       handleBtnClick();
     },
   });
   const deleteInvoiceMutation = useMutation({
     mutationFn: (invoiceId: string) => deleteInvoice(invoiceId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['invoices'] });
+      queryClient.invalidateQueries({ queryKey: ["invoices"] });
       setIsInvoiceModelOpen(false);
       handleBtnClick();
     },
@@ -135,8 +135,8 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const foundValue = handleFileChange(event, 'image');
-    if (foundValue && 'label' in foundValue) {
+    const foundValue = handleFileChange(event, "image");
+    if (foundValue && "label" in foundValue) {
       setSelectedImage(foundValue as { label: string; value: string });
     }
   };
@@ -147,18 +147,18 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
       const formData = new FormData();
 
       const response = await fetch(sendImage.value);
-      if (!response.ok) throw new Error('Failed to fetch image');
+      if (!response.ok) throw new Error("Failed to fetch image");
       const blob = await response.blob();
-      const fileName = sendImage?.label || 'uploaded_file';
-      formData.append('file', blob, fileName);
+      const fileName = sendImage?.label || "uploaded_file";
+      formData.append("file", blob, fileName);
       const extractedData = await invoiceServices.extractData(formData);
-      console.log('Extracted Data:', extractedData);
+      console.log("Extracted Data:", extractedData);
       return extractedData.data.data;
     } catch (error) {
-      console.error('Error extracting data:', error);
+      console.error("Error extracting data:", error);
       toast.error(
-        'Failed to extract data',
-        'There was a problem processing the selected image. Please try again.'
+        "Failed to extract data",
+        "There was a problem processing the selected image. Please try again."
       );
       throw error;
     }
@@ -179,7 +179,7 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
 
   const updateInvoice = async (data: unknown) => {
     try {
-      const invoiceId = selectedData?._id || reviewData?._id || '';
+      const invoiceId = selectedData?._id || reviewData?._id || "";
       const response = await invoiceServices.updateInvoice(invoiceId, data);
       console.log(response);
       setReviewData({
@@ -194,15 +194,15 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
         currency: response.data.data.currency,
         rarityInvoice: response.data.data.rarityInvoice,
         comment: response.data.data.comment,
-        fileUrl: response.data.data.fileUrl || '',
-        fileName: response.data.data.fileName || '',
+        fileUrl: response.data.data.fileUrl || "",
+        fileName: response.data.data.fileName || "",
         vatNumber: response.data.data?.vatNumber,
         vendorId: response.data.data.vendorId || response.data.data?.vatNumber,
         items: response.data.data?.items || [],
         _id: response.data.data._id,
         isLocalInvoice: response.data.data.isLocalInvoice,
         amountWithOutVat: response.data.data.amountWithOutVat,
-        internalPartnerCode: response.data.data.internalPartnerCode,
+        intervalVendorId: response.data.data.internalPartnerCode,
         vatPercentage: response.data.data.vatPercentage,
         countryCode: response.data.data.countryCode,
         documentType: response.data.data.documentType,
@@ -233,8 +233,8 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
           currency: response.data.data.currency,
           rarityInvoice: response.data.data.rarityInvoice,
           comment: response.data.data.comment,
-          fileUrl: response.data.data.fileUrl || '',
-          fileName: response.data.data.fileName || '',
+          fileUrl: response.data.data.fileUrl || "",
+          fileName: response.data.data.fileName || "",
           vatNumber: response.data.data?.vatNumber,
           vendorId:
             response.data.data.vendorId || response.data.data?.vatNumber,
@@ -242,7 +242,7 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
           _id: response.data.data._id,
           isLocalInvoice: response.data.data.isLocalInvoice,
           amountWithOutVat: response.data.data.amountWithOutVat,
-          internalPartnerCode: response.data.data.internalPartnerCode,
+          intervalVendorId: response.data.data.internalPartnerCode,
           vatPercentage: response.data.data.vatPercentage,
           countryCode: response.data.data.countryCode,
           documentType: response.data.data.documentType,
@@ -255,8 +255,8 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
     } catch (error) {
       console.log(error);
       toast.error(
-        'Error',
-        typeof error === 'object' ? (error as Error).message : String(error)
+        "Error",
+        typeof error === "object" ? (error as Error).message : String(error)
       );
     }
   };
@@ -271,8 +271,8 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
     } catch (error) {
       console.log(error);
       toast.error(
-        'Error',
-        typeof error === 'object' ? (error as Error).message : String(error)
+        "Error",
+        typeof error === "object" ? (error as Error).message : String(error)
       );
     }
   };
@@ -284,8 +284,8 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
     } catch (error) {
       console.log(error);
       toast.error(
-        'Error',
-        typeof error === 'object' ? (error as Error).message : String(error)
+        "Error",
+        typeof error === "object" ? (error as Error).message : String(error)
       );
     }
   };
@@ -295,8 +295,8 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
       const response = await invoiceServices.deleteInvoice(invoiceId);
       if (response.status === 200) {
         toast.success(
-          'Operation Successful',
-          'Invoice has been successfully deleted.'
+          "Operation Successful",
+          "Invoice has been successfully deleted."
         );
       }
     } catch (error) {
@@ -309,14 +309,14 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
       setIsDownloading(true);
       const response = await invoiceServices.downloadCompanyInvoices();
       const invoiceExportName = await settingServices.getSingleExportFormat(
-        userData?.exportFormatMethodId || ''
+        userData?.exportFormatMethodId || ""
       );
       const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
 
       link.setAttribute(
-        'download',
+        "download",
         `${invoiceExportName?.data?.data?.exportFormateName}.xlsx`
       );
 
@@ -324,10 +324,10 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
       link.click();
       document.body.removeChild(link);
 
-      toast.success('Export Successful', 'Invoices exported successfully');
+      toast.success("Export Successful", "Invoices exported successfully");
     } catch (error) {
       console.log(error);
-      toast.error('Export Failed', 'Failed to export invoices');
+      toast.error("Export Failed", "Failed to export invoices");
     } finally {
       setIsDownloading(false);
     }
@@ -390,7 +390,7 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
 export const useInvoice = (): InvoiceContextTypes => {
   const context = useContext(InvoiceContext);
   if (!context) {
-    throw new Error('use useInvoice inside Invoice Provider');
+    throw new Error("use useInvoice inside Invoice Provider");
   }
   return context;
 };

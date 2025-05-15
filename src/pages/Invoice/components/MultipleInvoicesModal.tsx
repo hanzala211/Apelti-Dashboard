@@ -62,8 +62,8 @@ export const MultipleInvoicesModal: React.FC = () => {
     setSelectedData({
       ...item,
       fileName: selectedMultipleImages[index]
-      ? selectedMultipleImages[index].label
-      : "",
+        ? selectedMultipleImages[index].label
+        : "",
     });
     setIsMultipleInvoicesModalOpen(false);
     setTimeout(() => {
@@ -109,7 +109,7 @@ export const MultipleInvoicesModal: React.FC = () => {
     "amount",
     "amountWithOutVat",
     "currency",
-    "internalPartnerCode",
+    "intervalVendorId",
     "location",
     "vatNumber",
     "vatPercentage",

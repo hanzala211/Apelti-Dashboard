@@ -80,6 +80,11 @@ export interface InvoiceItem {
   quantity: number;
   _id?: string;
   lineItemNumber: string;
+  expensesGL: string;
+  vatGL: string;
+  liabilityAccount: string;
+  projectCode: string;
+  costCentre: string;
 }
 
 export interface Invoice {
@@ -112,7 +117,7 @@ export interface Invoice {
   location?: string;
   vatPercentage?: number;
   amountWithOutVat?: number;
-  internalPartnerCode?: string;
+  intervalVendorId?: string;
   countryCode?: string;
   transactionType?: string;
   documentType?: string;

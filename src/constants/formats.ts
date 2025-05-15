@@ -464,6 +464,11 @@ export const INVOICE_ITEMS_HEADER = [
   "Department",
   "Quantity",
   "Description",
+  "Expenses GL",
+  "VAT GL",
+  "Liability Account",
+  "Project Code",
+  "Cost Centre"
 ];
 
 export const INVOICE_FIELD_OPTIONS = [
@@ -504,40 +509,40 @@ export const INVOICE_ITEM_MAPPING_OPTIONS = [
   { label: "Line Item Number", value: "lineItemNumber" },
 ];
 
-  export const INVOICE_KEYWORDS = [
-    { label: "Marketing", value: "marketing" },
-    { label: "Consultancy", value: "consultancy" },
-    { label: "Royalty", value: "royalty" },
-    { label: "Software", value: "software" },
-    { label: "Meal", value: "meal" },
-    { label: "Rent", value: "rent" },
-  ];
+export const INVOICE_KEYWORDS = [
+  { label: "Marketing", value: "marketing" },
+  { label: "Consultancy", value: "consultancy" },
+  { label: "Royalty", value: "royalty" },
+  { label: "Software", value: "software" },
+  { label: "Meal", value: "meal" },
+  { label: "Rent", value: "rent" },
+];
 
-  export const INVOICE_AREAS = [
-    { label: "Header", value: "header" },
-    { label: "Line Item", value: "lineitem" },
-  ];
+export const INVOICE_AREAS = [
+  { label: "Header", value: "header" },
+  { label: "Line Item", value: "lineitem" },
+];
 
-  export const ACTIONS = [
-    { label: "Use", value: "use" },
-    { label: "Remove", value: "remove" },
-  ];
+export const ACTIONS = [
+  { label: "Use", value: "use" },
+  { label: "Remove", value: "remove" },
+];
 
-  export const INVOICE_FIELD_OPTIONS_RULES = [
-    { label: "Supplier Name", value: "supplierName" },
-    { label: "Invoice Date", value: "invoiceDate" },
-    { label: "Currency", value: "currency" },
-    { label: "Vendor ID", value: "vendorId" },
-    { label: "VAT Number", value: "vatNumber" },
-    { label: "Payment Terms", value: "paymentTerms" },
-    { label: "Payment Term Description", value: "paymentTermDescription" },
-    { label: "Amount", value: "amount" },
-    { label: "Amount Without VAT", value: "amountWithoutVat" },
-    { label: "VAT Percentage", value: "vatPercentage" },
-    { label: "Terms of Payment", value: "termsOfPayment" },
-    { label: "Comment", value: "comment" },
-    { label: "JCI Number", value: "jciNumber" },
-    { label: "Location", value: "location" },
-    { label: "Internal Partner Code", value: "internalPartnerCode" },
-    { label: "Country Code", value: "countryCode" },
-  ];
+export const INVOICE_FIELD_OPTIONS_RULES = [
+  { label: "Supplier Name", value: "supplierName" },
+  { label: "Invoice Date", value: "invoiceDate" },
+  { label: "Currency", value: "currency" },
+  { label: "Vendor ID", value: "vendorId" },
+  { label: "VAT Number", value: "vatNumber" },
+  { label: "Payment Terms", value: "paymentTerms" },
+  { label: "Payment Term Description", value: "paymentTermDescription" },
+  { label: "Amount", value: "amount" },
+  { label: "Amount Without VAT", value: "amountWithoutVat" },
+  { label: "VAT Percentage", value: "vatPercentage" },
+  { label: "Terms of Payment", value: "termsOfPayment" },
+  { label: "Comment", value: "comment" },
+  { label: "JCI Number", value: "jciNumber" },
+  { label: "Location", value: "location" },
+  { label: "Internal Partner Code", value: "internalPartnerCode" },
+  { label: "Country Code", value: "countryCode" },
+];

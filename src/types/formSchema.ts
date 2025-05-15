@@ -15,6 +15,11 @@ export const invoiceItemSchema = z.object({
   department: z.string().min(1, "Please specify the department."),
   quantity: z.number().min(1, "Please enter quantity of at least 1."),
   lineItemNumber: z.string(),
+  expensesGL: z.string().min(1, "Please provide an Expenses GL account"),
+  vatGL: z.string().min(1, "Please provide a VAT GL account"),
+  liabilityAccount: z.string().min(1, "Please provide a liability account"),
+  projectCode: z.string().min(1, "Please provide a project code"),
+  costCentre: z.string().min(1, "Please provide a cost centre"),
 });
 
 export const invoiceForm = z
@@ -40,9 +45,9 @@ export const invoiceForm = z
     comment: z.string().min(1, { message: "Comment is required." }),
     supplierId: z.string().optional(),
     vatNumber: z.string().min(1, { message: "VAT number is required." }),
-    internalPartnerCode: z
+    intervalVendorId: z
       .string()
-      .min(1, { message: "Internal partner code is required." }),
+      .min(1, { message: "Interval vendor code is required." }),
     amountWithOutVat: z
       .number()
       .min(1, { message: "Amount without VAT must be at least 1." }),

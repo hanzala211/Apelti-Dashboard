@@ -1,33 +1,10 @@
-import { ICONS, INVOICE_ITEMS_HEADER } from '@constants';
-import { ReactSVG } from 'react-svg';
-import { CommonLoader } from "@components"
-
-type InvoiceItem = {
-  lineItemNumber?: string;
-  glAccount?: string;
-  amount?: string | number;
-  department?: string;
-  quantity?: string | number;
-  description?: string;
-};
-
-type InvoiceData = {
-  _id?: string;
-  supplierName?: string;
-  currency?: string;
-  amount?: string | number;
-  invoiceNumber?: string;
-  poNumber?: string;
-  termsOfPayment?: string;
-  invoiceDate?: string;
-  paymentTerms?: string;
-  comment?: string;
-  items?: InvoiceItem[];
-  fileUrl?: string;
-};
+import { ICONS, INVOICE_ITEMS_HEADER } from "@constants";
+import { ReactSVG } from "react-svg";
+import { CommonLoader } from "@components";
+import { Invoice } from "@types";
 
 type InvoiceOverviewProps = {
-  data: InvoiceData;
+  data: Invoice | Record<string, string>;
   showControls?: boolean;
   onEdit?: () => void;
   onDelete?: () => void;
@@ -41,7 +18,7 @@ export const InvoiceOverview: React.FC<InvoiceOverviewProps> = ({
   onEdit,
   onDelete,
   isDeleting = false,
-  deleteButtonColor = 'text-primaryColor',
+  deleteButtonColor = "text-primaryColor",
 }) => {
   return (
     <div className="w-full h-full bg-temporaryGray">
@@ -168,43 +145,57 @@ export const InvoiceOverview: React.FC<InvoiceOverviewProps> = ({
         <div className="w-full h-[1px] bg-black"></div>
       </div>
       <div className="w-full overflow-x-auto sm:px-0">
-        <div className="grid grid-cols-6 min-w-[600px] w-full px-5 sm:px-2 gap-4 place-items-center border border-slateGrey">
-          {INVOICE_ITEMS_HEADER.map(
-            (header) => (
-              <h4 key={header} className="m-0 py-3 text-center font-medium">
-                {header}
-              </h4>
-            )
-          )}
+        <div className="grid grid-cols-11 min-w-[1000px] w-full px-5 sm:px-2 gap-4 place-items-center border border-slateGrey">
+          {INVOICE_ITEMS_HEADER.map((header) => (
+            <h4 key={header} className="m-0 py-3 text-center font-medium">
+              {header}
+            </h4>
+          ))}
         </div>
-        {Array.isArray(data?.items) && data?.items?.map((item, index) => (
-          <div
-            key={index}
-            className="grid grid-cols-6 min-w-[600px] w-full border-b py-4 px-5 sm:px-2 gap-4 place-items-center"
-          >
-            <div className="border-[1px] border-silverGray w-full p-3 rounded-md font-semibold">
-              {item?.lineItemNumber}
+        {Array.isArray(data?.items) &&
+          data?.items?.map((item, index) => (
+            <div
+              key={index}
+              className="grid grid-cols-11 min-w-[1000px] w-full border-b py-4 px-5 sm:px-2 gap-4 place-items-center bg-temporaryGray"
+            >
+              <div className="border-[1px] border-silverGray w-full p-3 rounded-md font-semibold truncate">
+                {item?.lineItemNumber}
+              </div>
+              <div className="border-[1px] border-silverGray w-full p-3 rounded-md font-semibold truncate">
+                {item?.glAccount}
+              </div>
+              <div className="border-[1px] border-silverGray w-full p-3 rounded-md font-semibold truncate">
+                {item?.amount}
+              </div>
+              <div className="border-[1px] border-silverGray w-full p-3 rounded-md font-semibold truncate">
+                {item?.department}
+              </div>
+              <div className="border-[1px] border-silverGray w-full p-3 rounded-md font-semibold truncate">
+                {item?.quantity}
+              </div>
+              <div className="border-[1px] border-silverGray w-full p-3 rounded-md font-semibold truncate">
+                {item?.description}
+              </div>
+              <div className="border-[1px] border-silverGray w-full p-3 rounded-md font-semibold truncate">
+                {item?.expensesGL}
+              </div>
+              <div className="border-[1px] border-silverGray w-full p-3 rounded-md font-semibold truncate">
+                {item?.vatGL}
+              </div>
+              <div className="border-[1px] border-silverGray w-full p-3 rounded-md font-semibold truncate">
+                {item?.liabilityAccount}
+              </div>
+              <div className="border-[1px] border-silverGray w-full p-3 rounded-md font-semibold truncate">
+                {item?.projectCode}
+              </div>
+              <div className="border-[1px] border-silverGray w-full p-3 rounded-md font-semibold truncate">
+                {item?.costCentre}
+              </div>
             </div>
-            <div className="border-[1px] border-silverGray w-full p-3 rounded-md font-semibold">
-              {item?.glAccount}
-            </div>
-            <div className="border-[1px] border-silverGray w-full p-3 rounded-md font-semibold">
-              {item?.amount}
-            </div>
-            <div className="border-[1px] border-silverGray w-full p-3 rounded-md font-semibold">
-              {item?.department}
-            </div>
-            <div className="border-[1px] border-silverGray w-full p-3 rounded-md font-semibold">
-              {item?.quantity}
-            </div>
-            <div className="border-[1px] border-silverGray w-full p-3 rounded-md font-semibold">
-              {item?.description}
-            </div>
-          </div>
-        ))}
+          ))}
       </div>
     </div>
   );
 };
 
-export default InvoiceOverview; 
+export default InvoiceOverview;

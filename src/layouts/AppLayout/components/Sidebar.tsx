@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { SidebarItem } from './SidebarItem';
-import { APP_ACTIONS, ICONS, PERMISSIONS, ROUTES } from '@constants';
-import { useAuth, useMessage } from '@context';
-import { useQueryClient } from '@tanstack/react-query';
+import { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { SidebarItem } from "./SidebarItem";
+import { APP_ACTIONS, ICONS, PERMISSIONS, ROUTES } from "@constants";
+import { useAuth, useMessage } from "@context";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const Sidebar: React.FC = () => {
   const { setUserData, setIsMainLoading, userData } = useAuth();
@@ -28,8 +28,8 @@ export const Sidebar: React.FC = () => {
       }
     };
 
-    window.addEventListener('click', handleClick);
-    return () => window.removeEventListener('click', handleClick);
+    window.addEventListener("click", handleClick);
+    return () => window.removeEventListener("click", handleClick);
   }, []);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export const Sidebar: React.FC = () => {
     setIsMainLoading(true);
     queryClient.removeQueries();
     setUserData(null);
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     setTimeout(() => {
       setIsMainLoading(false);
       setSelectedMessage(null);
@@ -51,8 +51,9 @@ export const Sidebar: React.FC = () => {
     <>
       <button
         ref={sideBarButtonRef}
-        className={`md:hidden fixed top-3 sm:left-0 -left-1 p-3 h-fit bg-transparent rounded-md z-50 transition-all duration-300 ${isOpen ? 'opacity-0 pointer-events-none' : ''
-          }`}
+        className={`md:hidden fixed top-3 sm:left-0 -left-1 p-3 h-fit bg-transparent rounded-md z-50 transition-all duration-300 ${
+          isOpen ? "opacity-0 pointer-events-none" : ""
+        }`}
         onClick={() => setIsOpen(!isOpen)}
       >
         <ICONS.menu size={20} />
@@ -61,7 +62,8 @@ export const Sidebar: React.FC = () => {
       <aside
         ref={sideBarRef}
         className={`fixed md:relative h-[100dvh] z-50 bg-basicWhite w-64 p-5 flex flex-col border-r shadow-lg transition-transform duration-300
-          ${isOpen ? 'translate-x-0' : '-translate-x-full'
+          ${
+            isOpen ? "translate-x-0" : "-translate-x-full"
           } md:translate-x-0 md:flex`}
       >
         <div className="flex items-center justify-center">
@@ -126,6 +128,12 @@ export const Sidebar: React.FC = () => {
                 isIconType={true}
               />
             )}
+            <SidebarItem
+              link={ROUTES.export_invoice}
+              icon={ICONS.export}
+              label="Export Invoices"
+              isIconType={true}
+            />
           </div>
           <div className="flex flex-col gap-1 border-b-[1px] py-2">
             <SidebarItem
