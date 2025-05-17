@@ -159,16 +159,6 @@ export type GetApprovalTypes = {
   draftInvoices: number;
 };
 
-export interface MessageContextTypes {
-  selectedMessage: IMessage | null;
-  setSelectedMessage: React.Dispatch<React.SetStateAction<IMessage | null>>;
-  getMessages: () => Promise<IMessage[] | undefined>;
-  comment: string;
-  setComment: React.Dispatch<React.SetStateAction<string>>;
-  postCommentMessage: MutationFunction<CommentResponse, string>;
-  getComments: (messageId: string, page: number) => Promise<CommentResponse>;
-}
-
 export interface InvoiceContextTypes {
   selectedImage: { label: string; value: string } | null;
   setSelectedImage: React.Dispatch<
@@ -246,26 +236,12 @@ export interface AuthContextTypes {
   setUserData: React.Dispatch<React.SetStateAction<IUser | null>>;
   isRemember: boolean;
   setIsRemember: React.Dispatch<React.SetStateAction<boolean>>;
-  signup: (sendData: unknown) => void;
-  login: (sendData: unknown) => void;
   isMainLoading: boolean;
   setIsMainLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  errorMessage: string;
-  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
-  isAuthLoading: boolean;
   socketClient: Socket | null;
-  forgotPassword: (sendData: unknown) => Promise<void>;
-  resetPassword: (sendData: unknown) => Promise<void>;
-}
-
-export interface TeamContextTypes {
-  addMember: (sendData: unknown) => Promise<IUser | null>;
-  deleteMember: (userId: string) => Promise<null | undefined>;
-  editingUser: IUser | null;
-  setEditingUser: React.Dispatch<React.SetStateAction<IUser | null>>;
-  updateUser: (userId: string, data: unknown) => Promise<IUser | null>;
-  errorMessage: string;
-  getMembers: () => Promise<IUser[] | null>;
+  loadAuth: () => Promise<void>;
+  selectedMessage: IMessage | null;
+  setSelectedMessage: React.Dispatch<React.SetStateAction<IMessage | null>>;
 }
 
 export interface SettingContextTypes {
@@ -299,14 +275,7 @@ export interface ApprovalContextTypes {
   setSelectedApprovalInvoice: React.Dispatch<
     React.SetStateAction<number | null>
   >;
-  getApprovalInvoices: () => Promise<GetApprovalTypes | undefined>;
-  changeStatus: (data: unknown, invoiceID: string | undefined) => Promise<void>;
 }
-
-export interface DocumentContextTypes {
-  getDocuments: () => Promise<IDocument[] | undefined>;
-}
-
 export interface ExportFormat {
   id: string;
   headerTitle: string;

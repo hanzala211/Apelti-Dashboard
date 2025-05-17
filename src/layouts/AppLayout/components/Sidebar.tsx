@@ -2,12 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { SidebarItem } from "./SidebarItem";
 import { APP_ACTIONS, ICONS, PERMISSIONS, ROUTES } from "@constants";
-import { useAuth, useMessage } from "@context";
+import { useAuth } from "@context";
 import { useQueryClient } from "@tanstack/react-query";
 
 export const Sidebar: React.FC = () => {
   const { setUserData, setIsMainLoading, userData } = useAuth();
-  const { setSelectedMessage } = useMessage();
   const [isOpen, setIsOpen] = useState(false);
   const sideBarRef = useRef<HTMLDivElement>(null);
   const sideBarButtonRef = useRef<HTMLButtonElement>(null);
@@ -43,7 +42,6 @@ export const Sidebar: React.FC = () => {
     localStorage.removeItem("token");
     setTimeout(() => {
       setIsMainLoading(false);
-      setSelectedMessage(null);
     }, 1000);
   };
 

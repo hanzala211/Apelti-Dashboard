@@ -1,18 +1,21 @@
-import { DocumentNotFound } from '@components';
-import { useMessage } from '@context';
+import { DocumentNotFound } from "@components";
+import { useAuth } from "@context";
+import React from "react";
 
 export const MessagesRightPanel: React.FC = () => {
-  const { selectedMessage } = useMessage();
+  const { selectedMessage } = useAuth();
 
   return (
-    <>
-      {selectedMessage?.fileUrl ?
+    <React.Fragment>
+      {selectedMessage?.fileUrl ? (
         <img
           src={selectedMessage?.fileUrl}
           alt="Preview"
           className="absolute inset-0 w-[90%] mx-auto h-full object-contain"
         />
-        : <DocumentNotFound />}
-    </>
+      ) : (
+        <DocumentNotFound />
+      )}
+    </React.Fragment>
   );
 };

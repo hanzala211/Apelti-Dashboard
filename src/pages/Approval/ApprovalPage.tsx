@@ -10,29 +10,34 @@ import { useApproval, useAuth } from "@context";
 import { Table } from "@components";
 import { FilterTypes, Invoice } from "@types";
 import { Navigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useGetApprovalInvoicesQuery } from "@api";
 import { formatDate, handleInvoiceFilters } from "@helpers";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ApprovalModal from "./components/ApprovalModal";
 
 export const ApprovalPage: React.FC = () => {
   const { userData } = useAuth();
-  const {
-    selectedApprovalInvoice,
-    setSelectedApprovalInvoice,
-    getApprovalInvoices,
-  } = useApproval();
+  const { selectedApprovalInvoice, setSelectedApprovalInvoice } = useApproval();
   const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
   const [isApprovalModalOpen, setIsApprovalModalOpen] =
     useState<boolean>(false);
   const [filters, setFilters] = useState<FilterTypes[]>([
     { id: 1, field: "", condition: "", value: "" },
   ]);
-  const { data: approvalInvoices, isLoading: isApprovalInvoicesLoading } =
-    useQuery({
-      queryKey: ["approvalInvoices"],
-      queryFn: () => getApprovalInvoices(),
-    });
+
+  const { data: approvalData, isLoading: isApprovalInvoicesLoading } =
+    useGetApprovalInvoicesQuery();
+
+  const approvalInvoices = useMemo(() => {
+    return approvalData
+      ? {
+          ...approvalData,
+          invoices: approvalData.invoices.filter(
+            (invoice: Invoice) => invoice.status !== "approved"
+          ),
+        }
+      : undefined;
+  }, [approvalData]);
   const [filteredInvoices, setFilteredInvoices] = useState<Invoice[]>(
     approvalInvoices?.invoices || []
   );
@@ -136,7 +141,7 @@ export const ApprovalPage: React.FC = () => {
             setFilteredInvoices(
               handleInvoiceFilters(approvalInvoices?.invoices, filters) || []
             );
-            setIsFilterModalOpen(false)
+            setIsFilterModalOpen(false);
           }}
           heading="In this view show records"
           modalItems={
@@ -155,6 +160,7 @@ export const ApprovalPage: React.FC = () => {
         headings={headings}
         data={formattedInvoices}
         isLoading={isApprovalInvoicesLoading}
+        tableContainerClassName="w-full mt-5 sm:max-h-[calc(100vh-310px)] max-h-[calc(100dvh-280px)] overflow-auto"
       />
       <ApprovalModal
         handleClose={handleCloseApprovalModal}

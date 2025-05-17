@@ -1,33 +1,26 @@
-import { PageHeading } from '@components';
-import { DocumentTable } from './components/DocumentTable';
-import {
-  APP_ACTIONS,
-  DATE_FOMRAT,
-  PERMISSIONS,
-  ROUTES,
-} from '@constants';
-import { IDocument } from '@types';
-import { useEffect, useState } from 'react';
-import { DatePicker, DatePickerProps } from 'antd';
-import dayjs from 'dayjs';
-import { useAuth, useDocument } from '@context';
-import { Navigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import DocumentTableSkeleton from './components/DocumentTableSkeleton';
-import { formatDate } from '@helpers';
+import { PageHeading } from "@components";
+import { DocumentTable } from "./components/DocumentTable";
+import { APP_ACTIONS, DATE_FOMRAT, PERMISSIONS, ROUTES } from "@constants";
+import { IDocument } from "@types";
+import { useEffect, useState } from "react";
+import { DatePicker, DatePickerProps } from "antd";
+import dayjs from "dayjs";
+import { useAuth } from "@context";
+import { Navigate } from "react-router-dom";
+import DocumentTableSkeleton from "./components/DocumentTableSkeleton";
+import { formatDate } from "@helpers";
+import { useGetDocumentsQuery } from "@api";
 
 export const DocumentPage: React.FC = () => {
   const { userData } = useAuth();
-  const { getDocuments } = useDocument();
   const [searchData, setSearchData] = useState<IDocument[]>([]);
-  const [searchInput, setSearchInput] = useState<string>('');
-  const [searchDate, setSearchDate] = useState<string>('');
+  const [searchInput, setSearchInput] = useState<string>("");
+  const [searchDate, setSearchDate] = useState<string>("");
   const userPermissions =
     PERMISSIONS[userData?.role as keyof typeof PERMISSIONS];
-  const { data: documents, isLoading: isDocumentsLoading } = useQuery({
-    queryKey: ['documents'],
-    queryFn: getDocuments
-  })
+
+  const { data: documents, isLoading: isDocumentsLoading } =
+    useGetDocumentsQuery();
 
   useEffect(() => {
     if (searchInput.length > 1 || searchDate) {
@@ -35,33 +28,39 @@ export const DocumentPage: React.FC = () => {
     } else {
       setSearchData([]);
     }
-  }, [searchInput, searchDate]);
+  }, [searchInput, searchDate, documents]);
 
   const handleSearch = () => {
-    const foundSearches = documents && documents.filter((item) => {
-      const matchesName =
-        item.fileName && searchInput.trim().length > 0
-          ? item.fileName.toLowerCase().includes(searchInput.toLowerCase())
-          : false;
-      const matchesDate = searchDate ? formatDate(item.createdAt) === searchDate : false;
+    const foundSearches =
+      documents &&
+      documents
+        .filter((item: IDocument) => {
+          const matchesName =
+            item.fileName && searchInput.trim().length > 0
+              ? item.fileName.toLowerCase().includes(searchInput.toLowerCase())
+              : false;
+          const matchesDate = searchDate
+            ? formatDate(item.createdAt) === searchDate
+            : false;
 
-      return matchesName || matchesDate;
-    }).map((item) => {
-      return {
-        fileName: item.fileName || '',
-        documentType: item.documentType || '',
-        createdAt: item.createdAt || '',
-        fileUrl: item.fileUrl || '',
-        name: item.fileName || '',
-        section: item.documentType || '',
-        added: item.createdAt || '',
-      };
-    });
+          return matchesName || matchesDate;
+        })
+        .map((item: IDocument) => {
+          return {
+            fileName: item.fileName || "",
+            documentType: item.documentType || "",
+            createdAt: item.createdAt || "",
+            fileUrl: item.fileUrl || "",
+            name: item.fileName || "",
+            section: item.documentType || "",
+            added: item.createdAt || "",
+          };
+        });
 
     setSearchData(foundSearches as IDocument[]);
   };
 
-  const handleChange: DatePickerProps['onChange'] = (_, dateString) => {
+  const handleChange: DatePickerProps["onChange"] = (_, dateString) => {
     const formattedDate = Array.isArray(dateString)
       ? dateString[0]
       : dateString;
@@ -104,7 +103,11 @@ export const DocumentPage: React.FC = () => {
           </div>
         </div>
         <div className="h-[100dvh] max-h-[calc(100dvh-238px)] overflow-y-auto md:mt-4">
-          {isDocumentsLoading ? <DocumentTableSkeleton /> : <DocumentTable searchData={searchData} document={documents} />}
+          {isDocumentsLoading ? (
+            <DocumentTableSkeleton />
+          ) : (
+            <DocumentTable searchData={searchData} document={documents} />
+          )}
         </div>
       </div>
     </section>

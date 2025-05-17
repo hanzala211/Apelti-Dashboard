@@ -1,5 +1,5 @@
 import { formatDate, handleFileChange, toast } from "@helpers";
-import { invoiceServices, settingServices } from "@services";
+import { InvoiceService, SettingService } from "@services";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Invoice, InvoiceContextTypes } from "@types";
 import {
@@ -151,7 +151,7 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
       const blob = await response.blob();
       const fileName = sendImage?.label || "uploaded_file";
       formData.append("file", blob, fileName);
-      const extractedData = await invoiceServices.extractData(formData);
+      const extractedData = await InvoiceService.extractData(formData);
       console.log("Extracted Data:", extractedData);
       return extractedData.data.data;
     } catch (error) {
@@ -166,7 +166,7 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
 
   const getInvoices = async () => {
     try {
-      const response = await invoiceServices.getInvoices();
+      const response = await InvoiceService.getInvoices();
       console.log(response);
       if (response.status === 200) {
         return response.data.data;
@@ -180,7 +180,7 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
   const updateInvoice = async (data: unknown) => {
     try {
       const invoiceId = selectedData?._id || reviewData?._id || "";
-      const response = await invoiceServices.updateInvoice(invoiceId, data);
+      const response = await InvoiceService.updateInvoice(invoiceId, data);
       console.log(response);
       setReviewData({
         supplierName: response.data.data.supplierName,
@@ -218,7 +218,7 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
 
   const postInvoice = async (data: unknown) => {
     try {
-      const response = await invoiceServices.postInvoice(data);
+      const response = await InvoiceService.postInvoice(data);
       console.log(response);
       if (response.status === 200) {
         setReviewData({
@@ -263,7 +263,7 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
 
   const postInvoiceWithoutFormData = async (data: unknown) => {
     try {
-      const response = await invoiceServices.postInvoice(data);
+      const response = await InvoiceService.postInvoice(data);
       console.log(response);
       if (response.status === 200) {
         return response.data.data;
@@ -279,7 +279,7 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
 
   const postDraftInvoice = async (data: unknown) => {
     try {
-      const response = await invoiceServices.postDraftInvoice(data);
+      const response = await InvoiceService.postDraftInvoice(data);
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -292,7 +292,7 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
 
   const deleteInvoice = async (invoiceId: string) => {
     try {
-      const response = await invoiceServices.deleteInvoice(invoiceId);
+      const response = await InvoiceService.deleteInvoice(invoiceId);
       if (response.status === 200) {
         toast.success(
           "Operation Successful",
@@ -307,8 +307,8 @@ export const InvoiceProvider: React.FC<{ children: ReactNode }> = ({
   const downloadInvoices = async () => {
     try {
       setIsDownloading(true);
-      const response = await invoiceServices.downloadCompanyInvoices();
-      const invoiceExportName = await settingServices.getSingleExportFormat(
+      const response = await InvoiceService.downloadCompanyInvoices();
+      const invoiceExportName = await SettingService.getSingleExportFormat(
         userData?.exportFormatMethodId || ""
       );
       const url = window.URL.createObjectURL(new Blob([response.data]));

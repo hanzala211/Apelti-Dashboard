@@ -1,5 +1,5 @@
 import { useAuth } from "@context";
-import { settingServices } from "@services";
+import { SettingService } from "@services";
 import { SettingContextTypes } from "@types";
 import { createContext, ReactNode, useContext, useState } from "react";
 import { toast } from "@helpers";
@@ -65,7 +65,7 @@ export const SettingProvider: React.FC<{ children: ReactNode }> = ({
   const changePassword = async (data: unknown) => {
     try {
       setErrorMessage("");
-      const response = await settingServices.changePassword(data);
+      const response = await SettingService.changePassword(data);
       console.log(response);
       toast.success(
         "Update Complete",
@@ -82,7 +82,7 @@ export const SettingProvider: React.FC<{ children: ReactNode }> = ({
 
   const changeUserData = async (data: unknown) => {
     try {
-      const response = await settingServices.changeUserData(
+      const response = await SettingService.changeUserData(
         data,
         userData?._id || ""
       );
@@ -102,7 +102,7 @@ export const SettingProvider: React.FC<{ children: ReactNode }> = ({
 
   const createInvoiceExportFormat = async (data: unknown) => {
     try {
-      const response = await settingServices.createInvoiceExportFormat(data);
+      const response = await SettingService.createInvoiceExportFormat(data);
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -112,7 +112,7 @@ export const SettingProvider: React.FC<{ children: ReactNode }> = ({
 
   const getInvoiceFormatExport = async () => {
     try {
-      const response = await settingServices.getInvoiceFormatExport();
+      const response = await SettingService.getInvoiceFormatExport();
       console.log(response);
       return response.data.data;
     } catch (error) {
@@ -122,7 +122,7 @@ export const SettingProvider: React.FC<{ children: ReactNode }> = ({
 
   const selectExportFormat = async (data: unknown) => {
     try {
-      const response = await settingServices.selectExportFormat(data);
+      const response = await SettingService.selectExportFormat(data);
       console.log(response);
       return response.data.data;
     } catch (error) {
@@ -133,7 +133,7 @@ export const SettingProvider: React.FC<{ children: ReactNode }> = ({
 
   const updateExportFieldsFormat = async (formatId: string, data: unknown) => {
     try {
-      const response = await settingServices.updateExportFieldsFormat(
+      const response = await SettingService.updateExportFieldsFormat(
         formatId,
         data
       );
@@ -149,7 +149,7 @@ export const SettingProvider: React.FC<{ children: ReactNode }> = ({
     try {
       const formData = new FormData();
       formData.append("excelFile", data as File, "po-dataset.xlsx");
-      const response = await settingServices.uploadPoData(formData);
+      const response = await SettingService.uploadPoData(formData);
       console.log(response);
       return response.data;
     } catch (error) {
@@ -160,7 +160,7 @@ export const SettingProvider: React.FC<{ children: ReactNode }> = ({
 
   const postInvoiceRules = async (data: unknown) => {
     try {
-      const response = await settingServices.postInvoiceRules(data);
+      const response = await SettingService.postInvoiceRules(data);
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -170,7 +170,7 @@ export const SettingProvider: React.FC<{ children: ReactNode }> = ({
 
   const getInvoiceRules = async () => {
     try {
-      const response = await settingServices.getInvoiceRules();
+      const response = await SettingService.getInvoiceRules();
       console.log(response);
       return response.data.data;
     } catch (error) {
@@ -181,7 +181,7 @@ export const SettingProvider: React.FC<{ children: ReactNode }> = ({
 
   const updateInvoiceRulesStatus = async (ruleId: string, data: unknown) => {
     try {
-      const response = await settingServices.updateInvoiceRuleStatus(
+      const response = await SettingService.updateInvoiceRuleStatus(
         ruleId,
         data
       );
@@ -195,7 +195,7 @@ export const SettingProvider: React.FC<{ children: ReactNode }> = ({
 
   const deleteInvoiceRules = async (ruleId: string) => {
     try{
-      const response = await settingServices.deleteInvoiceRules(ruleId)
+      const response = await SettingService.deleteInvoiceRules(ruleId)
       console.log(response)
     }catch(error){
       console.log(error)

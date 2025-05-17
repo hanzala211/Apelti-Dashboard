@@ -1,7 +1,8 @@
-import PhoneInput from 'react-phone-input-2';
-import { Control, Controller, FieldValues, Path } from 'react-hook-form';
-import 'react-phone-input-2/lib/style.css';
-import { ErrorMessage } from '@components';
+import PhoneInput from "react-phone-input-2";
+import { Control, Controller, FieldValues, Path } from "react-hook-form";
+import "react-phone-input-2/lib/style.css";
+import { ErrorMessage } from "@components";
+import React from "react";
 
 interface PhoneNumberInputProps<T extends FieldValues> {
   control: Control<T>;
@@ -14,7 +15,7 @@ export const PhoneNumberInput = <T extends FieldValues>({
   control,
   name,
   label,
-  defaultCountry = 'pk',
+  defaultCountry = "pk",
 }: PhoneNumberInputProps<T>) => {
   return (
     <div className="flex flex-col gap-2 w-full">
@@ -25,7 +26,7 @@ export const PhoneNumberInput = <T extends FieldValues>({
         name={name}
         control={control}
         render={({ field, fieldState: { error } }) => (
-          <>
+          <React.Fragment>
             <PhoneInput
               country={defaultCountry}
               value={field.value}
@@ -33,7 +34,7 @@ export const PhoneNumberInput = <T extends FieldValues>({
               inputProps={{
                 name: name,
                 id: name,
-                placeholder: '',
+                placeholder: "",
               }}
               autoFormat={true}
               countryCodeEditable={true}
@@ -42,7 +43,7 @@ export const PhoneNumberInput = <T extends FieldValues>({
               specialLabel=""
             />
             <ErrorMessage error={error?.message} />
-          </>
+          </React.Fragment>
         )}
       />
     </div>

@@ -7,14 +7,7 @@ import { Skeleton } from 'antd';
 interface TeamTableProps {
   teamMembers: IUser[] | null | undefined;
   isTeamLoading: boolean;
-  deleteUserMutation: UseMutationResult<
-    null | undefined,
-    Error,
-    {
-      userId: string;
-    },
-    unknown
-  >;
+  deleteUserMutation: UseMutationResult<unknown, Error, string, unknown>;
 }
 
 export const TeamTable: React.FC<TeamTableProps> = ({
@@ -26,6 +19,12 @@ export const TeamTable: React.FC<TeamTableProps> = ({
   const { setEditingUser } = useTeam();
   const userPermissions =
     PERMISSIONS[userData?.role as keyof typeof PERMISSIONS];
+
+  const handleDelete = (userId: string) => {
+    if (!deleteUserMutation.isPending) {
+      deleteUserMutation.mutate(userId);
+    }
+  };
 
   return (
     <div className="overflow-x-auto overflow-y-hidden mt-8">
@@ -116,10 +115,7 @@ export const TeamTable: React.FC<TeamTableProps> = ({
                         ? 'cursor-not-allowed opacity-50'
                         : ''
                         }`}
-                      onClick={() => {
-                        if (!deleteUserMutation.isPending)
-                          deleteUserMutation.mutate({ userId: item._id });
-                      }}
+                      onClick={() => handleDelete(item._id)}
                     >
                       <ICONS.delete size={24} />
                     </td>

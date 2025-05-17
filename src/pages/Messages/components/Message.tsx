@@ -1,15 +1,14 @@
-import { CheckInput, Button } from '@components';
-import { COLORS, ICONS } from '@constants';
-import { useAuth, useMessage } from '@context';
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
-import { CommentResponse, IMessage } from '@types';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { CommonLoader } from "@components"
+import { CheckInput, Button } from "@components";
+import { COLORS, ICONS } from "@constants";
+import { useAuth } from "@context";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { CommentResponse, IMessage, MessageComment } from "@types";
+import { useEffect, useState } from "react";
+import { CommonLoader } from "@components";
+import { usePostCommentMutation } from "@api";
+import { MessageService } from "@services";
+import { toast } from "@helpers";
+import { useNavigate } from "react-router-dom";
 
 interface MessageProps {
   onCheckChange: (value: boolean) => void;
@@ -29,24 +28,19 @@ export const Message: React.FC<MessageProps> = ({
   item,
   messagesBoolean,
 }) => {
-  const { userData } = useAuth();
-  const {
-    setSelectedMessage,
-    selectedMessage,
-    comment,
-    setComment,
-    postCommentMessage,
-    getComments,
-  } = useMessage();
+  const { userData, selectedMessage, setSelectedMessage } = useAuth();
+  const [comment, setComment] = useState<string>("");
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
-  const postCommentMessageMutation = useMutation({
-    mutationFn: (messageId: string) => postCommentMessage(messageId),
-    onSuccess: () => {
-      setComment('');
+  const postCommentMutation = usePostCommentMutation();
+
+  useEffect(() => {
+    if (postCommentMutation.status === "success") {
+      setComment("");
       queryClient.setQueryData(
-        ['comments', item._id],
+        ["comments", item._id],
         (oldData: CommentsQueryData | undefined) => {
           if (!oldData) return { pages: [], pageParams: [] };
           const newComment = {
@@ -68,8 +62,18 @@ export const Message: React.FC<MessageProps> = ({
           };
         }
       );
-    },
-  });
+    } else if (postCommentMutation.status === "error") {
+      toast.error("Error posting comment", postCommentMutation.error.message);
+    }
+  }, [postCommentMutation.status]);
+
+  const handlePostComment = () => {
+    postCommentMutation.mutate({
+      data: { comment },
+      messageId: item._id,
+    });
+  };
+
   const {
     data: comments,
     isLoading: isCommentsLoading,
@@ -78,17 +82,16 @@ export const Message: React.FC<MessageProps> = ({
     isFetchingNextPage,
     refetch,
   } = useInfiniteQuery({
-    queryKey: ['comments', item._id],
+    queryKey: ["comments", item._id],
     queryFn: async ({ pageParam = 1 }) => {
-      const commentsResponse = await getComments(item._id, pageParam);
-      return commentsResponse;
+      const response = await MessageService.getComment(pageParam, 3, item._id);
+      return response.data.data.comments;
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage) =>
       lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined,
     enabled: false,
   });
-  const navigate = useNavigate();
 
   const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     onCheckChange(e.target.checked);
@@ -109,10 +112,11 @@ export const Message: React.FC<MessageProps> = ({
     <div className="relative">
       <div
         onClick={handleChange}
-        className={`flex gap-2 rounded-md cursor-pointer flex-col border-[1px] p-3 w-full ${item._id === selectedMessage?._id
-          ? 'bg-softBlue border-darkBlue'
-          : ' border-basicSilver'
-          }`}
+        className={`flex gap-2 rounded-md cursor-pointer flex-col border-[1px] p-3 w-full ${
+          item._id === selectedMessage?._id
+            ? "bg-softBlue border-darkBlue"
+            : " border-basicSilver"
+        }`}
       >
         <div className="flex gap-2 items-center">
           <CheckInput
@@ -138,13 +142,14 @@ export const Message: React.FC<MessageProps> = ({
                 refetch();
                 setIsCommentOpen((prev) => !prev);
               }}
-              className={`text-[12px] ${isCommentOpen && !isCommentsLoading ? 'text-primaryColor' : ''
-                } transition-all duration-200 m-0`}
+              className={`text-[12px] ${
+                isCommentOpen && !isCommentsLoading ? "text-primaryColor" : ""
+              } transition-all duration-200 m-0`}
             >
               {isCommentsLoading ? (
                 <CommonLoader color={COLORS.primaryColor} size={5} />
               ) : (
-                'Add Comments'
+                "Add Comments"
               )}
             </button>
           </div>
@@ -153,10 +158,11 @@ export const Message: React.FC<MessageProps> = ({
       {/* Comment Box */}
       <div
         className={`mt-3 z-10 overflow-hidden transition-all w-full duration-300
-    ${isCommentOpen && !isCommentsLoading
-            ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
-            : 'opacity-0 absolute h-0 translate-y-4 scale-95 pointer-events-none'
-          }`}
+    ${
+      isCommentOpen && !isCommentsLoading
+        ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
+        : "opacity-0 absolute h-0 translate-y-4 scale-95 pointer-events-none"
+    }`}
       >
         <div className="flex gap-4">
           <input
@@ -170,14 +176,14 @@ export const Message: React.FC<MessageProps> = ({
             disabled={comment.length === 0}
             btnText="Comment"
             className="rounded-md"
-            isLoading={postCommentMessageMutation.isPending}
-            handleClick={() => postCommentMessageMutation.mutate(item._id)}
+            isLoading={postCommentMutation.isPending}
+            handleClick={handlePostComment}
           />
         </div>
         <div className="bg-gray-200 shadow-md p-4 mt-2 rounded-md w-full flex flex-col gap-4">
           {/* User Comment */}
           {comments?.pages.map((page) =>
-            page.data.map((comment) => (
+            page.data.map((comment: MessageComment) => (
               <div
                 key={comment._id}
                 className={`border-b-[1px] border-silverGray pb-2 last:border-b-0`}
@@ -207,10 +213,11 @@ export const Message: React.FC<MessageProps> = ({
             <button
               disabled={isFetchingNextPage}
               onClick={handleFetchMore}
-              className={`w-fit ${isFetchingNextPage
-                ? 'bg-blue-900 cursor-not-allowed'
-                : 'hover:bg-blue-700'
-                } flex gap-2 items-center m-0 bg-primaryColor p-2 rounded-md text-basicWhite transition-all duration-200 text-[14px]`}
+              className={`w-fit ${
+                isFetchingNextPage
+                  ? "bg-blue-900 cursor-not-allowed"
+                  : "hover:bg-blue-700"
+              } flex gap-2 items-center m-0 bg-primaryColor p-2 rounded-md text-basicWhite transition-all duration-200 text-[14px]`}
             >
               <ICONS.load size={20} color={COLORS.basicWhite} />
               Load More Comments

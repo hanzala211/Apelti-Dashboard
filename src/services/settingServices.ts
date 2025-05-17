@@ -1,79 +1,93 @@
-import { sendRequest } from '@helpers';
+import { sendRequest } from "@helpers";
 
-export const settingServices = {
-  changePassword: (data: unknown) =>
-    sendRequest({
-      method: 'POST',
-      url: '/user/change-password',
-      data,
-      isAuthIncluded: true,
-    }),
-  changeUserData: (data: unknown, userID: string) =>
-    sendRequest({
-      method: 'PUT',
-      url: `/company/user/${userID}`,
-      isAuthIncluded: true,
-      data,
-    }),
-  createInvoiceExportFormat: (data: unknown) =>
-    sendRequest({
-      method: 'POST',
-      url: `/mapping`,
-      isAuthIncluded: true,
-      data,
-    }),
-  getInvoiceFormatExport: () =>
-    sendRequest({
-      method: 'GET',
-      url: `/mapping/all`,
-      isAuthIncluded: true,
-    }),
-  selectExportFormat: (data: unknown) =>
-    sendRequest({
-      method: 'PUT',
-      url: `/mapping/user`,
-      isAuthIncluded: true,
-      data,
-    }),
-  updateExportFieldsFormat: (formatId: string, data: unknown) =>
-    sendRequest({
-      method: 'PUT',
-      url: `/mapping/${formatId}`,
-      isAuthIncluded: true,
-      data,
-    }),
-  getSingleExportFormat: (formatId: string) =>
-    sendRequest({
-      method: 'GET',
-      url: `/mapping/${formatId}`,
-      isAuthIncluded: true,
-    }),
-  uploadPoData: (data: unknown) => sendRequest({
+export const changePassword = (data: unknown) =>
+  sendRequest({
+    method: "POST",
+    url: "/user/change-password",
+    data,
+    isAuthIncluded: true,
+  });
+
+export const changeUserData = (data: unknown, userID: string) =>
+  sendRequest({
+    method: "PUT",
+    url: `/company/user/${userID}`,
+    isAuthIncluded: true,
+    data,
+  });
+
+export const createInvoiceExportFormat = (data: unknown) =>
+  sendRequest({
+    method: "POST",
+    url: `/mapping`,
+    isAuthIncluded: true,
+    data,
+  });
+
+export const getInvoiceFormatExport = () =>
+  sendRequest({
+    method: "GET",
+    url: `/mapping/all`,
+    isAuthIncluded: true,
+  });
+
+export const selectExportFormat = (data: unknown) =>
+  sendRequest({
+    method: "PUT",
+    url: `/mapping/user`,
+    isAuthIncluded: true,
+    data,
+  });
+
+export const updateExportFieldsFormat = (formatId: string, data: unknown) =>
+  sendRequest({
+    method: "PUT",
+    url: `/mapping/${formatId}`,
+    isAuthIncluded: true,
+    data,
+  });
+
+export const getSingleExportFormat = (formatId: string) =>
+  sendRequest({
+    method: "GET",
+    url: `/mapping/${formatId}`,
+    isAuthIncluded: true,
+  });
+
+export const uploadPoData = (data: unknown) =>
+  sendRequest({
     method: "POST",
     url: `/excel/upload`,
     isAuthIncluded: true,
     data,
-  }),
-  postInvoiceRules: (data: unknown) => sendRequest({
+  });
+
+export const postInvoiceRules = (data: unknown) =>
+  sendRequest({
     url: `/invoice-rules`,
     data,
     isAuthIncluded: true,
-    method: "POST"
-  }),
-  getInvoiceRules: () => sendRequest({
+    method: "POST",
+  });
+
+export const getInvoiceRules = () =>
+  sendRequest({
     url: `/invoice-rules`,
     isAuthIncluded: true,
-    method: "GET"
-  }),
-  updateInvoiceRuleStatus: (ruleId: string, data: unknown) => sendRequest({
+    method: "GET",
+  });
+
+export const updateInvoiceRuleStatus = (ruleId: string, data: unknown) =>
+  sendRequest({
     url: `/invoice-rules/status/${ruleId}`,
     data,
     isAuthIncluded: true,
-    method: "PUT"
-  }),
-  deleteInvoiceRules: (ruleId: string) => sendRequest({
+    method: "PUT",
+  });
+
+export const deleteInvoiceRules = (ruleId: string) =>
+  sendRequest({
     url: `/invoice-rules/${ruleId}`,
     isAuthIncluded: true,
-    method: "DELETE"
-  }),
-};
+    method: "DELETE",
+  });

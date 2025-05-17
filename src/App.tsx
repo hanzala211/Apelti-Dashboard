@@ -20,10 +20,11 @@ import {
 } from "@pages";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "antd/dist/reset.css";
+import React from "react";
 
 const App: React.FC = () => {
   return (
-    <>
+    <React.Fragment>
       <ReactQueryProvider>
         <BrowserRouter>
           <ProvidersWrapper>
@@ -74,7 +75,7 @@ const App: React.FC = () => {
           </ProvidersWrapper>
         </BrowserRouter>
       </ReactQueryProvider>
-    </>
+    </React.Fragment>
   );
 };
 
