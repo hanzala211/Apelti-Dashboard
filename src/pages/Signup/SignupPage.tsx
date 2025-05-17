@@ -1,17 +1,17 @@
-import { AuthButton, ErrorMessage, Input, PhoneNumberInput } from '@components';
-import { ROUTES } from '@constants';
-import { useAuth } from '@context';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { signupForm, SignupFormSchema } from '@types';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
-import { MoonLoader } from 'react-spinners';
-import { useSignupMutation } from '@api';
-import { useEffect, useState } from 'react';
+import { AuthButton, ErrorMessage, Input, PhoneNumberInput } from "@components";
+import { ROUTES } from "@constants";
+import { useAuth } from "@context";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signupForm, SignupFormSchema } from "@types";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { MoonLoader } from "react-spinners";
+import { useSignupMutation } from "@api";
+import { useEffect, useState } from "react";
 
 export const SignupPage: React.FC = () => {
   const { setUserData } = useAuth();
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const navigate = useNavigate();
 
   const signupMutation = useSignupMutation();
@@ -24,29 +24,29 @@ export const SignupPage: React.FC = () => {
   } = useForm<SignupFormSchema>({
     resolver: zodResolver(signupForm),
     defaultValues: {
-      businessType: 'Small or midsize business',
+      businessType: "Small or midsize business",
     },
   });
 
   useEffect(() => {
-    if (signupMutation.status === 'success') {
+    if (signupMutation.status === "success") {
       setUserData(signupMutation.data.user);
 
       if (signupMutation.data.token) {
-        localStorage.setItem('token', signupMutation.data.token);
+        localStorage.setItem("token", signupMutation.data.token);
       }
 
-      if (signupMutation.data.user.role === 'admin') {
-        navigate('/');
+      if (signupMutation.data.user.role === "admin") {
+        navigate("/");
       } else if (
-        ['approver', 'clerk', 'accountant', 'payer'].includes(
+        ["approver", "clerk", "accountant", "payer"].includes(
           signupMutation.data.user.role
         )
       ) {
         navigate(`${ROUTES.messages}`);
       }
-    } else if (signupMutation.status === 'error') {
-      setErrorMessage(signupMutation.error?.message || 'Signup failed');
+    } else if (signupMutation.status === "error") {
+      setErrorMessage(signupMutation.error?.message || "Signup failed");
     }
   }, [signupMutation.status]);
 
@@ -57,8 +57,9 @@ export const SignupPage: React.FC = () => {
 
   return (
     <div
-      className={`w-[22rem] lg:w-[35rem] relative mx-auto h-screen flex flex-col gap-3 justify-center ${signupMutation.isPending ? 'opacity-70' : ''
-        } `}
+      className={`w-[22rem] lg:w-[35rem] relative mx-auto h-screen flex flex-col gap-3 justify-center ${
+        signupMutation.isPending ? "opacity-70" : ""
+      } `}
     >
       {signupMutation.isPending && (
         <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2">
@@ -69,47 +70,47 @@ export const SignupPage: React.FC = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
         <div className="flex gap-5">
           <Input
-            register={register('firstName')}
+            register={register("firstName")}
             label="First Name"
             type="string"
-            error={errors['firstName']?.message}
+            error={errors["firstName"]?.message}
           />
           <Input
-            register={register('lastName')}
+            register={register("lastName")}
             label="Last Name"
             type="string"
-            error={errors['lastName']?.message}
+            error={errors["lastName"]?.message}
           />
         </div>
         <div className="flex gap-5">
           <Input
-            register={register('email')}
+            register={register("email")}
             label="Email"
             type="string"
-            error={errors['email']?.message}
+            error={errors["email"]?.message}
           />
           <PhoneNumberInput label="Phone" name="phone" control={control} />
         </div>
         <div className="flex gap-5">
           <Input
-            register={register('companyName')}
+            register={register("companyName")}
             label="Company Name"
             type="string"
-            error={errors['companyName']?.message}
+            error={errors["companyName"]?.message}
           />
           <Input
-            register={register('numberOfEmployees', { valueAsNumber: true })}
+            register={register("numberOfEmployees", { valueAsNumber: true })}
             label="Number of Employes"
             type="number"
-            error={errors['numberOfEmployees']?.message}
+            error={errors["numberOfEmployees"]?.message}
           />
         </div>
         <div className="w-full">
           <Input
-            register={register('password')}
+            register={register("password")}
             label="Password"
             type="password"
-            error={errors['password']?.message}
+            error={errors["password"]?.message}
           />
         </div>
         <div className="space-y-2">
@@ -120,7 +121,7 @@ export const SignupPage: React.FC = () => {
               id="small"
               className="accent-black"
               value="Small or midsize business"
-              {...register('businessType')}
+              {...register("businessType")}
             />
             <label htmlFor="small" className="text-grayTxt text-[14px]">
               Small or midsize business
@@ -132,7 +133,7 @@ export const SignupPage: React.FC = () => {
               id="firm"
               className="accent-black"
               value="Accounting Firm"
-              {...register('businessType')}
+              {...register("businessType")}
             />
             <label htmlFor="firm" className="text-grayTxt text-[14px]">
               Accounting Firm
@@ -140,12 +141,14 @@ export const SignupPage: React.FC = () => {
           </div>
         </div>
         <ErrorMessage error={errorMessage} />
-        <AuthButton text="Sign Up" />
+        <AuthButton text="Sign Up" isAuthLoading={signupMutation.isPending} />
         <div className="flex gap-3 items-baseline">
-          <p className="text-[13px] m-0 text-grayTxt">Already have an account</p>
+          <p className="text-[13px] m-0 text-grayTxt">
+            Already have an account
+          </p>
           <Link
             to={`${ROUTES.auth}/${ROUTES.login}`}
-            onClick={() => setErrorMessage('')}
+            onClick={() => setErrorMessage("")}
             className="text-[14px] underline font-medium"
           >
             Login

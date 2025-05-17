@@ -1,8 +1,5 @@
-import { useAuth } from '@context';
 
-export const AuthButton: React.FC<{ text: string }> = ({ text }) => {
-  const { isAuthLoading } = useAuth();
-
+export const AuthButton: React.FC<{ text: string, isAuthLoading: boolean }> = ({ text, isAuthLoading }) => {
   return (
     <button
       type="submit"

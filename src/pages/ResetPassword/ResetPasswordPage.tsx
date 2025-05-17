@@ -42,8 +42,9 @@ export const ResetPasswordPage: React.FC = () => {
 
   return (
     <div
-      className={`lg:w-[30rem] w-[22rem] relative mx-auto h-screen flex flex-col gap-3 ${resetPasswordMutation.isPending ? 'opacity-70' : ''
-        } justify-center`}
+      className={`lg:w-[30rem] w-[22rem] relative mx-auto h-screen flex flex-col gap-3 ${
+        resetPasswordMutation.isPending ? "opacity-70" : ""
+      } justify-center`}
     >
       {resetPasswordMutation.isPending && (
         <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2">
@@ -55,26 +56,29 @@ export const ResetPasswordPage: React.FC = () => {
         <Input
           type="email"
           label="Email"
-          error={errors['email']?.message}
-          register={register('email')}
+          error={errors["email"]?.message}
+          register={register("email")}
         />
         <Input
           type="text"
           label="Code"
-          error={errors['forgotPasswordCode']?.message}
-          register={register('forgotPasswordCode')}
+          error={errors["forgotPasswordCode"]?.message}
+          register={register("forgotPasswordCode")}
         />
         <Input
           type="password"
           label="New Password"
-          error={errors['newPassword']?.message}
-          register={register('newPassword')}
+          error={errors["newPassword"]?.message}
+          register={register("newPassword")}
         />
         <ErrorMessage error={errorMessage} />
-        <AuthButton text="Reset Password" />
+        <AuthButton
+          text="Reset Password"
+          isAuthLoading={resetPasswordMutation.isPending}
+        />
       </form>
     </div>
   );
-}
+};
 
-export default ResetPasswordPage
+export default ResetPasswordPage;

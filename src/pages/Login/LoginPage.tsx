@@ -98,7 +98,7 @@ export const LoginPage: React.FC = () => {
           </button>
         </div>
         <ErrorMessage error={errorMessage} />
-        <AuthButton text="Sign In" />
+        <AuthButton text="Sign In" isAuthLoading={loginMutation.isPending} />
         <div>
           <p className="text-[13px] text-grayTxt">
             Here to receive a payment from a Apelti customer?
