@@ -45,6 +45,7 @@ export const invoiceForm = z
     comment: z.string().min(1, { message: "Comment is required." }),
     supplierId: z.string().optional(),
     vatNumber: z.string().min(1, { message: "VAT number is required." }),
+    vatId: z.string().min(1, { message: "VAT ID is required." }),
     intervalVendorId: z
       .string()
       .min(1, { message: "Interval vendor code is required." }),

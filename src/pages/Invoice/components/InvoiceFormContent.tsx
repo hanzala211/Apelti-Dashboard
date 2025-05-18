@@ -165,12 +165,18 @@ export const InvoiceFormContent: React.FC<InvoiceFormContentProps> = ({
           data={COUNTRIES}
         />
       </div>
-      <div className="px-7 grid grid-cols-1 gap-5">
+      <div className="px-7 grid grid-cols-1 lg:grid-cols-2 gap-5">
         <Input
           register={register("location")}
           error={errors["location"]?.message}
           type="text"
           label="Location"
+        />
+        <Input
+          register={register("vatId")}
+          error={errors["vatId"]?.message}
+          type="text"
+          label="VAT ID"
         />
       </div>
       <div className="grid px-7 lg:grid-cols-[1fr_1fr] grid-cols-1 gap-5">

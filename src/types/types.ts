@@ -126,6 +126,7 @@ export interface Invoice {
     match: boolean;
     reason: string;
   };
+  vatId?: string;
 }
 
 export interface FilterTypes {

@@ -46,6 +46,7 @@ const getDefaultFormValues = () => ({
   amountWithOutVat: 0,
   vatPercentage: 0,
   vatNumber: "",
+  vatId: "",
   items: [
     {
       lineItemNumber: "",
@@ -68,6 +69,7 @@ const processData = (data: Invoice) => ({
   paymentTermDescription: data.paymentTermDescription || "",
   comment: data.comment || "",
   vatNumber: data.vatNumber || "",
+  vatId: data.vatId || "",
   amountWithOutVat: data.amountWithOutVat || 0,
   vatPercentage: data.vatPercentage || 0,
   intervalVendorId: data.intervalVendorId || "",
@@ -181,6 +183,7 @@ export const InvoiceRightPanelForm: React.FC = () => {
           processedData.paymentTerms &&
           convertDateToISO(processedData.paymentTerms as string),
         amount: processedData.amount,
+        vatId: processedData.vatId,
         paymentTermDescription: processedData.paymentTermDescription,
         currency: processedData.currency,
         rarityInvoice: processedData.rarityInvoice,
@@ -223,6 +226,7 @@ export const InvoiceRightPanelForm: React.FC = () => {
       invoiceDate: convertDateToISO(data.invoiceDate),
       paymentTerms: convertDateToISO(data.paymentTerms),
       amount: data.amount,
+      vatId: data.vatId,
       paymentTermDescription: data.paymentTermDescription,
       currency: data.currency,
       rarityInvoice: data.rarityInvoice,
@@ -296,7 +300,7 @@ export const InvoiceRightPanelForm: React.FC = () => {
         onClick={handleDraftSubmit}
       ></button>
       {!reviewData ? (
-        <>
+        <React.Fragment>
           <button
             ref={removeDataBtnRef}
             onClick={() => {
@@ -332,7 +336,7 @@ export const InvoiceRightPanelForm: React.FC = () => {
               setValue={setValue}
             />
           </div>
-        </>
+        </React.Fragment>
       ) : (
         <InvoiceRightPanelOverview />
       )}
